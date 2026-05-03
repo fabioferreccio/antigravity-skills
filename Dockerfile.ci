@@ -1,0 +1,32 @@
+# ─────────────────────────────────────────────────────────────────
+# Antigravity Skills — Local CI Simulation (Optimized)
+# Mirrors the GitHub Actions pipeline (ubuntu-latest + Node 20)
+# ─────────────────────────────────────────────────────────────────
+FROM node:20-slim
+
+LABEL maintainer="Fábio Ferreccio"
+LABEL description="Local CI environment for antigravity-skills"
+
+# Enable corepack and prepare pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
+WORKDIR /workspace
+
+# Copy dependency manifests first for layer caching
+COPY package.json pnpm-lock.yaml* ./
+
+# Install dependencies using pnpm with cache mount for speed
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install --frozen-lockfile --ignore-scripts
+
+# Copy the rest of the project
+COPY . .
+
+# ─── CI Pipeline Stages ─────────────────────────────────────────
+# The entrypoint script runs all CI stages in sequence
+COPY scripts/ci-local.sh /usr/local/bin/ci-local
+RUN chmod +x /usr/local/bin/ci-local
+
+ENTRYPOINT ["ci-local"]

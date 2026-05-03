@@ -1,0 +1,52 @@
+name: 📦 Sync Catalog
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.agents/skills/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-catalog:
+    name: Regenerate Catalog
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Regenerate catalog.json
+        run: npm run catalog:sync
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet .agents/catalog.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit updated catalog
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "Fábio Ferreccio"
+          git config user.email "fabioferreccio@hotmail.com"
+          git add .agents/catalog.json
+          git commit -m "chore(catalog): sync catalog.json [skip ci]"
+          git push

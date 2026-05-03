@@ -1,0 +1,44 @@
+graph TD
+    subgraph "Level 4: Frameworks & Drivers (Plugins)"
+        F1[Database: SQL/NoSQL]
+        F2[HTTP Framework: Express/Fastify]
+        F3[External SDKs]
+    end
+
+    subgraph "Level 3: Interface Adapters"
+        A1[Controllers]
+        A2[Gateways / Repositories Implementation]
+        A3[Presenters]
+    end
+
+    subgraph "Level 2: Application (Core)"
+        U1[Use Cases / Application Services]
+        U2[Orchestrators / Sagas]
+        U3[Output Ports / Interfaces]
+    end
+
+    subgraph "Level 1: Domain (Core)"
+        E1[Entities]
+        E2[Domain Services]
+        E3[Repository Interfaces]
+    end
+
+    %% Dependency Rules (Pointing Inwards)
+    F1 --> A2
+    F2 --> A1
+    F3 --> A2
+    
+    A1 --> U1
+    A2 --> U1
+    A2 --> E3
+    A3 --> U3
+    
+    U1 --> E1
+    U1 --> E2
+    U2 --> U1
+
+    %% Inversion of Control (DIP)
+    U1 -.-> |Uses Contract| E3
+    U1 -.-> |Uses Contract| U3
+    A2 -.-> |Implements| E3
+    A3 -.-> |Implements| U3

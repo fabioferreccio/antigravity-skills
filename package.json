@@ -1,0 +1,61 @@
+{
+  "name": "@anthropic-skills/antigravity",
+  "version": "1.0.0",
+  "description": "Production-grade public registry of reusable Antigravity Skills — versioned, documented, testable, and installable via npx.",
+  "type": "module",
+  "main": "cli/index.js",
+  "bin": {
+    "antigravity": "./cli/index.js"
+  },
+  "scripts": {
+    "validate": "node scripts/validate.js",
+    "validate:structure": "node scripts/validate.js --structure",
+    "validate:frontmatter": "node scripts/validate.js --frontmatter",
+    "validate:catalog": "node scripts/validate.js --catalog",
+    "catalog:sync": "node scripts/sync-catalog.js",
+    "test": "node --test tests/",
+    "lint": "node scripts/validate.js --all",
+    "doctor": "node cli/commands/doctor.js",
+    "ci:local": "bash scripts/ci-local.sh",
+    "ci:docker": "docker build -f Dockerfile.ci -t antigravity-ci . && docker run --rm antigravity-ci",
+    "prepublishOnly": "npm run validate && npm run catalog:sync"
+  },
+  "keywords": [
+    "antigravity",
+    "skills",
+    "ai-agents",
+    "gemini",
+    "agentic",
+    "developer-tools",
+    "code-generation",
+    "automation",
+    "prompt-engineering"
+  ],
+  "author": "Fábio Ferreccio",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabioferreccio/antigravity-skills.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fabioferreccio/antigravity-skills/issues"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "cli/",
+    ".agents/skills/",
+    ".agents/catalog.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2"
+  }
+}

@@ -1,0 +1,71 @@
+# Decision Heuristics
+# Rules of thumb for skill creation decisions
+
+skill_fit:
+  must_satisfy_at_least_one:
+    - repeated_workflow: "Is this done more than 3x per week?"
+    - saves_time: "Does it save >5 minutes per occurrence?"
+    - reduces_errors: "Does manual execution have >10% error rate?"
+    - enforces_standards: "Is there a convention that gets violated?"
+    - expert_reasoning: "Does it require domain knowledge?"
+    - automation_needed: "Are there >3 manual steps?"
+    - cross_session_reuse: "Will future sessions benefit?"
+
+architecture_selection:
+  rules:
+    - if: "single clear responsibility"
+      then: single_skill
+      confidence: high
+
+    - if: "user says 'review' or 'check' or 'audit' or 'validate'"
+      then: reviewer
+      confidence: high
+
+    - if: "user says 'generate' or 'create' or 'scaffold' or 'produce'"
+      then: generator
+      confidence: high
+
+    - if: "user describes multiple related tasks"
+      then: multi_skill_suite
+      confidence: medium
+
+    - if: "user describes sequential pipeline"
+      then: orchestrator
+      confidence: high
+
+    - if: "user wants reference documentation"
+      then: static_knowledge
+      confidence: high
+
+    - if: "user mentions 'track' or 'monitor' or 'evolve'"
+      then: dynamic_updating
+      confidence: medium
+
+    - if: "user wants hands-off automation"
+      then: autonomous_operator
+      confidence: medium
+
+complexity_selection:
+  rules:
+    - if: "no scripts, no external tools"
+      then: level_1
+
+    - if: "needs concrete examples for clarity"
+      then: level_2
+
+    - if: "requires executable scripts or tools"
+      then: level_3
+
+    - if: "complex domain with many concepts"
+      then: level_4
+
+    - if: "integrates with external services"
+      then: level_5
+
+trigger_quality:
+  ranking_criteria:
+    - specificity: "More specific = higher rank"
+    - uniqueness: "Less overlap with other skills = higher rank"
+    - naturalness: "How a human would actually phrase it"
+    - keyword_density: "Contains domain-specific terms"
+    - ambiguity_risk: "Lower ambiguity = higher rank"
