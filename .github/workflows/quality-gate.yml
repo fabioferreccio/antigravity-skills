@@ -1,0 +1,71 @@
+name: 🛡️ Quality Gate
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  quality-gate:
+    name: Enforce Quality Standards
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run full validation suite
+        id: validate
+        run: |
+          npm run validate 2>&1 | tee validation-output.txt
+          echo "exit_code=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
+
+      - name: Check CHANGELOG updated
+        if: contains(github.event.pull_request.labels.*.name, 'new-skill') || contains(github.event.pull_request.labels.*.name, 'skill-update')
+        run: |
+          if ! git diff --name-only origin/main...HEAD | grep -q "CHANGELOG.md"; then
+            echo "::error::CHANGELOG.md must be updated for skill changes"
+            exit 1
+          fi
+
+      - name: Check version bump
+        if: contains(github.event.pull_request.labels.*.name, 'new-skill') || contains(github.event.pull_request.labels.*.name, 'skill-update')
+        run: |
+          node scripts/validate.js --version-bump-required
+
+      - name: Check README presence
+        run: |
+          node scripts/validate.js --readme-check
+
+      - name: Post validation summary
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let output = '';
+            try {
+              output = fs.readFileSync('validation-output.txt', 'utf8');
+            } catch (e) {
+              output = 'No validation output captured.';
+            }
+            const body = `## 🛡️ Quality Gate Results\n\n\`\`\`\n${output.slice(0, 3000)}\n\`\`\``;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });

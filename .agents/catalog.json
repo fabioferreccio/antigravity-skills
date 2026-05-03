@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "generated": "2026-05-03T00:25:00-03:00",
+  "total_skills": 2,
+  "skills": [
+    {
+      "name": "repository-maintainer",
+      "version": "1.0.0",
+      "description": "Monitors and maintains the antigravity-skills repository by validating skill structures, detecting rule violations, reviewing documentation quality, and proposing releases. Activates when the user asks to review, audit, or improve the skills registry.",
+      "author": "Fábio Ferreccio",
+      "tags": ["governance", "maintenance", "validation", "self-management"],
+      "scope": "workspace",
+      "path": ".agents/skills/repository-maintainer",
+      "security": {
+        "filesystem": "read-write",
+        "terminal": "sandboxed",
+        "network": false
+      }
+    },
+    {
+      "name": "skill-creator",
+      "version": "1.0.0",
+      "description": "Guides the user through designing, scaffolding, documenting, and validating new Antigravity Skills. Activates when the user wants to create a new skill, teach the agent a new capability, or automate a specialized workflow.",
+      "author": "Fábio Ferreccio",
+      "tags": ["scaffolding", "creation", "automation", "meta-skill"],
+      "scope": "workspace",
+      "path": ".agents/skills/skill-creator",
+      "security": {
+        "filesystem": "read-write",
+        "terminal": "sandboxed",
+        "network": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+# Antigravity Skills — Code Owners
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners for everything
+* @fabioferreccio
+
+# Skills directory — require review for all skill changes
+.agents/skills/ @fabioferreccio
+
+# CI/CD and infrastructure
+.github/ @fabioferreccio
+cli/ @fabioferreccio
+scripts/ @fabioferreccio
+
+# Documentation
+docs/ @fabioferreccio
+README.md @fabioferreccio
+CONTRIBUTING.md @fabioferreccio

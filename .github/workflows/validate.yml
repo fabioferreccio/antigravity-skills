@@ -1,0 +1,101 @@
+name: 🔍 Validate Skills
+
+on:
+  pull_request:
+    paths:
+      - '.agents/skills/**'
+      - 'scripts/**'
+  push:
+    branches: [main]
+    paths:
+      - '.agents/skills/**'
+
+permissions:
+  contents: read
+
+jobs:
+  validate-structure:
+    name: Validate Skill Structure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate directory structure
+        run: npm run validate:structure
+
+      - name: Validate frontmatter
+        run: npm run validate:frontmatter
+
+      - name: Validate catalog consistency
+        run: npm run validate:catalog
+
+  detect-changes:
+    name: Detect Changed Skills
+    runs-on: ubuntu-latest
+    outputs:
+      changed-skills: ${{ steps.changes.outputs.skills }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changed skill directories
+        id: changes
+        run: |
+          CHANGED=$(git diff --name-only ${{ github.event.before || 'HEAD~1' }} HEAD -- '.agents/skills/' | cut -d'/' -f3 | sort -u | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "skills=$CHANGED" >> $GITHUB_OUTPUT
+          echo "Changed skills: $CHANGED"
+
+  validate-versions:
+    name: Validate Version Bumps
+    needs: detect-changes
+    if: needs.detect-changes.outputs.changed-skills != '[]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check version bumps for changed skills
+        run: |
+          node scripts/validate.js --versions --changed '${{ needs.detect-changes.outputs.changed-skills }}'
+
+  check-duplicates:
+    name: Check Duplicate Names
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for duplicate skill names
+        run: node scripts/validate.js --duplicates
