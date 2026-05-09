@@ -1,8 +1,29 @@
 {
   "version": "1.0.0",
-  "generated": "2026-05-09T18:45:00.000Z",
-  "total_skills": 2,
+  "generated": "2026-05-09T18:58:20.885Z",
+  "total_skills": 3,
   "skills": [
+    {
+      "name": "enterprise-architect",
+      "version": "1.0.0",
+      "description": "Enterprise Architect Agent responsible for preserving architectural integrity, scalability, and corporate governance. Activates when evaluating new solutions, reviewing ADRs, identifying anti-patterns, validating domain boundaries, or assessing systemic risks across distributed systems.",
+      "author": "Fábio Ferreccio",
+      "tags": [
+        "architecture",
+        "governance",
+        "enterprise",
+        "systems-thinking",
+        "adr",
+        "c4",
+        "domain-design"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/enterprise-architect",
+      "security": {
+        "network": false,
+        "filesystem": "read"
+      }
+    },
     {
       "name": "product-manager",
       "version": "1.0.0",
@@ -24,24 +45,24 @@
       }
     },
     {
-      "name": "enterprise-architect",
+      "name": "staff-engineer",
       "version": "1.0.0",
-      "description": "Enterprise Architect Agent responsible for preserving architectural integrity, scalability, and corporate governance. Activates when evaluating new solutions, reviewing ADRs, identifying anti-patterns, validating domain boundaries, or assessing systemic risks across distributed systems.",
+      "description": "Staff Engineer Agent specialized in cross-functional engineering, organizational scalability, and technical standardization. Multiplies impact across teams by detecting redundancy, creating reusable abstractions, enforcing architectural standards, and accelerating engineering velocity through systematic observation, reflection, and action cycles.",
       "author": "Fábio Ferreccio",
       "tags": [
-        "architecture",
-        "governance",
-        "enterprise",
-        "systems-thinking",
-        "adr",
-        "c4",
-        "domain-design"
+        "staff-engineer",
+        "platform-engineering",
+        "technical-standards",
+        "refactoring",
+        "organizational-scalability",
+        "dora-metrics",
+        "shared-libraries"
       ],
       "scope": "workspace",
-      "path": ".agents/skills/enterprise-architect",
+      "path": ".agents/skills/staff-engineer",
       "security": {
         "network": false,
-        "filesystem": "read"
+        "filesystem": "read-write"
       }
     }
   ]

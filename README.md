@@ -73,6 +73,7 @@ npx github:fabioferreccio/antigravity-skills list
 | `repository-maintainer` | 1.0.0 | AI-powered repository governance, auditing, and quality enforcement | governance, validation |
 | `skill-creator` | 2.0.0 | Guided skill scaffolding with modular architecture and internal agentic reasoning | scaffolding, meta-skill |
 | `spec-driven-development` | 1.0.0 | Guide the team through SDD workflow with Specs, Plans, and Tasks | sdd, specification, architecture |
+| `staff-engineer` | 1.0.0 | Staff Engineer Agent for cross-functional engineering diagnosis, redundancy elimination, and DORA analysis | staff-engineer, refactoring, dora |
 
 > 💡 **This registry grows with contributions.** See [Creating Skills](#-creating-skills) to add yours.
 

@@ -1,6 +1,6 @@
 # clean-architecture
 
-> **Version**: 1.0.0 · **Scope**: workspace · **Author**: Antigravity Architect
+> **Version**: 1.0.0 · **Scope**: workspace · **Author**: Fábio Ferreccio
 
 ## Overview
 

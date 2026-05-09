@@ -5,7 +5,7 @@ description: >
   Clean Architecture. Enforces strict dependency rules and modularity 
   through a reference-based knowledge system.
 version: 1.0.0
-author: Antigravity Architect
+author: Fábio Ferreccio
 tags:
   - architecture
   - clean-code

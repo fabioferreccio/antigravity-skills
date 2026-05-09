@@ -1,5 +1,5 @@
 {
-  "name": "@anthropic-skills/antigravity",
+  "name": "@antigravity-skills/registry",
   "version": "1.0.0",
   "description": "Production-grade public registry of reusable Antigravity Skills — versioned, documented, testable, and installable via npx.",
   "type": "module",
