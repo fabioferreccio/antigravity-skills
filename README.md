@@ -67,6 +67,7 @@ npx github:fabioferreccio/antigravity-skills list
 | Skill | Version | Description | Tags |
 |---|---|---|---|
 | `clean-architecture` | 1.0.0 | Expert cognitive system for designing and refactoring systems using Clean Architecture, SOLID, and DDD | architecture, clean-code, ddd |
+| `enterprise-architect` | 1.0.0 | Enterprise Architect Agent responsible for preserving architectural integrity, scalability, and corporate governance | architecture, governance, adr, c4 |
 | `product-manager` | 1.0.0 | Guides product discovery, prioritization, and strategy as a Senior Product Manager Agent | product-management, strategy, prd |
 | `prompt-engineering` | 1.0.0 | Elite system for designing, auditing, and optimizing high-performance prompt architectures | prompts, optimization, llm |
 | `repository-maintainer` | 1.0.0 | AI-powered repository governance, auditing, and quality enforcement | governance, validation |

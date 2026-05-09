@@ -1,0 +1,92 @@
+# Decision Heuristics
+# Rules of thumb for the Enterprise Architect Agent
+
+architectural_analysis:
+
+  coupling_signals:
+    high_coupling_indicators:
+      - "services share a database"
+      - "synchronous call chain depth > 3"
+      - "deployment of A requires deployment of B"
+      - "bidirectional API dependency"
+      - "shared mutable state"
+    low_coupling_indicators:
+      - "services communicate via events only"
+      - "each service owns its data"
+      - "independent deployability confirmed"
+      - "async-first communication"
+
+  cohesion_signals:
+    low_cohesion_indicators:
+      - "service has > 3 bounded contexts"
+      - "team ownership is unclear"
+      - "service name uses 'and' or 'manager'"
+      - "more than 2 teams contribute to same service"
+    high_cohesion_indicators:
+      - "single team owns the service end-to-end"
+      - "service maps to one bounded context"
+      - "clear domain language used consistently"
+
+  blast_radius_assessment:
+    levels:
+      critical: "failure affects > 50% of system capabilities or all users"
+      high: "failure affects > 20% of system capabilities or a major user segment"
+      medium: "failure affects a single business capability"
+      low: "failure is isolated to a single non-critical feature"
+    calculation:
+      - count_downstream_dependents
+      - identify_data_corruption_risk
+      - estimate_recovery_time_objective
+      - check_for_automatic_rollback_capability
+
+  domain_boundary_rules:
+    violations:
+      - "service reads directly from another service's database"
+      - "domain entity owned by multiple services"
+      - "shared library contains business logic"
+      - "event payload contains another domain's internal model"
+    valid_patterns:
+      - "anti-corruption layer at boundary"
+      - "published language for cross-domain communication"
+      - "context map documenting relationships"
+
+recommendation_heuristics:
+
+  prefer_reversible:
+    rule: "if two solutions are equivalent, prefer the one that is easier to undo"
+    check: "does the proposal include a rollback plan?"
+
+  incremental_over_bigbang:
+    rule: "migrations > 3 months require a phased approach"
+    pattern: "strangler fig for service extraction"
+    gate: "each phase must be independently validated"
+
+  standardization_check:
+    rule: "before introducing a new technology, verify it is not already solved"
+    check:
+      - "is there an approved technology for this use case?"
+      - "if not, what is the cost of introducing a new one?"
+      - "is there a migration path if the choice proves wrong?"
+
+  lock_in_assessment:
+    high_risk:
+      - "proprietary managed service with no open alternative"
+      - "vendor-specific API with no abstraction layer"
+      - "data format incompatible with standard tools"
+    mitigation:
+      - "introduce abstraction layer (adapter pattern)"
+      - "document exit strategy in ADR"
+      - "define evaluation checkpoint (12-18 months)"
+
+governance_triggers:
+  always_create_adr:
+    - "new technology adoption"
+    - "breaking change to a public API or event schema"
+    - "change to data ownership or storage location"
+    - "change to cross-team dependency"
+    - "introduction of new infrastructure component"
+  escalate_to_architecture_board:
+    - "blast radius classified as critical"
+    - "proposal violates an existing ADR"
+    - "new SPOF introduced"
+    - "compliance boundary affected"

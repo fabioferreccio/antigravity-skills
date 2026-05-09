@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-05-09T18:33:44.081Z",
-  "total_skills": 1,
+  "generated": "2026-05-09T18:45:00.000Z",
+  "total_skills": 2,
   "skills": [
     {
       "name": "product-manager",
@@ -21,6 +21,27 @@
       "security": {
         "network": false,
         "filesystem": "read-write"
+      }
+    },
+    {
+      "name": "enterprise-architect",
+      "version": "1.0.0",
+      "description": "Enterprise Architect Agent responsible for preserving architectural integrity, scalability, and corporate governance. Activates when evaluating new solutions, reviewing ADRs, identifying anti-patterns, validating domain boundaries, or assessing systemic risks across distributed systems.",
+      "author": "Fábio Ferreccio",
+      "tags": [
+        "architecture",
+        "governance",
+        "enterprise",
+        "systems-thinking",
+        "adr",
+        "c4",
+        "domain-design"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/enterprise-architect",
+      "security": {
+        "network": false,
+        "filesystem": "read"
       }
     }
   ]
