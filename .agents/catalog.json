@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-05-09T19:05:38.288Z",
-  "total_skills": 4,
+  "generated": "2026-05-09T19:11:05.866Z",
+  "total_skills": 5,
   "skills": [
     {
       "name": "dba-agent",
@@ -22,6 +22,25 @@
       ],
       "scope": "workspace",
       "path": ".agents/skills/dba-agent",
+      "security": {
+        "network": false,
+        "filesystem": "read-write"
+      }
+    },
+    {
+      "name": "devops-agent",
+      "version": "1.0.0",
+      "description": "Acts as a DevOps Engineer Agent focusing on automation, infrastructure as code, observability, and platform resilience.",
+      "author": "Antigravity Skill Creator",
+      "tags": [
+        "devops",
+        "sre",
+        "automation",
+        "cicd",
+        "observability"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/devops-agent",
       "security": {
         "network": false,
         "filesystem": "read-write"
