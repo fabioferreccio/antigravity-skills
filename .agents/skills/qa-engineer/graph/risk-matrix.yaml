@@ -1,0 +1,69 @@
+risk_levels:
+  CRITICAL:
+    description: "Defect causes data loss, security breach, or complete service outage"
+    examples:
+      - race condition allowing overselling / double-spend
+      - authentication bypass
+      - data corruption in persistent storage
+    action: "Generate tests immediately. Escalate if systemic."
+
+  HIGH:
+    description: "Defect causes significant user impact or revenue loss"
+    examples:
+      - missing edge case causes checkout failure for edge-case inputs
+      - flaky E2E test masking a real bug
+      - missing rate limiting allowing brute force
+    action: "Generate tests in current sprint."
+
+  MEDIUM:
+    description: "Defect causes degraded UX or non-critical data inconsistency"
+    examples:
+      - validation accepts unexpected input without error
+      - misleading error messages
+      - performance degradation under moderate load
+    action: "Add to test backlog. Address before next release."
+
+  LOW:
+    description: "Cosmetic or informational — no functional impact"
+    examples:
+      - log format inconsistency
+      - misleading but non-harmful warning message
+      - minor UI alignment off by 1px
+    action: "Document. Address when convenient."
+
+test_type_risk_mapping:
+  data_integrity: [Unit, Integration, Regression]
+  user_flows: [E2E, Integration]
+  performance: [Load, Stress, Soak]
+  security: [Unit, Integration] # defer to security-engineer for deeper analysis
+  concurrency: [Integration, Stress]
+  schema_contracts: [Contract, Integration]
+
+confidence_levels:
+  GREEN:
+    description: "All layers covered. Deterministic tests. No known gaps."
+    criteria:
+      unit_coverage: ">= 80%"
+      integration_coverage: ">= 60%"
+      e2e_critical_paths: "100%"
+      performance_sla_validated: true
+      regression_tests_per_bug: ">= 1"
+
+  YELLOW:
+    description: "Core paths covered. Some gaps remain in edge cases or performance."
+    criteria:
+      unit_coverage: ">= 60%"
+      e2e_critical_paths: ">= 70%"
+
+  ORANGE:
+    description: "Significant gaps. E2E or integration layer weak."
+    criteria:
+      unit_coverage: ">= 40%"
+      known_untested_critical_paths: true
+
+  RED:
+    description: "Insufficient coverage. High regression risk. Do not release."
+    criteria:
+      any_critical_path_untested: true
+      known_race_condition_uncovered: true
+      performance_never_tested: true

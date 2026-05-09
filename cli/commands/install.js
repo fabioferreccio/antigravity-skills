@@ -29,53 +29,70 @@ function getTargetDir(skillName, isGlobal) {
 /**
  * Install a skill from the registry.
  */
-export async function install(skillName, options = {}) {
+export async function install(skillNames, options = {}) {
   printBanner();
-  const name = formatSkillName(skillName);
+  
+  const names = Array.isArray(skillNames) ? skillNames : [skillNames];
+  
+  if (names.length === 0) {
+    printError('No skill names provided.');
+    process.exit(1);
+  }
 
-  // 1. Verify skill exists in registry
   const catalog = loadCatalog();
-  const skill = catalog.skills.find((s) => s.name === name);
-
-  if (!skill) {
-    printError(`Skill "${name}" not found in the registry.`);
-    console.log('\n  Available skills:');
-    catalog.skills.forEach((s) => console.log(`    • ${s.name} (v${s.version})`));
-    console.log(`\n  Use \`antigravity search ${skillName}\` to find similar skills.`);
-    process.exit(1);
-  }
-
-  // 2. Check source directory exists
-  const sourceDir = join(REGISTRY_ROOT, name);
-  if (!existsSync(sourceDir)) {
-    printError(`Skill directory not found: ${sourceDir}`);
-    process.exit(1);
-  }
-
-  // 3. Determine target
-  const targetDir = getTargetDir(name, options.global);
   const scope = options.global ? 'global' : 'workspace';
+  
+  console.log(`  Installing ${names.length} skill(s) to ${scope}...\n`);
 
-  // 4. Check if already installed
-  if (existsSync(targetDir) && !options.force) {
-    printWarning(`Skill "${name}" is already installed at:\n  ${targetDir}`);
-    console.log('\n  Use --force to overwrite.');
-    process.exit(0);
+  let hasError = false;
+  let successCount = 0;
+
+  for (const rawName of names) {
+    const name = formatSkillName(rawName);
+    const skill = catalog.skills.find((s) => s.name === name);
+
+    if (!skill) {
+      printError(`Skill "${name}" not found in the registry.`);
+      hasError = true;
+      continue;
+    }
+
+    // Check source directory exists
+    const sourceDir = join(REGISTRY_ROOT, name);
+    if (!existsSync(sourceDir)) {
+      printError(`Skill directory not found for "${name}": ${sourceDir}`);
+      hasError = true;
+      continue;
+    }
+
+    // Determine target
+    const targetDir = getTargetDir(name, options.global);
+
+    // Check if already installed
+    if (existsSync(targetDir) && !options.force) {
+      printWarning(`Skill "${name}" is already installed at:\n  ${targetDir}`);
+      console.log('  Use --force to overwrite.');
+      continue;
+    }
+
+    // Create target directory and copy
+    try {
+      mkdirSync(targetDir, { recursive: true });
+      cpSync(sourceDir, targetDir, { recursive: true });
+
+      printSuccess(`Skill "${name}" installed successfully!`);
+      console.log(`    📍 Location: ${targetDir}`);
+      console.log(`    📦 Version:  ${skill.version}\n`);
+      successCount++;
+    } catch (err) {
+      printError(`Failed to install skill "${name}": ${err.message}`);
+      hasError = true;
+    }
   }
 
-  // 5. Create target directory and copy
-  try {
-    mkdirSync(targetDir, { recursive: true });
-    cpSync(sourceDir, targetDir, { recursive: true });
+  console.log(`  Done: ${successCount} of ${names.length} skill(s) installed.`);
 
-    printSuccess(`Skill "${name}" installed successfully!`);
-    console.log(`\n  📍 Location: ${targetDir}`);
-    console.log(`  📦 Version:  ${skill.version}`);
-    console.log(`  🎯 Scope:    ${scope}`);
-    console.log(`  🏷️  Tags:     ${skill.tags.join(', ')}`);
-    console.log('\n  The skill is now available to Antigravity agents.');
-  } catch (err) {
-    printError(`Failed to install skill: ${err.message}`);
+  if (hasError) {
     process.exit(1);
   }
 }

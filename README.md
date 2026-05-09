@@ -36,11 +36,14 @@ Every skill in this registry is:
 
 ## ⚡ Quick Start
 
-### Install a Skill
+### Install Skills
 
 ```bash
 # Install to your current project (workspace-scoped)
 npx github:fabioferreccio/antigravity-skills install clean-architecture
+
+# Install multiple skills at once
+npx github:fabioferreccio/antigravity-skills install clean-architecture dba-agent
 
 # Install globally (available in all projects)
 npx github:fabioferreccio/antigravity-skills install clean-architecture --global
@@ -72,6 +75,7 @@ npx github:fabioferreccio/antigravity-skills list
 | `enterprise-architect` | 1.0.0 | Enterprise Architect Agent responsible for preserving architectural integrity, scalability, and corporate governance | architecture, governance, adr, c4 |
 | `product-manager` | 1.0.0 | Guides product discovery, prioritization, and strategy as a Senior Product Manager Agent | product-management, strategy, prd |
 | `prompt-engineering` | 1.0.0 | Elite system for designing, auditing, and optimizing high-performance prompt architectures | prompts, optimization, llm |
+| `qa-engineer` | 1.0.0 | QA Engineer Agent specialized in defect prevention and destructive testing | qa, testing, edge-cases, automation |
 | `repository-maintainer` | 1.0.0 | AI-powered repository governance, auditing, and quality enforcement | governance, validation |
 | `security-engineer` | 1.0.0 | Security Engineer Agent specialized in Security by Design and defense in depth | security, appsec, threat-modeling |
 | `skill-creator` | 2.0.0 | Guided skill scaffolding with modular architecture and internal agentic reasoning | scaffolding, meta-skill |

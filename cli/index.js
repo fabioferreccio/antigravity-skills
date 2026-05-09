@@ -33,14 +33,14 @@ program
 
 // ─── Install Command ──────────────────────────────────────────────
 program
-  .command('install <skill-name>')
+  .command('install <skill-names...>')
   .alias('i')
-  .description('Install a skill from the registry')
+  .description('Install one or more skills from the registry')
   .option('-g, --global', 'Install to global skills directory (~/.gemini/antigravity/skills/)')
   .option('-f, --force', 'Overwrite existing skill if present')
-  .action(async (skillName, options) => {
+  .action(async (skillNames, options) => {
     const { install } = await import('./commands/install.js');
-    await install(skillName, options);
+    await install(skillNames, options);
   });
 
 // ─── Search Command ───────────────────────────────────────────────

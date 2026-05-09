@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-05-09T19:24:23.937Z",
-  "total_skills": 7,
+  "generated": "2026-05-09T19:33:39.375Z",
+  "total_skills": 8,
   "skills": [
     {
       "name": "dba-agent",
@@ -82,6 +82,28 @@
       ],
       "scope": "workspace",
       "path": ".agents/skills/product-manager",
+      "security": {
+        "network": false,
+        "filesystem": "read-write"
+      }
+    },
+    {
+      "name": "qa-engineer",
+      "version": "1.0.0",
+      "description": "QA Engineer Agent specialized in defect prevention and destructive testing. Identifies missing edge cases, race conditions, flaky scenarios, and systemic failures. Generates test strategies, mocks, E2E suites, stress tests, and regression plans to ensure robustness, stability, and predictability.",
+      "author": "Antigravity Skill Creator",
+      "tags": [
+        "qa",
+        "testing",
+        "edge-cases",
+        "automation",
+        "regression",
+        "e2e",
+        "performance",
+        "tdd"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/qa-engineer",
       "security": {
         "network": false,
         "filesystem": "read-write"
