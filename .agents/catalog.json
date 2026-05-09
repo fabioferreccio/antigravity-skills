@@ -1,8 +1,32 @@
 {
   "version": "1.0.0",
-  "generated": "2026-05-09T18:58:20.885Z",
-  "total_skills": 3,
+  "generated": "2026-05-09T19:05:38.288Z",
+  "total_skills": 4,
   "skills": [
+    {
+      "name": "dba-agent",
+      "version": "1.0.0",
+      "description": "DBA Agent specialized in database performance, integrity, and security. Activates when analyzing slow queries, reviewing migrations, designing indexes, detecting N+1 patterns, auditing transactions, planning partitioning/sharding, or diagnosing any data-layer bottleneck.",
+      "author": "Fábio Ferreccio",
+      "tags": [
+        "database",
+        "performance",
+        "sql",
+        "indexing",
+        "query-optimization",
+        "transactions",
+        "sharding",
+        "partitioning",
+        "migrations",
+        "security"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/dba-agent",
+      "security": {
+        "network": false,
+        "filesystem": "read-write"
+      }
+    },
     {
       "name": "enterprise-architect",
       "version": "1.0.0",

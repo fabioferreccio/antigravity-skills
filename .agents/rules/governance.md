@@ -13,6 +13,7 @@ These rules are **always active** and apply to every agent interaction within th
 2. All SKILL.md files must contain valid YAML frontmatter
 3. Semantic versioning is mandatory — no exceptions
 4. CHANGELOG.md must be updated for every skill change
+5. The main README.md must be updated to include the skill in the "Available Skills" table when created
 
 ## Security
 
