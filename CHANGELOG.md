@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `product-manager` (v1.0.0) — Senior PM Agent for discovery, prioritization, and strategy with RICE/WSJF/Kano frameworks.
   - `staff-engineer` (v1.0.0) — Staff Engineer Agent for cross-functional engineering diagnosis, redundancy elimination, shared library design, DORA analysis, and organizational scalability. Level 4 complexity with anti-patterns catalog, output templates, heuristics graph, 2 examples, and 16-case eval suite.
   - `dba-agent` (v1.0.0) — DBA Agent specialized in database performance, integrity, and security. Supports query optimization, index design, N+1 detection, migration safety review, transaction audit, partition/shard planning, and replication analysis. Level 4 complexity with principles reference, heuristics graph, 2 examples, and 16-case eval suite (10 valid + 3 misuse + 3 edge cases).
+  - `security-engineer` (v1.0.0) — Security Engineer Agent applying Security by Design and defense-in-depth. Covers threat modeling (STRIDE), CVE identification, IAM review, auth/crypto audit, secrets scanning, HTTP header audit, pipeline security, and supply chain analysis. Level 4 complexity with OWASP/CVSS/severity references, agentic state-machine graph, 2 realistic audit examples (Node.js API + Kubernetes IAM), and 16-case eval suite (10 valid + 3 misuse + 3 edge cases). Structured output uses CVSS v3.1 scoring and P0–P3 prioritization.
 
 ---
 

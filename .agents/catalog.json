@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-05-09T19:16:52.760Z",
-  "total_skills": 6,
+  "generated": "2026-05-09T19:24:23.937Z",
+  "total_skills": 7,
   "skills": [
     {
       "name": "dba-agent",
@@ -85,6 +85,27 @@
       "security": {
         "network": false,
         "filesystem": "read-write"
+      }
+    },
+    {
+      "name": "security-engineer",
+      "version": "1.0.0",
+      "description": "Security Engineer Agent specialized in Security by Design and defense in depth. Identifies, prevents, and mitigates vulnerabilities across code, infrastructure, IAM, pipelines, secrets, and dependencies before they become incidents.",
+      "author": "Antigravity Skill Creator",
+      "tags": [
+        "security",
+        "appsec",
+        "threat-modeling",
+        "vulnerability",
+        "devsecops",
+        "owasp",
+        "cve"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/security-engineer",
+      "security": {
+        "network": false,
+        "filesystem": "read"
       }
     },
     {

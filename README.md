@@ -73,6 +73,7 @@ npx github:fabioferreccio/antigravity-skills list
 | `product-manager` | 1.0.0 | Guides product discovery, prioritization, and strategy as a Senior Product Manager Agent | product-management, strategy, prd |
 | `prompt-engineering` | 1.0.0 | Elite system for designing, auditing, and optimizing high-performance prompt architectures | prompts, optimization, llm |
 | `repository-maintainer` | 1.0.0 | AI-powered repository governance, auditing, and quality enforcement | governance, validation |
+| `security-engineer` | 1.0.0 | Security Engineer Agent specialized in Security by Design and defense in depth | security, appsec, threat-modeling |
 | `skill-creator` | 2.0.0 | Guided skill scaffolding with modular architecture and internal agentic reasoning | scaffolding, meta-skill |
 | `spec-driven-development` | 1.0.0 | Guide the team through SDD workflow with Specs, Plans, and Tasks | sdd, specification, architecture |
 | `staff-engineer` | 1.0.0 | Staff Engineer Agent for cross-functional engineering diagnosis, redundancy elimination, and DORA analysis | staff-engineer, refactoring, dora |
