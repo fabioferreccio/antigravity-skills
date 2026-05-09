@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-05-09T19:11:05.866Z",
-  "total_skills": 5,
+  "generated": "2026-05-09T19:16:52.760Z",
+  "total_skills": 6,
   "skills": [
     {
       "name": "dba-agent",
@@ -106,6 +106,25 @@
       "security": {
         "network": false,
         "filesystem": "read-write"
+      }
+    },
+    {
+      "name": "ux-specialist",
+      "version": "1.0.0",
+      "description": "Atua como um UX Specialist Agent focado em usabilidade, acessibilidade e experiência do usuário, garantindo interfaces intuitivas que reduzem a fricção.",
+      "author": "Fabio Ferreccio <fabio@example.com>",
+      "tags": [
+        "ux",
+        "ui",
+        "accessibility",
+        "usability",
+        "design"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/ux-specialist",
+      "security": {
+        "network": false,
+        "filesystem": "read"
       }
     }
   ]

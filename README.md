@@ -76,6 +76,7 @@ npx github:fabioferreccio/antigravity-skills list
 | `skill-creator` | 2.0.0 | Guided skill scaffolding with modular architecture and internal agentic reasoning | scaffolding, meta-skill |
 | `spec-driven-development` | 1.0.0 | Guide the team through SDD workflow with Specs, Plans, and Tasks | sdd, specification, architecture |
 | `staff-engineer` | 1.0.0 | Staff Engineer Agent for cross-functional engineering diagnosis, redundancy elimination, and DORA analysis | staff-engineer, refactoring, dora |
+| `ux-specialist` | 1.0.0 | UX Specialist Agent focused on usability, accessibility, and user experience, reducing friction | ux, ui, accessibility |
 
 > 💡 **This registry grows with contributions.** See [Creating Skills](#-creating-skills) to add yours.
 

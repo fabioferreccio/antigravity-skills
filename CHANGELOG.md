@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **Skills Registry**:
+  - `ux-specialist` (v1.0.0) - UX Specialist Agent for usability, accessibility, and user experience.
   - `devops-agent` (v1.0.0) — DevOps Engineer Agent for platform stability, automation, continuous integration/delivery, and observability. Level 2 complexity with examples and test suite.
   - `enterprise-architect` (v1.0.0) — Enterprise Architect Agent for architectural integrity, governance, and systemic risk analysis. Level 4 complexity with references, graph, examples, and test suite.
   - `product-manager` (v1.0.0) — Senior PM Agent for discovery, prioritization, and strategy with RICE/WSJF/Kano frameworks.
