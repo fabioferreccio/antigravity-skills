@@ -1,21 +1,26 @@
 {
   "version": "1.0.0",
-  "generated": "2026-05-14T12:44:27.504Z",
+  "generated": "2026-05-14T12:45:00.848Z",
   "total_skills": 14,
   "skills": [
     {
       "name": "clean-architecture",
-      "version": "0.0.0",
-      "description": "",
-      "author": "Unknown",
+      "version": "1.0.0",
+      "description": "Expert cognitive system for designing and refactoring systems using Clean Architecture. Enforces strict dependency rules and modularity through a reference-based knowledge system.",
+      "author": "Fábio Ferreccio",
       "tags": [
-        "architecture\r",
-        "clean-code\r",
-        "domain-driven-design\r",
-        "modularity\r"
+        "architecture",
+        "clean-code",
+        "domain-driven-design",
+        "modularity"
       ],
       "scope": "workspace",
-      "path": ".agents/skills/clean-architecture"
+      "path": ".agents/skills/clean-architecture",
+      "security": {
+        "network": false,
+        "filesystem": "read-write",
+        "terminal": "sandboxed"
+      }
     },
     {
       "name": "dba-agent",
@@ -83,21 +88,26 @@
     },
     {
       "name": "migration-reviewer",
-      "version": "0.0.0",
-      "description": "",
-      "author": "Unknown",
+      "version": "1.0.0",
+      "description": "Migration Reviewer Agent that receives database migrations in any format (Knex, Prisma, Sequelize, TypeORM, raw SQL, etc.), performs DBA-grade analysis for safety, performance, and rollback viability, then generates a structured Slack-ready Markdown approval report for Stack Leaders and Holders. Use when reviewing, analyzing, or approving database migrations, or when generating DB change reports for stakeholders.",
+      "author": "Fábio Ferreccio",
       "tags": [
-        "migration\r",
-        "database\r",
-        "approval\r",
-        "slack\r",
-        "dba\r",
-        "review\r",
-        "knex\r",
-        "prisma\r"
+        "migration",
+        "database",
+        "approval",
+        "slack",
+        "dba",
+        "review",
+        "knex",
+        "prisma"
       ],
       "scope": "workspace",
-      "path": ".agents/skills/migration-reviewer"
+      "path": ".agents/skills/migration-reviewer",
+      "security": {
+        "network": false,
+        "filesystem": "read-write",
+        "terminal": "sandboxed"
+      }
     },
     {
       "name": "product-manager",
@@ -121,17 +131,22 @@
     },
     {
       "name": "prompt-engineering",
-      "version": "0.0.0",
-      "description": "",
-      "author": "Unknown",
+      "version": "1.0.0",
+      "description": "Elite interactive prompt engineering skill for designing, auditing, optimizing, and evolving prompts for LLMs, agents, and complex AI workflows with high precision.",
+      "author": "Supreme Skill Architecture",
       "tags": [
-        "prompt-engineering\r",
-        "optimization\r",
-        "multi-agent\r",
-        "llm\r"
+        "prompt-engineering",
+        "optimization",
+        "multi-agent",
+        "llm"
       ],
       "scope": "workspace",
-      "path": ".agents/skills/prompt-engineering"
+      "path": ".agents/skills/prompt-engineering",
+      "security": {
+        "network": false,
+        "filesystem": "read-write",
+        "terminal": "sandboxed"
+      }
     },
     {
       "name": "qa-engineer",
@@ -157,18 +172,22 @@
     },
     {
       "name": "repository-maintainer",
-      "version": "0.0.0",
-      "description": "",
-      "author": "Unknown",
+      "version": "1.0.0",
+      "description": "Monitors and maintains the antigravity-skills repository by validating skill structures, detecting rule violations, reviewing documentation quality, proposing version bumps, and suggesting releases. Activates when the user asks to review, audit, fix, or improve the skills registry or any individual skill within it.",
+      "author": "Fábio Ferreccio",
       "tags": [
-        "governance\r",
-        "maintenance\r",
-        "validation\r",
-        "self-management\r",
-        "audit\r"
+        "governance",
+        "maintenance",
+        "validation",
+        "self-management",
+        "audit"
       ],
       "scope": "workspace",
-      "path": ".agents/skills/repository-maintainer"
+      "path": ".agents/skills/repository-maintainer",
+      "security": {
+        "network": false,
+        "filesystem": "read-write"
+      }
     },
     {
       "name": "security-engineer",
@@ -193,33 +212,41 @@
     },
     {
       "name": "skill-creator",
-      "version": "0.0.0",
-      "description": "",
-      "author": "Unknown",
+      "version": "2.0.0",
+      "description": "Interactive meta-skill that designs, scaffolds, validates, and evolves Antigravity Skills using modular architecture, internal agentic reasoning, structured knowledge graphs, and production-grade outputs. Activates when the user wants to create, teach, or add a new skill to the registry.",
+      "author": "Fábio Ferreccio",
       "tags": [
-        "scaffolding\r",
-        "creation\r",
-        "automation\r",
-        "meta-skill\r",
-        "architecture\r"
+        "scaffolding",
+        "creation",
+        "automation",
+        "meta-skill",
+        "architecture"
       ],
       "scope": "workspace",
-      "path": ".agents/skills/skill-creator"
+      "path": ".agents/skills/skill-creator",
+      "security": {
+        "network": false,
+        "filesystem": "read-write"
+      }
     },
     {
       "name": "spec-driven-development",
-      "version": "0.0.0",
-      "description": "",
-      "author": "Unknown",
+      "version": "1.0.0",
+      "description": "Guide the development team through the rigorous Spec-Driven Development (SDD) workflow, creating and maintaining specifications, plans, and tasks as the single source of truth before any code generation, eliminating \"vibe coding\".",
+      "author": "Fábio Ferreccio",
       "tags": [
-        "sdd\r",
-        "specification\r",
-        "architecture\r",
-        "workflow\r",
-        "speckit\r"
+        "sdd",
+        "specification",
+        "architecture",
+        "workflow",
+        "speckit"
       ],
       "scope": "workspace",
-      "path": ".agents/skills/spec-driven-development"
+      "path": ".agents/skills/spec-driven-development",
+      "security": {
+        "network": false,
+        "filesystem": "read-write"
+      }
     },
     {
       "name": "staff-engineer",
