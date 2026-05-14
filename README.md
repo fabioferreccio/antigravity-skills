@@ -39,7 +39,7 @@ Every skill in this registry is:
 ### Install Skills
 
 ```bash
-# Install to your current project (workspace-scoped)
+# Install to your current project (workspace-scoped, Antigravity)
 npx github:fabioferreccio/antigravity-skills install clean-architecture
 
 # Install multiple skills at once
@@ -47,6 +47,15 @@ npx github:fabioferreccio/antigravity-skills install clean-architecture dba-agen
 
 # Install globally (available in all projects)
 npx github:fabioferreccio/antigravity-skills install clean-architecture --global
+
+# Install for Claude Code
+npx github:fabioferreccio/antigravity-skills install migration-reviewer --claude
+
+# Install for Claude Code globally
+npx github:fabioferreccio/antigravity-skills install migration-reviewer --claude --global
+
+# Install for ALL supported clients (Antigravity + Claude Code)
+npx github:fabioferreccio/antigravity-skills install migration-reviewer --all-clients
 ```
 
 ### Explore the Registry
@@ -58,10 +67,12 @@ npx github:fabioferreccio/antigravity-skills list
 
 ### Installation Paths
 
-| Scope | Path | When to Use |
-|---|---|---|
-| **Workspace** | `./.agents/skills/<name>/` | Project-specific skills |
-| **Global** | `~/.gemini/antigravity/skills/<name>/` | Cross-project utilities |
+| Client | Scope | Path | When to Use |
+|---|---|---|---|
+| **Antigravity** | Workspace | `./.agents/skills/<name>/` | Project-specific skills |
+| **Antigravity** | Global | `~/.gemini/antigravity/skills/<name>/` | Cross-project utilities |
+| **Claude Code** | Workspace | `./.claude/skills/<name>/` | Project-specific skills |
+| **Claude Code** | Global | `~/.claude/skills/<name>/` | Cross-project utilities |
 
 ---
 
@@ -73,6 +84,7 @@ npx github:fabioferreccio/antigravity-skills list
 | `dba-agent` | 1.0.0 | DBA Agent specialized in database performance, integrity, and security | database, performance, sql |
 | `devops-agent` | 1.0.0 | Acts as a DevOps Engineer Agent focusing on automation, infrastructure as code, observability, and platform resilience | devops, sre, automation, cicd |
 | `enterprise-architect` | 1.0.0 | Enterprise Architect Agent responsible for preserving architectural integrity, scalability, and corporate governance | architecture, governance, adr, c4 |
+| `migration-reviewer` | 1.0.0 | Migration Reviewer Agent that analyzes migrations (Knex, Prisma, SQL, etc.) and generates Slack-ready approval reports | migration, dba, approval, slack |
 | `product-manager` | 1.0.0 | Guides product discovery, prioritization, and strategy as a Senior Product Manager Agent | product-management, strategy, prd |
 | `prompt-engineering` | 1.0.0 | Elite system for designing, auditing, and optimizing high-performance prompt architectures | prompts, optimization, llm |
 | `qa-engineer` | 1.0.0 | QA Engineer Agent specialized in defect prevention and destructive testing | qa, testing, edge-cases, automation |
@@ -235,9 +247,3 @@ security:
 [MIT](LICENSE) © Fábio Ferreccio
 
 ---
-
-<div align="center">
-
-**Built for the Agentic Era** · Powered by [Google Antigravity](https://github.com/google/antigravity)
-
-</div>

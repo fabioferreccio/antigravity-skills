@@ -17,6 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `staff-engineer` (v1.0.0) — Staff Engineer Agent for cross-functional engineering diagnosis, redundancy elimination, shared library design, DORA analysis, and organizational scalability. Level 4 complexity with anti-patterns catalog, output templates, heuristics graph, 2 examples, and 16-case eval suite.
   - `dba-agent` (v1.0.0) — DBA Agent specialized in database performance, integrity, and security. Supports query optimization, index design, N+1 detection, migration safety review, transaction audit, partition/shard planning, and replication analysis. Level 4 complexity with principles reference, heuristics graph, 2 examples, and 16-case eval suite (10 valid + 3 misuse + 3 edge cases).
   - `security-engineer` (v1.0.0) — Security Engineer Agent applying Security by Design and defense-in-depth. Covers threat modeling (STRIDE), CVE identification, IAM review, auth/crypto audit, secrets scanning, HTTP header audit, pipeline security, and supply chain analysis. Level 4 complexity with OWASP/CVSS/severity references, agentic state-machine graph, 2 realistic audit examples (Node.js API + Kubernetes IAM), and 16-case eval suite (10 valid + 3 misuse + 3 edge cases). Structured output uses CVSS v3.1 scoring and P0–P3 prioritization.
+  - `migration-reviewer` (v1.0.0) — Migration Reviewer Agent that receives database migrations in any format (Knex, Prisma, Sequelize, TypeORM, Django, Rails, raw SQL, or informal descriptions), performs DBA-grade safety and impact analysis, and generates Slack-ready Markdown approval reports for Stack Leaders and Holders. Level 4 complexity with safety-checklist reference, heuristics graph, 2 examples (Knex NOT NULL + informal multi-table), and 16-case eval suite (10 valid + 3 misuse + 3 edge cases). Compatible with Agent Skills open standard (Claude Code + Antigravity).
+
+- **CLI Tooling**:
+  - Multi-client installation support: `--claude` flag installs skills to `.claude/skills/` (workspace) or `~/.claude/skills/` (global).
+  - `--all-clients` flag installs for all supported clients (Antigravity + Claude Code) in a single command.
+  - Same-path guard: prevents `cpSync` errors when installing from inside the registry repository.
+  - Updated help text and usage documentation.
 
 ---
 

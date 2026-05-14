@@ -65,3 +65,10 @@ export function printError(message) {
 export function printWarning(message) {
   console.log(`\n  ⚠️  ${message}`);
 }
+
+/**
+ * Print an info message.
+ */
+export function printInfo(message) {
+  console.log(`\n  ℹ️  ${message}`);
+}

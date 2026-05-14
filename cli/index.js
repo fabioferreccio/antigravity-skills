@@ -9,6 +9,9 @@
  * Usage:
  *   npx antigravity install <skill-name>
  *   npx antigravity install <skill-name> --global
+ *   npx antigravity install <skill-name> --claude
+ *   npx antigravity install <skill-name> --claude --global
+ *   npx antigravity install <skill-name> --all-clients
  *   npx antigravity search <query>
  *   npx antigravity list
  *   npx antigravity update
@@ -36,8 +39,10 @@ program
   .command('install <skill-names...>')
   .alias('i')
   .description('Install one or more skills from the registry')
-  .option('-g, --global', 'Install to global skills directory (~/.gemini/antigravity/skills/)')
+  .option('-g, --global', 'Install to global skills directory')
   .option('-f, --force', 'Overwrite existing skill if present')
+  .option('-c, --claude', 'Install for Claude Code (.claude/skills/)')
+  .option('-a, --all-clients', 'Install for all supported clients (Antigravity + Claude)')
   .action(async (skillNames, options) => {
     const { install } = await import('./commands/install.js');
     await install(skillNames, options);

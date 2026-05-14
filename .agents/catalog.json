@@ -1,26 +1,21 @@
 {
   "version": "1.0.0",
-  "generated": "2026-05-09T19:41:30.577Z",
-  "total_skills": 13,
+  "generated": "2026-05-14T12:44:27.504Z",
+  "total_skills": 14,
   "skills": [
     {
       "name": "clean-architecture",
-      "version": "1.0.0",
-      "description": "Expert cognitive system for designing and refactoring systems using Clean Architecture. Enforces strict dependency rules and modularity through a reference-based knowledge system.",
-      "author": "Fábio Ferreccio",
+      "version": "0.0.0",
+      "description": "",
+      "author": "Unknown",
       "tags": [
-        "architecture",
-        "clean-code",
-        "domain-driven-design",
-        "modularity"
+        "architecture\r",
+        "clean-code\r",
+        "domain-driven-design\r",
+        "modularity\r"
       ],
       "scope": "workspace",
-      "path": ".agents/skills/clean-architecture",
-      "security": {
-        "network": false,
-        "filesystem": "read-write",
-        "terminal": "sandboxed"
-      }
+      "path": ".agents/skills/clean-architecture"
     },
     {
       "name": "dba-agent",
@@ -87,6 +82,24 @@
       }
     },
     {
+      "name": "migration-reviewer",
+      "version": "0.0.0",
+      "description": "",
+      "author": "Unknown",
+      "tags": [
+        "migration\r",
+        "database\r",
+        "approval\r",
+        "slack\r",
+        "dba\r",
+        "review\r",
+        "knex\r",
+        "prisma\r"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/migration-reviewer"
+    },
+    {
       "name": "product-manager",
       "version": "1.0.0",
       "description": "Guides product discovery, prioritization, and strategy as a Senior Product Manager Agent. Synthesizes user pain, business impact, technical feasibility, and operational cost to maximize value and eliminate waste.",
@@ -108,22 +121,17 @@
     },
     {
       "name": "prompt-engineering",
-      "version": "1.0.0",
-      "description": "Elite interactive prompt engineering skill for designing, auditing, optimizing, and evolving prompts for LLMs, agents, and complex AI workflows with high precision.",
-      "author": "Supreme Skill Architecture",
+      "version": "0.0.0",
+      "description": "",
+      "author": "Unknown",
       "tags": [
-        "prompt-engineering",
-        "optimization",
-        "multi-agent",
-        "llm"
+        "prompt-engineering\r",
+        "optimization\r",
+        "multi-agent\r",
+        "llm\r"
       ],
       "scope": "workspace",
-      "path": ".agents/skills/prompt-engineering",
-      "security": {
-        "network": false,
-        "filesystem": "read-write",
-        "terminal": "sandboxed"
-      }
+      "path": ".agents/skills/prompt-engineering"
     },
     {
       "name": "qa-engineer",
@@ -149,22 +157,18 @@
     },
     {
       "name": "repository-maintainer",
-      "version": "1.0.0",
-      "description": "Monitors and maintains the antigravity-skills repository by validating skill structures, detecting rule violations, reviewing documentation quality, proposing version bumps, and suggesting releases. Activates when the user asks to review, audit, fix, or improve the skills registry or any individual skill within it.",
-      "author": "Fábio Ferreccio",
+      "version": "0.0.0",
+      "description": "",
+      "author": "Unknown",
       "tags": [
-        "governance",
-        "maintenance",
-        "validation",
-        "self-management",
-        "audit"
+        "governance\r",
+        "maintenance\r",
+        "validation\r",
+        "self-management\r",
+        "audit\r"
       ],
       "scope": "workspace",
-      "path": ".agents/skills/repository-maintainer",
-      "security": {
-        "network": false,
-        "filesystem": "read-write"
-      }
+      "path": ".agents/skills/repository-maintainer"
     },
     {
       "name": "security-engineer",
@@ -189,41 +193,33 @@
     },
     {
       "name": "skill-creator",
-      "version": "2.0.0",
-      "description": "Interactive meta-skill that designs, scaffolds, validates, and evolves Antigravity Skills using modular architecture, internal agentic reasoning, structured knowledge graphs, and production-grade outputs. Activates when the user wants to create, teach, or add a new skill to the registry.",
-      "author": "Fábio Ferreccio",
+      "version": "0.0.0",
+      "description": "",
+      "author": "Unknown",
       "tags": [
-        "scaffolding",
-        "creation",
-        "automation",
-        "meta-skill",
-        "architecture"
+        "scaffolding\r",
+        "creation\r",
+        "automation\r",
+        "meta-skill\r",
+        "architecture\r"
       ],
       "scope": "workspace",
-      "path": ".agents/skills/skill-creator",
-      "security": {
-        "network": false,
-        "filesystem": "read-write"
-      }
+      "path": ".agents/skills/skill-creator"
     },
     {
       "name": "spec-driven-development",
-      "version": "1.0.0",
-      "description": "Guide the development team through the rigorous Spec-Driven Development (SDD) workflow, creating and maintaining specifications, plans, and tasks as the single source of truth before any code generation, eliminating \"vibe coding\".",
-      "author": "Fábio Ferreccio",
+      "version": "0.0.0",
+      "description": "",
+      "author": "Unknown",
       "tags": [
-        "sdd",
-        "specification",
-        "architecture",
-        "workflow",
-        "speckit"
+        "sdd\r",
+        "specification\r",
+        "architecture\r",
+        "workflow\r",
+        "speckit\r"
       ],
       "scope": "workspace",
-      "path": ".agents/skills/spec-driven-development",
-      "security": {
-        "network": false,
-        "filesystem": "read-write"
-      }
+      "path": ".agents/skills/spec-driven-development"
     },
     {
       "name": "staff-engineer",
