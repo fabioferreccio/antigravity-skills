@@ -55,7 +55,7 @@
     "commander": "^12.1.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.3.0",
+    "@commitlint/cli": "^21.0.2",
     "@commitlint/config-conventional": "^19.2.2"
   }
 }
