@@ -56,6 +56,6 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^21.0.2",
-    "@commitlint/config-conventional": "^19.2.2"
+    "@commitlint/config-conventional": "^21.0.2"
   }
 }
