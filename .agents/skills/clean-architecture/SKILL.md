@@ -4,13 +4,16 @@ description: >
   Expert cognitive system for designing and refactoring systems using 
   Clean Architecture. Enforces strict dependency rules and modularity 
   through a reference-based knowledge system.
-version: 1.0.0
-author: Fábio Ferreccio
+version: 1.1.0
+author: Fábio Ferreccio <fabio@example.com>
 tags:
   - architecture
   - clean-code
   - domain-driven-design
   - modularity
+  - cqrs
+  - error-handling
+  - contracts
 triggers:
   - "clean arch"
   - "arquitetura limpa"
@@ -20,6 +23,11 @@ triggers:
   - "orchestrator"
   - "saga"
   - "ports and adapters"
+  - "cqrs"
+  - "error handling"
+  - "contracts"
+  - "interfaces"
+  - "observability"
 scope: workspace
 tools:
   - filesystem
@@ -27,7 +35,6 @@ security:
   network: false
   filesystem: read-write
   terminal: sandboxed
-interaction_language: pt-BR
 ---
 
 # Goal
@@ -43,14 +50,18 @@ To optimize token usage and accuracy, do not assume you know all rules for every
    - `entities.md`: For pure business rules.
    - `use-cases.md`: For single-task application flows.
    - `orchestrators.md`: For complex flows, Sagas, or multi-use-case services.
-   - `adapters.md`: For Controllers, Presenters, or Gateways.
-   - `drivers.md`: For DB, Web Frameworks, or External APIs.
+   - `adapters-drivers.md`: For Controllers, Presenters, Gateways, DB, Web Frameworks, or External APIs.
    - `layers.md`: For overall system organization and layer responsibilities.
    - `dependency-principles.md`: For DIP, DI, Contracts, and Framework-as-plugin rules.
    - `solid.md`: For SRP, OCP, LSP, ISP, and DIP applications.
    - `ddd.md`: For Aggregates, Value Objects, Bounded Contexts, and Domain Events.
    - `patterns.md`: For Factories, Strategy, Decorators, and Mappers.
    - `testing.md`: For Unit/Integration/E2E tests, TDD, and Triple AAA organization.
+   - `error-handling.md`: For error boundaries, Result pattern, domain/app/infra exceptions.
+   - `cqrs-events.md`: For CQRS, Event Sourcing, Command/Query separation, Event Bus/Message Bus.
+   - `anti-patterns.md`: For code smells, before/after refactoring examples.
+   - `contracts-catalog.md`: For comprehensive interface/contract reference by layer.
+   - `observability.md`: For logging, metrics, tracing cross-cutting concerns.
 
 ## 2. Knowledge Graph Validation
 Before proposing any code change, visually verify the dependency direction:

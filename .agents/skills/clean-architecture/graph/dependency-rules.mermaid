@@ -1,4 +1,16 @@
 graph TD
+    subgraph "Level 0: Shared Kernel (Primitives)"
+        K1[IResult / IError]
+        K2[IMapper]
+        K3[IPaginatedResult]
+    end
+
+    subgraph "Cross-Cutting (via DI)"
+        CC1[ILogger]
+        CC2[IMetricsService]
+        CC3[ITracingService]
+    end
+
     subgraph "Level 4: Frameworks & Drivers (Plugins)"
         F1[Database: SQL/NoSQL]
         F2[HTTP Framework: Express/Fastify]
@@ -6,7 +18,7 @@ graph TD
     end
 
     subgraph "Level 3: Interface Adapters"
-        A1[Controllers]
+        A1[Controllers / Middleware]
         A2[Gateways / Repositories Implementation]
         A3[Presenters]
     end
@@ -15,30 +27,47 @@ graph TD
         U1[Use Cases / Application Services]
         U2[Orchestrators / Sagas]
         U3[Output Ports / Interfaces]
+        U4[Command Handlers]
+        U5[Query Handlers]
     end
 
     subgraph "Level 1: Domain (Core)"
-        E1[Entities]
+        E1[Entities / Aggregate Roots]
         E2[Domain Services]
-        E3[Repository Interfaces]
+        E3[Repository Interfaces / Ports]
+        E4[Domain Events]
+        E5[Specifications]
     end
 
     %% Dependency Rules (Pointing Inwards)
     F1 --> A2
     F2 --> A1
     F3 --> A2
-    
+
     A1 --> U1
     A2 --> U1
     A2 --> E3
     A3 --> U3
-    
+
     U1 --> E1
     U1 --> E2
     U2 --> U1
+    U4 --> U1
+    U5 --> E3
 
     %% Inversion of Control (DIP)
     U1 -.-> |Uses Contract| E3
     U1 -.-> |Uses Contract| U3
     A2 -.-> |Implements| E3
     A3 -.-> |Implements| U3
+
+    %% Shared Kernel (all layers may depend on)
+    E1 -.-> |Uses| K1
+    U1 -.-> |Uses| K1
+    U1 -.-> |Uses| K2
+    A2 -.-> |Uses| K2
+
+    %% Cross-Cutting (injected via DI, available to all)
+    U1 -.-> |Injected| CC1
+    A1 -.-> |Injected| CC1
+    A2 -.-> |Injected| CC2

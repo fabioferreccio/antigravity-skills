@@ -10,6 +10,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **Skills Registry**:
+  - `clean-architecture` bumped to **v1.1.0**:
+    - **Bug Fix**: Corrected `adapters.md`/`drivers.md` references to `adapters-drivers.md` in SKILL.md.
+    - **New Modules**: `error-handling.md`, `cqrs-events.md`, `anti-patterns.md`, `contracts-catalog.md`, `observability.md`.
+    - **Enriched Modules**: All 7 existing reference modules expanded with interface contracts from production codebase (~70 interfaces absorbed).
+    - **Example Tests**: Both examples (CheckoutSaga, PaymentGateway) now include unit tests following Triple AAA.
+    - **Golden Answers**: Eval suite now includes expected responses, scoring rubric, and 5 new prompts.
+    - **Updated Graph**: Dependency graph includes Shared Kernel, Cross-Cutting, and CQRS nodes.
+    - **Level 2.5 Disclaimer**: Orchestrators module notes this is a practical extension, not canonical.
+
+- **Skills Registry**:
   - `ux-specialist` (v1.0.0) - UX Specialist Agent for usability, accessibility, and user experience.
   - `devops-agent` (v1.0.0) — DevOps Engineer Agent for platform stability, automation, continuous integration/delivery, and observability. Level 2 complexity with examples and test suite.
   - `enterprise-architect` (v1.0.0) — Enterprise Architect Agent for architectural integrity, governance, and systemic risk analysis. Level 4 complexity with references, graph, examples, and test suite.

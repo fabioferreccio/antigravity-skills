@@ -40,3 +40,63 @@ export class PaymentStrategyFactory {
 - **DIP (SOLID)**: The `PaymentSaga` depends on `IPaymentProvider` (Contract), not on `StripeSDK`.
 - **DDD**: `Payment` is an **Aggregate Root**. It publishes a `PaymentAuthorized` event after success.
 - **Modular RAG**: If the AI is working on this example, it loads `patterns.md` for the Factory logic and `orchestrators.md` for the Saga logic.
+
+## 5. Unit Tests (Triple AAA)
+
+```typescript
+// PaymentStrategyFactory.spec.ts
+import { describe, it, expect, vi } from 'vitest';
+
+describe('PaymentStrategyFactory', () => {
+  // Test 1: Pix selects CentralBank
+  it('should select CentralBank provider for Pix payments', () => {
+    // Arrange
+    const centralBank = { process: vi.fn() };
+    const providers = new Map([['CentralBank', centralBank]]);
+    const factory = new PaymentStrategyFactory(providers);
+    const method = PaymentMethod.create('PIX');
+    const amount = Amount.create(50);
+
+    // Act
+    const provider = factory.getProvider(method, amount);
+
+    // Assert
+    expect(provider).toBe(centralBank);
+  });
+
+  // Test 2: High-value card selects Adyen
+  it('should select Adyen for high-value card payments', () => {
+    // Arrange
+    const adyen = { process: vi.fn() };
+    const providers = new Map([['Adyen', adyen]]);
+    const factory = new PaymentStrategyFactory(providers);
+    const method = PaymentMethod.create('CREDIT_CARD');
+    const amount = Amount.create(10000); // high value
+
+    // Act
+    const provider = factory.getProvider(method, amount);
+
+    // Assert
+    expect(provider).toBe(adyen);
+  });
+
+  // Test 3: Default fallback
+  it('should fallback to Stone for small card payments', () => {
+    // Arrange
+    const stone = { process: vi.fn() };
+    const providers = new Map([['Stone', stone]]);
+    const factory = new PaymentStrategyFactory(providers);
+    const method = PaymentMethod.create('CREDIT_CARD');
+    const amount = Amount.create(25); // small value
+
+    // Act
+    const provider = factory.getProvider(method, amount);
+
+    // Assert
+    expect(provider).toBe(stone);
+  });
+});
+```
+
+> **Por que Strategy + Factory facilita testes e extensão?**
+> O padrão **Strategy** encapsula cada algoritmo de roteamento de pagamento atrás de uma interface comum (`IPaymentProvider`), enquanto o **Factory** centraliza a lógica de seleção em um único ponto. Nos testes, basta injetar um `Map` com mocks — sem instanciar SDKs reais. Para extensão, adicionar um novo provedor (ex.: `CryptoAdapter`) exige apenas criar a implementação e registrá-la no `Map`, sem alterar o `PaymentSaga` ou qualquer Use Case existente. Isso é o **Open/Closed Principle** em ação.
