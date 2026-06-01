@@ -29,7 +29,7 @@ function parseFrontmatter(content) {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return null;
 
-  const yaml = match[1];
+  const yaml = match[1].replace(/\r/g, '');
   const result = {};
   let currentKey = null;
   let isMultilineString = false;
@@ -82,10 +82,10 @@ function parseFrontmatter(content) {
  * Parse security section from frontmatter.
  */
 function parseSecurity(content) {
-  const match = content.match(/^---\n([\s\S]*?)\n---/);
+  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return {};
 
-  const yaml = match[1];
+  const yaml = match[1].replace(/\r/g, '');
   const securityMatch = yaml.match(/security:\n((?:\s+\w.*\n)*)/);
   if (!securityMatch) return {};
 
