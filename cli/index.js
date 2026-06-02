@@ -36,13 +36,14 @@ program
 
 // ─── Install Command ──────────────────────────────────────────────
 program
-  .command('install <skill-names...>')
+  .command('install [skill-names...]')
   .alias('i')
   .description('Install one or more skills from the registry')
   .option('-g, --global', 'Install to global skills directory')
   .option('-f, --force', 'Overwrite existing skill if present')
   .option('-c, --claude', 'Install for Claude Code (.claude/skills/)')
   .option('-a, --all-clients', 'Install for all supported clients (Antigravity + Claude)')
+  .option('--no-save', 'Do not save installed skills to package.json')
   .action(async (skillNames, options) => {
     const { install } = await import('./commands/install.js');
     await install(skillNames, options);

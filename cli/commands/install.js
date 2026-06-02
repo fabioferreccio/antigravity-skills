@@ -12,7 +12,7 @@
  *   Claude Code global:     ~/.claude/skills/<name>/
  */
 
-import { existsSync, mkdirSync, cpSync } from 'fs';
+import { existsSync, mkdirSync, cpSync, readFileSync, writeFileSync } from 'fs';
 import { join, resolve } from 'path';
 import { homedir } from 'os';
 import { fileURLToPath } from 'url';
@@ -95,14 +95,40 @@ function resolveClients(options) {
 export async function install(skillNames, options = {}) {
   printBanner();
   
-  const names = Array.isArray(skillNames) ? skillNames : [skillNames];
-  
-  if (names.length === 0) {
-    printError('No skill names provided.');
-    process.exit(1);
+  let names = skillNames;
+  if (!names || (Array.isArray(names) && names.length === 0)) {
+    names = [];
+  } else if (!Array.isArray(names)) {
+    names = [names];
   }
 
   const catalog = loadCatalog();
+
+  // If no skill names provided, attempt to load them from package.json in the current working directory
+  if (names.length === 0) {
+    const localPkgPath = join(process.cwd(), 'package.json');
+    if (existsSync(localPkgPath)) {
+      try {
+        const pkg = JSON.parse(readFileSync(localPkgPath, 'utf8'));
+        const skillsToInstall = pkg.antigravity?.skills || {};
+        const skillEntries = Object.keys(skillsToInstall);
+        if (skillEntries.length > 0) {
+          names = skillEntries.map((n) => `${n}@${skillsToInstall[n]}`);
+          printInfo(`Found ${names.length} skill(s) defined in package.json. Installing...`);
+        } else {
+          printError('No skills found in package.json under "antigravity.skills".');
+          process.exit(1);
+        }
+      } catch (err) {
+        printError(`Failed to read or parse local package.json: ${err.message}`);
+        process.exit(1);
+      }
+    } else {
+      printError('No skill names provided, and no local package.json found.');
+      process.exit(1);
+    }
+  }
+
   const clients = resolveClients(options);
   const scope = options.global ? 'global' : 'workspace';
   const clientLabels = clients.map((c) => CLIENTS[c].name).join(' + ');
@@ -111,21 +137,38 @@ export async function install(skillNames, options = {}) {
 
   let hasError = false;
   let successCount = 0;
+  const installedSkills = new Map(); // name -> version
 
   for (const rawName of names) {
-    const name = formatSkillName(rawName);
-    const skill = catalog.skills.find((s) => s.name === name);
+    // Parse name and version if specified (format: name@version)
+    const atIndex = rawName.lastIndexOf('@');
+    let name = rawName;
+    let requestedVersion = null;
+    if (atIndex > 0) {
+      name = rawName.slice(0, atIndex);
+      requestedVersion = rawName.slice(atIndex + 1);
+      // Strip range characters like ^ or ~ if present for lookup
+      requestedVersion = requestedVersion.replace(/^[~^]/, '');
+    }
+
+    const formattedName = formatSkillName(name);
+    const skill = catalog.skills.find((s) => s.name === formattedName);
 
     if (!skill) {
-      printError(`Skill "${name}" not found in the registry.`);
+      printError(`Skill "${formattedName}" not found in the registry.`);
       hasError = true;
       continue;
     }
 
+    if (requestedVersion && skill.version !== requestedVersion) {
+      printWarning(`Requested version ${requestedVersion} for "${formattedName}", but only version ${skill.version} is available in this registry.`);
+      console.log(`    Installing version ${skill.version} instead.`);
+    }
+
     // Check source directory exists
-    const sourceDir = join(REGISTRY_ROOT, name);
+    const sourceDir = join(REGISTRY_ROOT, formattedName);
     if (!existsSync(sourceDir)) {
-      printError(`Skill directory not found for "${name}": ${sourceDir}`);
+      printError(`Skill directory not found for "${formattedName}": ${sourceDir}`);
       hasError = true;
       continue;
     }
@@ -133,18 +176,18 @@ export async function install(skillNames, options = {}) {
     // Install for each target client
     for (const client of clients) {
       const clientConfig = CLIENTS[client];
-      const targetDir = getTargetDir(name, client, options.global);
+      const targetDir = getTargetDir(formattedName, client, options.global);
 
       // Check if already installed
       if (existsSync(targetDir) && !options.force) {
-        printWarning(`Skill "${name}" is already installed for ${clientConfig.name} at:\n  ${targetDir}`);
+        printWarning(`Skill "${formattedName}" is already installed for ${clientConfig.name} at:\n  ${targetDir}`);
         console.log('  Use --force to overwrite.');
         continue;
       }
 
       // Skip if source and target are the same (running from inside the registry)
       if (resolve(sourceDir) === resolve(targetDir)) {
-        printWarning(`Skill "${name}" source and target are the same for ${clientConfig.name}. Skipping.`);
+        printWarning(`Skill "${formattedName}" source and target are the same for ${clientConfig.name}. Skipping.`);
         continue;
       }
 
@@ -153,14 +196,36 @@ export async function install(skillNames, options = {}) {
         mkdirSync(targetDir, { recursive: true });
         cpSync(sourceDir, targetDir, { recursive: true });
 
-        printSuccess(`Skill "${name}" installed for ${clientConfig.name}!`);
+        printSuccess(`Skill "${formattedName}" installed for ${clientConfig.name}!`);
         console.log(`    📍 Location: ${targetDir}`);
         console.log(`    📦 Version:  ${skill.version}`);
         console.log(`    🎯 Client:   ${clientConfig.name}\n`);
         successCount++;
+        installedSkills.set(formattedName, skill.version);
       } catch (err) {
-        printError(`Failed to install skill "${name}" for ${clientConfig.name}: ${err.message}`);
+        printError(`Failed to install skill "${formattedName}" for ${clientConfig.name}: ${err.message}`);
         hasError = true;
+      }
+    }
+  }
+
+  // Save successfully installed local workspace skills to package.json
+  if (installedSkills.size > 0 && !options.global && options.save !== false) {
+    const localPkgPath = join(process.cwd(), 'package.json');
+    if (existsSync(localPkgPath)) {
+      try {
+        const pkg = JSON.parse(readFileSync(localPkgPath, 'utf8'));
+        pkg.antigravity = pkg.antigravity || {};
+        pkg.antigravity.skills = pkg.antigravity.skills || {};
+        
+        for (const [sName, sVersion] of installedSkills.entries()) {
+          pkg.antigravity.skills[sName] = `^${sVersion}`;
+        }
+        
+        writeFileSync(localPkgPath, JSON.stringify(pkg, null, 2) + '\n');
+        printInfo(`Updated package.json with installed skill(s).`);
+      } catch (err) {
+        printWarning(`Could not update package.json: ${err.message}`);
       }
     }
   }
