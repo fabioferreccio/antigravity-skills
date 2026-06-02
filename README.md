@@ -65,6 +65,46 @@ npx github:fabioferreccio/antigravity-skills install migration-reviewer --all-cl
 npx github:fabioferreccio/antigravity-skills list
 ```
 
+### Update Skills
+
+```bash
+# Check for updates for all installed skills
+npx github:fabioferreccio/antigravity-skills update
+
+# Apply all available updates
+npx github:fabioferreccio/antigravity-skills update --all
+
+# Update a specific skill by name
+npx github:fabioferreccio/antigravity-skills update --name clean-architecture
+```
+
+### Tracking in `package.json`
+
+By default, when installing skills locally in a workspace that contains a `package.json`, the CLI will track the installed skills in your project configuration under `"antigravity.skills"`.
+
+Additionally, the CLI automatically injects a `postinstall` script pointing to the remote git registry. This guarantees that running `pnpm install` or `npm install` will automatically restore and download all configured skills.
+
+**Example `package.json`:**
+```json
+{
+  "name": "my-project",
+  "antigravity": {
+    "skills": {
+      "clean-architecture": "^1.1.0"
+    }
+  },
+  "scripts": {
+    "postinstall": "npx github:fabioferreccio/antigravity-skills install"
+  }
+}
+```
+
+* **Install configured skills:** Simply run `npx github:fabioferreccio/antigravity-skills install` with no arguments to install all skills declared in your `package.json`.
+* **Opt-out:** If you do not wish to save skills or configure `postinstall` scripts, pass the `--no-save` flag when installing:
+  ```bash
+  npx github:fabioferreccio/antigravity-skills install clean-architecture --no-save
+  ```
+
 ### Installation Paths
 
 | Client | Scope | Path | When to Use |
