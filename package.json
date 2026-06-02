@@ -1,6 +1,6 @@
 {
   "name": "@antigravity-skills/registry",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Production-grade public registry of reusable Antigravity Skills — versioned, documented, testable, and installable via npx.",
   "type": "module",
   "main": "cli/index.js",
