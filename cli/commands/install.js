@@ -221,9 +221,17 @@ export async function install(skillNames, options = {}) {
         for (const [sName, sVersion] of installedSkills.entries()) {
           pkg.antigravity.skills[sName] = `^${sVersion}`;
         }
+
+        // Configure scripts.postinstall to run antigravity install
+        pkg.scripts = pkg.scripts || {};
+        if (!pkg.scripts.postinstall) {
+          pkg.scripts.postinstall = 'antigravity install';
+        } else if (!pkg.scripts.postinstall.includes('antigravity')) {
+          pkg.scripts.postinstall += ' && antigravity install';
+        }
         
         writeFileSync(localPkgPath, JSON.stringify(pkg, null, 2) + '\n');
-        printInfo(`Updated package.json with installed skill(s).`);
+        printInfo(`Updated package.json with installed skill(s) and configured postinstall script.`);
       } catch (err) {
         printWarning(`Could not update package.json: ${err.message}`);
       }

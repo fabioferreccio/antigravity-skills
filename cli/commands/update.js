@@ -5,7 +5,7 @@
  * and updates them to the latest version.
  */
 
-import { existsSync, readFileSync, cpSync } from 'fs';
+import { existsSync, readFileSync, cpSync, writeFileSync } from 'fs';
 import { join, resolve } from 'path';
 import { homedir } from 'os';
 import { fileURLToPath } from 'url';
@@ -76,6 +76,7 @@ export async function update(options = {}) {
   ];
 
   let updatesFound = 0;
+  const updatedSkills = new Map(); // name -> version
 
   for (const { dir, scope } of locations) {
     if (!existsSync(dir)) continue;
@@ -105,10 +106,35 @@ export async function update(options = {}) {
           try {
             cpSync(sourceDir, targetDir, { recursive: true });
             printSuccess(`  ✅ Updated ${entry.name} to v${catalogEntry.version}`);
+            
+            if (scope === 'workspace') {
+              updatedSkills.set(entry.name, catalogEntry.version);
+            }
           } catch (err) {
             printError(`  ❌ Failed to update ${entry.name}: ${err.message}`);
           }
         }
+      }
+    }
+  }
+
+  // Save updated local workspace skills to package.json
+  if (updatedSkills.size > 0) {
+    const localPkgPath = join(process.cwd(), 'package.json');
+    if (existsSync(localPkgPath)) {
+      try {
+        const pkg = JSON.parse(readFileSync(localPkgPath, 'utf8'));
+        pkg.antigravity = pkg.antigravity || {};
+        pkg.antigravity.skills = pkg.antigravity.skills || {};
+        
+        for (const [sName, sVersion] of updatedSkills.entries()) {
+          pkg.antigravity.skills[sName] = `^${sVersion}`;
+        }
+        
+        writeFileSync(localPkgPath, JSON.stringify(pkg, null, 2) + '\n');
+        console.log(`  ℹ️  Updated package.json with new skill version(s).\n`);
+      } catch (err) {
+        printWarning(`  ⚠️  Could not update package.json: ${err.message}`);
       }
     }
   }
