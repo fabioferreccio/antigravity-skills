@@ -222,12 +222,28 @@ export async function install(skillNames, options = {}) {
           pkg.antigravity.skills[sName] = `^${sVersion}`;
         }
 
-        // Configure scripts.postinstall to run antigravity install
+        // Determine npx source based on registry package.json repository url
+        let npxCommand = 'npx github:fabioferreccio/antigravity-skills install';
+        try {
+          const registryPkgPath = resolve(__dirname, '..', '..', 'package.json');
+          if (existsSync(registryPkgPath)) {
+            const registryPkg = JSON.parse(readFileSync(registryPkgPath, 'utf8'));
+            const repoUrl = registryPkg.repository?.url || '';
+            const match = repoUrl.match(/github\.com\/([^\/]+)\/([^\/.]+)/);
+            if (match) {
+              npxCommand = `npx github:${match[1]}/${match[2]} install`;
+            }
+          }
+        } catch (e) {
+          // Fallback to default command
+        }
+
+        // Configure scripts.postinstall to run the npx command
         pkg.scripts = pkg.scripts || {};
         if (!pkg.scripts.postinstall) {
-          pkg.scripts.postinstall = 'antigravity install';
-        } else if (!pkg.scripts.postinstall.includes('antigravity')) {
-          pkg.scripts.postinstall += ' && antigravity install';
+          pkg.scripts.postinstall = npxCommand;
+        } else if (!pkg.scripts.postinstall.includes('antigravity') && !pkg.scripts.postinstall.includes('antigravity-skills')) {
+          pkg.scripts.postinstall += ` && ${npxCommand}`;
         }
         
         writeFileSync(localPkgPath, JSON.stringify(pkg, null, 2) + '\n');
