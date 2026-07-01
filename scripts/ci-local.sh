@@ -166,6 +166,8 @@ detect_pm() {
     echo "pnpm"
   elif [ -f "$dir/yarn.lock" ]; then
     echo "yarn"
+  elif [ -f "$dir/package-lock.json" ]; then
+    echo "npm"
   else
     echo "npm"
   fi

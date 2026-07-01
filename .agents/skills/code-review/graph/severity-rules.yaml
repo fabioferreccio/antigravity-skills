@@ -1,0 +1,65 @@
+severity_levels:
+  critico:
+    label: "Crítico (Deve Corrigir)"
+    description: "Must fix before merging. Bugs, security risks, data at risk, failing tests."
+    criteria:
+      - "Exploitable security vulnerability"
+      - "Data loss or corruption risk"
+      - "Failing tests or broken functionality"
+      - "Clean Architecture layer violations (domain importing infra)"
+      - "N+1 queries on production-critical paths"
+      - "SQL injection or other injection attacks"
+      - "Hardcoded secrets or credentials"
+      - "Auth/authz bypass"
+      - "Missing rollback for destructive migration"
+      - "Connection/pool leak"
+      - "Breaking API change without versioning"
+      - "New code with zero test coverage"
+      - "Memory leak or resource leak"
+    posting_behavior: "Always post as inline comment"
+
+  importante:
+    label: "Importante (Deveria Corrigir)"
+    description: "Should fix. Architecture issues, convention violations, missing coverage."
+    criteria:
+      - "Convention deviations from project rules"
+      - "Missing edge case tests"
+      - "Legacy patterns when newer ones exist"
+      - "Significant complexity with simpler alternative"
+      - "Missing input validation (low-risk)"
+      - "Performance issues (non-critical paths)"
+      - "Duplicate types/DTOs/services"
+      - "Missing error handling on non-critical paths"
+      - "Schema/type issues (varchar vs text)"
+      - "Repository pattern violations"
+    posting_behavior: "Post as inline comment"
+
+  menor:
+    label: "Menor (Oportunidade de Melhoria)"
+    description: "Nice to have. Style, minor optimizations, suggestions."
+    criteria:
+      - "Style preferences"
+      - "Naming improvements"
+      - "Import ordering"
+      - "Minor duplication"
+      - "Over-testing"
+      - "Readability improvements"
+      - "Documentation gaps"
+      - "Minor simplification opportunities"
+    posting_behavior: "Include in general comment only, not inline"
+
+escalation_rules:
+  - condition: "Pre-existing CRITICAL security issue found in surrounding code"
+    action: "Promote to change-related finding"
+  - condition: "More than 5 Critico findings"
+    action: "Warn user about overall code health, suggest deeper review"
+  - condition: "Diff > 1000 lines"
+    action: "Warn user, suggest reviewing in parts"
+
+de_escalation_rules:
+  - condition: "Simplicity finding"
+    action: "Frame as suggestion, never as requirement"
+  - condition: "Style/naming finding"
+    action: "Lowest priority, never blocks merge"
+  - condition: "Finding in generated code"
+    action: "Skip unless it reveals a generator bug"

@@ -24,6 +24,7 @@ import { readFileSync, existsSync, readdirSync, statSync } from 'fs';
 import { join, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { parse as parseYaml } from 'yaml';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -77,38 +78,11 @@ function parseFrontmatter(content) {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return null;
 
-  const yaml = match[1].replace(/\r/g, '');
-  const result = {};
-
-  // Simple YAML parser for flat and array fields
-  let currentKey = null;
-  for (const line of yaml.split('\n')) {
-    const kvMatch = line.match(/^(\w[\w-]*):\s*(.*)$/);
-    if (kvMatch) {
-      currentKey = kvMatch[1];
-      const value = kvMatch[2].trim();
-      if (value === '' || value === '>') {
-        result[currentKey] = '';
-      } else if (value === 'true') {
-        result[currentKey] = true;
-      } else if (value === 'false') {
-        result[currentKey] = false;
-      } else {
-        result[currentKey] = value;
-      }
-    } else if (line.match(/^\s+-\s+/) && currentKey) {
-      const item = line.replace(/^\s+-\s+/, '').replace(/^["']|["']$/g, '');
-      if (!Array.isArray(result[currentKey])) {
-        result[currentKey] = result[currentKey] ? [result[currentKey]] : [];
-      }
-      result[currentKey].push(item);
-    } else if (line.match(/^\s+\w/) && currentKey) {
-      // Multi-line value continuation
-      result[currentKey] += ' ' + line.trim();
-    }
+  try {
+    return parseYaml(match[1]);
+  } catch (e) {
+    return null;
   }
-
-  return result;
 }
 
 // ─── Validate Structure ─────────────────────────────────────────
