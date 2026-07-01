@@ -1,7 +1,7 @@
 {
-  "version": "1.0.0",
-  "generated": "2026-06-02T00:44:22.375Z",
-  "total_skills": 14,
+  "version": "1.1.0",
+  "generated": "2026-07-01T13:41:40.096Z",
+  "total_skills": 15,
   "skills": [
     {
       "name": "clean-architecture",
@@ -19,6 +19,27 @@
       ],
       "scope": "workspace",
       "path": ".agents/skills/clean-architecture",
+      "security": {
+        "network": false,
+        "filesystem": "read-write"
+      }
+    },
+    {
+      "name": "code-review",
+      "version": "1.0.0",
+      "description": "Polyglot code review skill that analyzes MRs/PRs or individual files across any language and framework. Generates anchored inline comments on GitHub, GitLab, or Bitbucket via MCP or pre-generated scripts. Uses project indexing for context persistence and delegates to complementary skills when detected.",
+      "author": "Fábio Ferreccio",
+      "tags": [
+        "code-review",
+        "pull-request",
+        "merge-request",
+        "architecture",
+        "security",
+        "testing",
+        "polyglot"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/code-review",
       "security": {
         "network": false,
         "filesystem": "read-write"

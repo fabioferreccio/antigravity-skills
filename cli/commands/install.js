@@ -111,6 +111,10 @@ export async function install(skillNames, options = {}) {
       try {
         const pkg = JSON.parse(readFileSync(localPkgPath, 'utf8'));
         const skillsToInstall = pkg.antigravity?.skills || {};
+        if (typeof skillsToInstall !== 'object' || skillsToInstall === null || Array.isArray(skillsToInstall)) {
+          printError('"antigravity.skills" in package.json must be an object.');
+          process.exit(1);
+        }
         const skillEntries = Object.keys(skillsToInstall);
         if (skillEntries.length > 0) {
           names = skillEntries.map((n) => `${n}@${skillsToInstall[n]}`);

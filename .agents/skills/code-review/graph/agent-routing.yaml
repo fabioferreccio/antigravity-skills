@@ -1,0 +1,131 @@
+core_agents:
+  description: "Always launched regardless of project type"
+  agents:
+    - name: architecture-reviewer
+      template: agents/architecture-reviewer.md
+      always: true
+      extra_context:
+        - key: RECENT_MODULE_COMMITS
+          command: "git log --oneline -20 -- {paths_touched}"
+        - key: COMPLEMENTARY_CONTEXT
+          condition: "clean-architecture skill exists"
+          action: "load clean-architecture references"
+
+    - name: security-reviewer
+      template: agents/security-reviewer.md
+      always: true
+
+    - name: simplicity-reviewer
+      template: agents/simplicity-reviewer.md
+      always: true
+
+    - name: testing-reviewer
+      template: agents/testing-reviewer.md
+      always: true
+
+conditional_agents:
+  description: "Launched based on diff content and project type"
+  agents:
+    - name: database-reviewer
+      template: agents/database-reviewer.md
+      conditions:
+        file_patterns:
+          - "**/migrations/**"
+          - "**/migration/**"
+          - "**/*repository*"
+          - "**/*Repository*"
+          - "**/*.sql"
+          - "**/schema.*"
+          - "**/prisma/**"
+          - "**/drizzle/**"
+          - "**/typeorm/**"
+          - "**/sequelize/**"
+          - "**/alembic/**"
+          - "**/flyway/**"
+          - "**/liquibase/**"
+          - "**/*dao*"
+          - "**/*query*"
+          - "**/*model*"  # only if ORM detected
+        extra_variables:
+          DB_FILES: "filtered list of DB-related files from diff"
+
+    - name: frontend-reviewer
+      template: agents/frontend-reviewer.md
+      conditions:
+        file_patterns:
+          - "**/*.tsx"
+          - "**/*.jsx"
+          - "**/*.vue"
+          - "**/*.svelte"
+          - "**/*.css"
+          - "**/*.scss"
+          - "**/*.sass"
+          - "**/*.less"
+          - "**/*.html"  # only if SPA framework detected
+          - "**/*.component.ts"  # Angular
+          - "**/components/**"
+          - "**/pages/**"
+          - "**/views/**"
+          - "**/widgets/**"  # Flutter
+          - "**/*.dart"  # Flutter UI files
+        extra_variables:
+          FRONTEND_FILES: "filtered list of frontend files from diff"
+
+    - name: api-contracts-reviewer
+      template: agents/api-contracts-reviewer.md
+      conditions:
+        file_patterns:
+          - "**/*.sdkgen"
+          - "**/openapi.*"
+          - "**/swagger.*"
+          - "**/*.graphql"
+          - "**/*.gql"
+          - "**/*.proto"
+          - "**/*-generated.ts"
+          - "**/generated/api.*"
+          - "**/api-spec.*"
+          - "**/routes.*"  # if REST framework detected
+        extra_variables:
+          API_FILES: "filtered list of API definition files from diff"
+
+    - name: i18n-reviewer
+      template: agents/i18n-reviewer.md
+      conditions:
+        file_patterns:
+          - "**/locales/**"
+          - "**/i18n/**"
+          - "**/translations/**"
+          - "**/lang/**"
+          - "**/messages/**"
+          - "**/*.arb"  # Flutter
+        content_patterns:
+          - "useTranslation"
+          - "use(I18N)"
+          - "t("
+          - "$t("
+          - "i18n."
+          - "intl."
+          - "AppLocalizations"
+        extra_variables:
+          I18N_FILES: "filtered list of i18n files from diff"
+
+    - name: error-handling-reviewer
+      template: agents/error-handling-reviewer.md
+      conditions:
+        complexity_threshold: "diff > 200 lines or touches error handling code"
+        content_patterns:
+          - "catch"
+          - "try"
+          - "throw"
+          - "raise"
+          - "except"
+          - "Error"
+          - "Exception"
+          - "Result.failed"
+          - "Result.err"
+
+mutual_exclusion:
+  description: "Groups where only one agent fires"
+  groups: []
+  # Note: Unlike the Zig-specific version, the polyglot version has no
+  # mutual exclusion groups. All agents can fire simultaneously.

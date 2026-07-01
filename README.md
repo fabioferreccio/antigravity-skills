@@ -121,6 +121,7 @@ Additionally, the CLI automatically injects a `postinstall` script pointing to t
 | Skill | Version | Description | Tags |
 |---|---|---|---|
 | `clean-architecture` | 1.1.0 | Expert cognitive system for designing and refactoring systems using Clean Architecture, SOLID, DDD, CQRS, and comprehensive contracts catalog | architecture, clean-code, ddd, cqrs |
+| `code-review` | 1.0.0 | Polyglot code review skill that analyzes MRs/PRs or individual files across any language and framework and generates anchored inline comments | code-review, pull-request, architecture, security |
 | `dba-agent` | 1.0.0 | DBA Agent specialized in database performance, integrity, and security | database, performance, sql |
 | `devops-agent` | 1.0.0 | Acts as a DevOps Engineer Agent focusing on automation, infrastructure as code, observability, and platform resilience | devops, sre, automation, cicd |
 | `enterprise-architect` | 1.0.0 | Enterprise Architect Agent responsible for preserving architectural integrity, scalability, and corporate governance | architecture, governance, adr, c4 |

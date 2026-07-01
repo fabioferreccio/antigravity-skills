@@ -1,0 +1,123 @@
+phases:
+  detect_target:
+    id: 1
+    name: "Detect Review Target"
+    inputs:
+      - user_request
+    outputs:
+      - review_mode  # mr | branch | file | implicit
+      - platform  # github | gitlab | bitbucket | local
+      - diff_content
+      - branch_name
+      - base_branch
+      - mr_metadata  # title, description, source, target (if MR mode)
+    transitions:
+      - condition: "review_mode determined"
+        target: project_indexing
+      - condition: "ambiguous target"
+        action: "ask user to clarify"
+        target: detect_target  # loop
+
+  project_indexing:
+    id: 2
+    name: "Project Indexing"
+    inputs:
+      - project_root
+    outputs:
+      - project_index  # .code-review-index.json content
+    transitions:
+      - condition: "index exists and fresh"
+        action: "load existing index"
+        target: context_enrichment
+      - condition: "index missing or stale"
+        action: "run full indexing protocol"
+        target: context_enrichment
+
+  context_enrichment:
+    id: 3
+    name: "Context Enrichment"
+    inputs:
+      - project_index
+      - diff_content
+      - paths_touched
+    outputs:
+      - agent_rules  # from AGENTS.md/CLAUDE.md
+      - complementary_skills  # detected workspace skills
+      - task_context  # from branch name / commits
+      - file_classification  # source, test, config, migration, docs, generated
+    transitions:
+      - condition: "more than 3 complementary skills detected"
+        action: "ask user which to activate"
+        target: review_dispatch
+      - condition: "context ready"
+        target: review_dispatch
+
+  review_dispatch:
+    id: 4
+    name: "Review Dispatch"
+    inputs:
+      - all context from phases 1-3
+      - agent_routing rules
+    outputs:
+      - launched_agents[]
+    transitions:
+      - condition: "all agents launched"
+        target: aggregate
+
+  aggregate:
+    id: 5
+    name: "Aggregate & Deduplicate"
+    inputs:
+      - agent_findings[]
+    outputs:
+      - unified_findings  # deduplicated, severity-classified
+      - positive_observations
+      - pre_existing_issues
+    transitions:
+      - condition: "no findings"
+        target: present_clean
+      - condition: "findings exist"
+        target: present_findings
+
+  present_clean:
+    id: "6a"
+    name: "Present Clean Verdict"
+    outputs:
+      - review_output
+    transitions:
+      - condition: "user wants to post"
+        target: post_comments
+      - condition: "done"
+        target: end
+
+  present_findings:
+    id: "6b"
+    name: "Present Findings"
+    outputs:
+      - review_output
+      - inline_comments[]
+    transitions:
+      - condition: "user wants to post"
+        target: post_comments
+      - condition: "done"
+        target: end
+
+  post_comments:
+    id: 7
+    name: "Post Comments"
+    inputs:
+      - platform
+      - mr_metadata
+      - inline_comments[]
+    outputs:
+      - posting_results
+    transitions:
+      - condition: "posted successfully"
+        target: end
+      - condition: "posting failed"
+        action: "generate curl script as fallback"
+        target: end
+
+  end:
+    id: 8
+    name: "Review Complete"
