@@ -65,7 +65,6 @@ unitários dedicados.
 
 #### 1. Entidade de domínio importando enum de infraestrutura
 - **File:** `src/domain/entities/order.entity.ts:4`
-- **Agent:** architecture-reviewer
 - **What:** The domain entity imports `PaymentStatusEnum` from `src/infra/database/enums/payment-status.enum.ts`. The domain layer depends on the infrastructure layer.
 - **Why:** This violates the Dependency Rule of Clean Architecture — inner layers must never depend on outer layers. The domain entity should define its own enum or use a port/interface. This coupling means the entity cannot be used or tested without the database infrastructure.
 - **Fix:**
@@ -89,7 +88,6 @@ export enum PaymentStatus {
 
 #### 2. calculateTotal() usa aritmética de ponto flutuante para valores monetários
 - **File:** `src/domain/entities/order.entity.ts:67-78`
-- **Agent:** simplicity-reviewer
 - **What:** The `calculateTotal()` method uses JavaScript's native `number` type to sum item prices and apply discounts, which leads to floating-point precision errors (e.g., `0.1 + 0.2 !== 0.3`).
 - **Why:** Monetary calculations must be exact. Using `number` for currency will eventually produce incorrect totals — a classic financial bug that is hard to detect in testing but causes real accounting discrepancies.
 - **Fix:** Use the existing `Money` value object (already imported) for all arithmetic:
@@ -105,7 +103,6 @@ calculateTotal(): Money {
 
 #### 3. Invariante de transição de status não cobre todos os caminhos
 - **File:** `src/domain/entities/order.entity.ts:89-105`
-- **Agent:** error-handling-reviewer
 - **What:** The `transitionTo(status)` method validates some transitions (e.g., PENDING → PAID) but does not cover:
   - PAID → REFUNDED (allowed but missing)
   - CANCELLED → any state (should be terminal, but not enforced)
@@ -129,19 +126,16 @@ private static readonly ALLOWED_TRANSITIONS: Record<OrderStatus, OrderStatus[]> 
 
 #### 4. Propriedade `createdAt` é mutável
 - **File:** `src/domain/entities/order.entity.ts:12`
-- **Agent:** simplicity-reviewer
 - **What:** `createdAt` is declared as `public createdAt: Date` instead of `public readonly createdAt: Date`. Nothing should modify the creation timestamp after instantiation.
 - **Fix:** Add `readonly` modifier.
 
 #### 5. Método `addItem()` não valida duplicatas
 - **File:** `src/domain/entities/order.entity.ts:45`
-- **Agent:** simplicity-reviewer
 - **What:** `addItem(item)` pushes to the items array without checking if an item with the same product ID already exists. This could lead to duplicate line items instead of incrementing quantity.
 - **Fix:** Check for existing item and increment quantity, or throw if business rules require explicit separate items.
 
 #### 6. Ausência de testes unitários para a entidade
 - **File:** (missing file: `src/domain/entities/order.entity.spec.ts`)
-- **Agent:** testing-reviewer (note)
 - **What:** No dedicated unit test file exists for this core domain entity.
 - **Note:** This is flagged as a Menor because it was not part of the user's request, but domain entities with business logic should always have comprehensive tests.
 

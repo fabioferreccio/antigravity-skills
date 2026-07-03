@@ -6,13 +6,16 @@ How to detect which git platform is in use and select the best integration metho
 
 ### 1. From MR/PR URL
 
-Parse the URL to identify the platform:
+Parse the URL to identify the platform. Well-known hostnames are a quick win, but self-hosted instances (GitLab CE/EE, Bitbucket Server, GitHub Enterprise) use arbitrary domains — the URL **path shape** is the reliable signal:
 
-| URL Pattern | Platform |
+| Signal | Platform |
 |---|---|
-| `github.com` or `api.github.com` | GitHub |
-| `gitlab.com` or custom GitLab instances | GitLab |
-| `bitbucket.org` or `api.bitbucket.org` | Bitbucket |
+| Host `github.com` / `api.github.com`, or path `/<org>/<repo>/pull/<id>` | GitHub (Enterprise included) |
+| Path contains `/-/merge_requests/<id>` (any host) | GitLab (self-hosted included) |
+| Host `bitbucket.org`, path `/<workspace>/<repo>/pull-requests/<id>` | Bitbucket Cloud |
+| Path `/projects/<KEY>/repos/<slug>/pull-requests/<id>` (any host) | Bitbucket Server / Data Center |
+
+If the path shape is ambiguous, cross-check with the git remote (method 2) before choosing an API format.
 
 ### 2. From Git Remote
 

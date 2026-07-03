@@ -69,8 +69,14 @@ phases:
     name: "Aggregate & Deduplicate"
     inputs:
       - agent_findings[]
+    steps:
+      - "verify Crítico/Importante findings against source (discard false positives, re-anchor lines)"
+      - "deduplicate by file:line"
+      - "classify severity"
+      - "resolve conflicts"
+      - "partition change-related vs pre-existing"
     outputs:
-      - unified_findings  # deduplicated, severity-classified
+      - unified_findings  # verified, deduplicated, severity-classified
       - positive_observations
       - pre_existing_issues
     transitions:

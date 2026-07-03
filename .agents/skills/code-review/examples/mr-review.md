@@ -71,7 +71,6 @@ de testes para o novo fluxo, e um potencial de CSRF no state parameter.
 
 #### 1. OAuth2 callback não valida o state parameter
 - **File:** `src/auth/auth.service.ts:42`
-- **Agent:** security-reviewer
 - **What:** The `handleOAuth2Callback` method accepts the authorization code and exchanges it for a token without validating the `state` parameter against the session.
 - **Why:** Without state validation, the OAuth2 flow is vulnerable to CSRF attacks. An attacker can craft a malicious authorization URL and trick a user into linking the attacker's account.
 - **Fix:**
@@ -102,7 +101,6 @@ async handleOAuth2Callback(code: string, state: string) {
 
 #### 2. Nenhum teste adicionado para o fluxo OAuth2
 - **File:** (missing test file)
-- **Agent:** testing-reviewer
 - **What:** PR adds 342 lines of authentication logic with zero test coverage. No spec files were created or modified.
 - **Why:** Authentication is a critical path. Without tests, regressions in the OAuth2 flow will go undetected, potentially locking users out or creating security holes.
 - **Fix:** Create `src/auth/auth.service.spec.ts` with at minimum:
@@ -113,7 +111,6 @@ async handleOAuth2Callback(code: string, state: string) {
 
 #### 3. Access token stored in plain text in session
 - **File:** `src/auth/auth.service.ts:58`
-- **Agent:** security-reviewer
 - **What:** The OAuth2 access token is stored directly in the session object without encryption.
 - **Why:** If session storage is compromised (e.g., Redis dump, session fixation), access tokens are immediately usable by an attacker. Tokens should be encrypted at rest.
 - **Fix:** Encrypt the token before storing and decrypt on retrieval:
@@ -128,7 +125,6 @@ await this.sessionService.set(sessionId, { token: encryptedToken });
 
 #### 4. Guard class name does not follow project convention
 - **File:** `src/auth/guards/oauth2.guard.ts:5`
-- **Agent:** simplicity-reviewer
 - **What:** Guard is named `OAuth2AuthGuard` but existing guards follow the `*Guard` pattern without the `Auth` infix (e.g., `JwtGuard`, `RolesGuard`).
 - **Fix:** Rename to `OAuth2Guard` for consistency.
 

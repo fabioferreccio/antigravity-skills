@@ -72,7 +72,6 @@ de erros no controller não diferencia falhas de validação de falhas de infrae
 
 #### 1. Use case importando diretamente do Prisma
 - **File:** `src/core/use-cases/payment/create-payment.use-case.ts:8`
-- **Agent:** architecture-reviewer
 - **What:** Use case imports `PrismaService` directly instead of using the repository interface
 - **Why:** Violates Clean Architecture dependency rule — the domain/application layer must not depend on infrastructure. This creates tight coupling and makes the use case untestable without a database.
 - **Fix:**
@@ -86,7 +85,6 @@ import { IPaymentRepository } from '../../core/ports/payment.repository';
 
 #### 2. Stripe secret key hardcoded in adapter
 - **File:** `src/infra/gateways/stripe/stripe-gateway.adapter.ts:12`
-- **Agent:** security-reviewer
 - **What:** Stripe API key is hardcoded as a string literal in the adapter constructor
 - **Why:** Secrets in source code are a critical security vulnerability. The key will be committed to version control and exposed to anyone with repository access.
 - **Fix:**
@@ -108,7 +106,6 @@ constructor(
 
 #### 3. Testes não cobrem cenários de falha do gateway
 - **File:** `src/core/use-cases/payment/create-payment.use-case.spec.ts`
-- **Agent:** testing-reviewer
 - **What:** Test suite only covers the happy path (successful payment creation). No tests for gateway timeout, declined card, invalid amount, or network failure.
 - **Why:** Payment flows are critical paths — untested failure scenarios will cause unhandled errors in production. At minimum, test: gateway throws, gateway returns declined, invalid input.
 - **Fix:** Add test cases:
@@ -126,7 +123,6 @@ it('should throw GatewayTimeoutError when gateway times out', async () => {
 
 #### 4. Controller catch-all swallows error context
 - **File:** `src/presentation/controllers/payment.controller.ts:34`
-- **Agent:** error-handling-reviewer
 - **What:** Controller wraps the entire use case call in a generic `try/catch` that returns `500` for all errors, including validation failures that should return `400` or `422`.
 - **Why:** Clients cannot distinguish between "invalid input" and "server error", making debugging and UX significantly harder.
 - **Fix:** Use NestJS exception filters or differentiate error types:
@@ -142,7 +138,6 @@ try {
 
 #### 5. Migration adds NOT NULL column without DEFAULT
 - **File:** `prisma/migrations/20250115_add_payments/migration.sql:14`
-- **Agent:** database-reviewer
 - **What:** Column `gateway_reference` is defined as `VARCHAR(255) NOT NULL` without a `DEFAULT` value
 - **Why:** If the `payments` table has existing rows, this migration will fail. Even on a new table, it is safer to provide a default or make the column nullable initially.
 - **Fix:** Add `DEFAULT ''` or make nullable and backfill later.
@@ -153,13 +148,11 @@ try {
 
 #### 6. DTO class name inconsistent with project convention
 - **File:** `src/presentation/dtos/create-payment.dto.ts:3`
-- **Agent:** simplicity-reviewer
 - **What:** DTO is named `CreatePaymentBody` but all other DTOs in the project use the `*Dto` suffix (e.g., `CreateOrderDto`, `UpdateUserDto`)
 - **Fix:** Rename to `CreatePaymentDto` for consistency.
 
 #### 7. Unused import in repository
 - **File:** `src/infra/database/repositories/payment.repository.ts:2`
-- **Agent:** simplicity-reviewer
 - **What:** `Injectable` is imported from `@nestjs/common` but never used (the class uses `@Injectable()` from line 1's import)
 - **Fix:** Remove the duplicate import.
 
