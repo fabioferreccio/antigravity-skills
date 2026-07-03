@@ -1,6 +1,6 @@
 # code-review
 
-> **Version**: 1.0.0 · **Scope**: workspace · **Author**: Fábio Ferreccio
+> **Version**: 1.1.0 · **Scope**: workspace · **Author**: Fábio Ferreccio
 
 ## Overview
 
@@ -104,8 +104,9 @@ Input (branch name / MR URL / file path / generic request)
   ├─→ Phase 1: INDEX ───────────── Build or load project context index
   ├─→ Phase 2: DETECT ──────────── Identify languages, frameworks, complementary skills
   ├─→ Phase 3: DISPATCH ─────────── Launch parallel review agents
-  ├─→ Phase 4: AGGREGATE ────────── Merge findings, resolve conflicts, classify severity
-  └─→ Phase 5: PRESENT ─────────── Unified report (pt-BR) + optional inline posting
+  ├─→ Phase 4: VERIFY ───────────── Re-check Crítico/Importante findings against source
+  ├─→ Phase 5: AGGREGATE ────────── Merge findings, resolve conflicts, classify severity
+  └─→ Phase 6: PRESENT ─────────── Unified report (user's language) + optional inline posting
 ```
 
 ### Review Agents
@@ -149,6 +150,7 @@ For single-file reviews, a **Migration Plan** section is appended with steps ord
 - **Complementary Skill Detection**: Automatically detects and delegates to skills like `clean-architecture`, `dba-agent`, or `security-engineer` when specialized knowledge is needed
 - **Anchored Inline Comments**: Posts comments on the exact diff line in GitHub, GitLab, or Bitbucket using platform APIs
 - **Parallel Review Agents**: Up to 9 specialized agents run concurrently for fast, thorough reviews
+- **Finding Verification**: Every Crítico/Importante finding is re-checked against the actual source before being reported — false positives are discarded, unconfirmable findings are downgraded and phrased as questions
 - **Severity Classification**: Consistent Crítico / Importante / Menor classification across all languages
 - **Pre-existing Issue Detection**: Separates issues that already existed from issues introduced by the current change
 - **Positive Feedback**: Always highlights what was done well, not just what needs fixing

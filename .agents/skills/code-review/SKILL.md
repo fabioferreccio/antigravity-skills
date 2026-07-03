@@ -1,11 +1,18 @@
 ---
 name: code-review
 description: >
-  Polyglot code review skill that analyzes MRs/PRs or individual files across
-  any language and framework. Generates anchored inline comments on GitHub,
-  GitLab, or Bitbucket via MCP or pre-generated scripts. Uses project indexing
-  for context persistence and delegates to complementary skills when detected.
-version: 1.0.0
+  Elite polyglot code review system that analyzes MRs/PRs, branches, or
+  individual files across any language and framework, producing
+  severity-classified findings with file:line anchors and posting inline
+  comments on GitHub, GitLab, or Bitbucket via MCP, CLI, or generated scripts.
+  Use this skill whenever the user asks for any kind of code review, in any
+  language or phrasing — "review my code", "revisa meu código", "revisa o
+  MR/PR", "review this PR", "pode revisar", "review before merge", "revisa meu
+  branch" — or pastes a GitHub/GitLab/Bitbucket MR/PR URL, or names a branch or
+  file with review intent, even without the word "review". Uses project
+  indexing for context persistence and delegates to complementary skills when
+  detected.
+version: 1.1.0
 author: Fábio Ferreccio
 tags:
   - code-review
@@ -44,9 +51,10 @@ Operate as an elite polyglot code review system. Analyze MRs/PRs, branches, or i
 
 # Language Policy
 
-- **User communication**: ALWAYS in Brazilian Portuguese (PT-BR).
+- **User communication**: mirror the language the user wrote in. Default to Brazilian Portuguese (PT-BR) when the user writes in Portuguese or mixes languages; respond in English when the user writes entirely in English.
 - **Code references**: ALWAYS in English — file paths, function names, variable names, code snippets.
-- **Review output**: Section titles and explanations in PT-BR. Code references, technical terms, and code blocks remain in English.
+- **Review output**: Section titles and explanations follow the user's language. Code references, technical terms, and code blocks remain in English.
+- **Inline comments posted to MR/PR**: follow the language of the MR/PR description and existing discussion — teammates who read the comments may not share the reviewer's language.
 
 # Modular Context Loading
 
@@ -74,10 +82,11 @@ The user may provide one of four input types. Detect and route accordingly.
 
 → Read `references/platforms/detection.md`
 
-Detect platform from URL pattern:
+Detect platform from URL pattern. Self-hosted instances have arbitrary hostnames, so the URL **path shape** is the reliable signal, not the domain:
 - `github.com/<org>/<repo>/pull/<id>` → GitHub
-- `gitlab.com/<org>/<repo>/-/merge_requests/<id>` → GitLab (also self-hosted)
-- `bitbucket.org/<org>/<repo>/pull-requests/<id>` → Bitbucket
+- `<any-host>/<group>/<repo>/-/merge_requests/<id>` → GitLab (the `/-/merge_requests/` segment is GitLab-specific, self-hosted included)
+- `bitbucket.org/<workspace>/<repo>/pull-requests/<id>` → Bitbucket Cloud
+- `<any-host>/projects/<KEY>/repos/<slug>/pull-requests/<id>` → Bitbucket Server / Data Center
 
 Extract metadata:
 - Platform, organization, repository name, MR/PR ID
@@ -174,14 +183,10 @@ Scan the project and build a comprehensive index:
 
 ## 2.3 — Index Found → Validate Staleness
 
-Compare the stored `project_hash` with the current tree hash:
-
-```bash
-git ls-files -s | git hash-object --stdin
-```
+Compare the stored `project_hash` with a hash of the key config files (`package.json`, `tsconfig.json`, `go.mod`, `pyproject.toml`, `.editorconfig`, `AGENTS.md`, etc. — full list and commands in `references/indexing.md`, Step 8). Config files are the staleness signal because languages, frameworks, and conventions only change when they change — hashing the whole tree would invalidate the index on every commit.
 
 - **Hash matches** → load the index as-is.
-- **Hash differs** → re-index only changed areas (compare file list delta).
+- **Hash differs** → re-index only the sections affected by the changed files (see `references/indexing.md`, Step 9).
 
 # Phase 3: Context Enrichment
 
@@ -206,7 +211,7 @@ Load only the files that exist. Absence is not an error.
 
 ## 3.2 — Detect Complementary Skills
 
-Check `.agents/skills/` for skills that match the project's architecture and diff content:
+Check the skill registries available in the environment — `.claude/skills/` (project), `~/.claude/skills/` (global), and `.agents/skills/` (Antigravity) — for skills that match the project's architecture and diff content:
 
 | Condition | Skill | Action |
 |---|---|---|
@@ -286,18 +291,22 @@ When complementary skills are detected in Phase 3.2, enrich agent context:
 For each applicable agent:
 
 1. Read the corresponding template from `agents/{AGENT_NAME}.md`.
-2. Fill `{PLACEHOLDER}` variables with context from Phases 1–3:
-   - `{DIFF_CONTENT}` — the full diff or file content
-   - `{AFFECTED_FILES}` — list of changed files with types
-   - `{PROJECT_CONVENTIONS}` — from the loaded index and config files
-   - `{ARCHITECTURE_PATTERN}` — from the project index
-   - `{LANGUAGES}` — detected languages
-   - `{FRAMEWORKS}` — detected frameworks
-   - `{COMPLEMENTARY_CONTEXT}` — additional context from complementary skills
-   - `{TASK_REFERENCE}` — external task ID if detected
-3. Launch the agent as a subagent.
+2. Read the agent's lens file from `references/lenses/` and inline its full content into the `{LENS_CONTENT}` placeholder. Subagents run in a fresh context and cannot resolve relative paths inside this skill directory — never ask a subagent to "read the lens file"; hand it the content.
+3. Fill the remaining `{PLACEHOLDER}` variables with context from Phases 1–3:
+   - `{REPOSITORY}` — repo name and root path
+   - `{PROJECT_INDEX}` — the loaded `.code-review-index.json` content (languages, frameworks, architecture pattern, conventions)
+   - `{AGENT_RULES}` — rules extracted from AGENTS.md / CLAUDE.md, or "none"
+   - `{BRANCH}` / `{BASE_BRANCH}` — source and target branches
+   - `{TASK_CONTEXT}` — external task ID and title if detected, or "none"
+   - `{PATHS_TOUCHED}` — list of changed files with their type classification from Phase 3.4
+   - `{DIFF}` — the full diff (or file content in single-file mode)
+   - `{COMPLEMENTARY_CONTEXT}` — additional context from complementary skills, or "none"
+   - `{LENS_CONTENT}` — the inlined lens file(s) from step 2
+4. Launch the agent as a subagent with the fully-resolved template as its prompt.
 
-**Launch ALL applicable agents in parallel** using a single invoke call. Do not wait for one agent to finish before launching the next.
+**Shared performance lens:** `references/lenses/performance.md` has no dedicated agent. Append its content to `{LENS_CONTENT}` for `architecture-reviewer` (async/concurrency), `database-reviewer` (query efficiency), and `frontend-reviewer` (rendering) so performance findings have an owner.
+
+**Launch ALL applicable agents in parallel** — a single message containing one subagent invocation per applicable agent. Do not wait for one agent to finish before launching the next.
 
 # Phase 5: Aggregate & Deduplicate
 
@@ -308,13 +317,24 @@ For each applicable agent:
 
 If ALL agents report zero findings → proceed to Phase 6 clean path.
 
-## 5.2 — Collect and Deduplicate
+## 5.2 — Verify Findings Against Source
+
+Subagents occasionally misread context, cite stale line numbers, or flag issues the surrounding code already handles. A false positive posted as an inline comment costs more trust than ten real findings earn. Before aggregating, verify every **Crítico** and **Importante** finding:
+
+1. Read the actual lines at the cited `file:line` anchor. If the cited code doesn't match the finding's description, discard or re-anchor it.
+2. Check the surrounding code for guards the agent may have missed — validation upstream, auth middleware, transaction wrappers, test coverage in a sibling file.
+3. Confirm the line number refers to the NEW version of the file (the side comments will anchor to). Re-anchor if the agent cited old-version numbering.
+4. A finding that survives verification keeps its severity. A finding that is plausible but unconfirmable (e.g., depends on runtime config you cannot see) is downgraded one level and phrased as a question in the inline comment ("Existe validação upstream para...?").
+
+**Menor** findings skip verification — their cost of being wrong is low and the token cost of verifying them all is not.
+
+## 5.3 — Collect and Deduplicate
 
 1. Collect all findings from all agents into a single list.
 2. Deduplicate by `file:line` — when two agents report on the same location, keep the more detailed finding.
 3. If both are equally detailed, keep the one from the higher-priority agent.
 
-## 5.3 — Classify Severity
+## 5.4 — Classify Severity
 
 Apply severity classification from `graph/severity-rules.yaml`:
 
@@ -324,7 +344,7 @@ Apply severity classification from `graph/severity-rules.yaml`:
 | **Importante** | Architecture violations, convention drift, missing test coverage, query performance | Dependency inversion violation, untested edge case, N+1 query |
 | **Menor** | Style suggestions, minor optimizations, readability improvements | Variable naming, extract method opportunity, redundant condition |
 
-## 5.4 — Resolve Conflicts
+## 5.5 — Resolve Conflicts
 
 When agents disagree on the same finding, apply priority order:
 
@@ -334,18 +354,18 @@ security > architecture > database > testing > simplicity > frontend > i18n > er
 
 The higher-priority agent's recommendation takes precedence. Merge supporting context from the lower-priority agent if it adds value.
 
-## 5.5 — Separate Change-Related vs Pre-Existing
+## 5.6 — Separate Change-Related vs Pre-Existing
 
 Partition all findings into two groups:
 
 - **Change-related (PRIMARY)**: Issues directly in the user's diff — lines that were added or modified.
 - **Pre-existing observations (SECONDARY)**: Issues found in surrounding code that was NOT part of the diff. These are presented in a collapsible section.
 
-## 5.6 — Extract Positive Observations
+## 5.7 — Extract Positive Observations
 
 Collect positive observations from all agents — good patterns, strong design choices, effective test coverage — and aggregate into a unified "Pontos Fortes" section.
 
-## 5.7 — Unified Voice
+## 5.8 — Unified Voice
 
 Do NOT indicate which internal agent produced which finding. Present the review as a single, coherent assessment from one reviewer.
 
@@ -410,9 +430,28 @@ Do NOT indicate which internal agent produced which finding. Present the review 
 - Each finding must have a `file:line` anchor — no vague references.
 - The 💬 comment text is what will be posted inline on the MR/PR if the user confirms.
 
-**After the review, ask:**
+## Single-File Mode Addendum: Migration Plan
 
-> "Quer que eu poste esses comentários inline no MR/PR?"
+Single-file reviews (Phase 1.3) append a **📋 Migration Plan** section after Pontos Fortes. It converts the findings into an ordered execution path, from lowest to highest risk, so the user knows where to start:
+
+```markdown
+### 📋 Migration Plan
+
+| Step | Risk | Action | Impact |
+|---|---|---|---|
+| 1 | 🟢 Low | {smallest safe change} | {behavioral impact} |
+| 2 | 🟡 Medium | {change requiring caller audit} | {behavioral impact} |
+| 3 | 🔴 High | {change altering contracts or behavior} | {behavioral impact} |
+
+> **Recomendação:** {which steps to batch together, which deserve isolated PRs}
+```
+
+Risk ordering rationale: low-risk steps (adding `readonly`, adding tests) build a safety net that makes the high-risk steps (changing return types, refactoring calculations) safer to execute. Diff-based reviews (MR/branch) do NOT include this section — the change is already in flight.
+
+**After the review:**
+
+- If the target is an MR/PR (or the branch has an open MR/PR) → ask: _"Quer que eu poste esses comentários inline no MR/PR?"_
+- Otherwise → end with the report. There is nowhere to post inline comments; do not offer.
 
 # Phase 7: Post Comments (Optional)
 
@@ -437,10 +476,11 @@ Only execute if the user explicitly confirms.
 
 ## 7.3 — Posting Protocol
 
-1. Post the general summary comment first.
-2. Post each inline comment anchored to the correct diff line using the platform-specific position format.
-3. Post the 💬 suggested comment text verbatim — do not rephrase.
-4. Verify anchoring success after posting. If a comment fails to anchor (line not in diff), report it to the user with the file:line reference.
+1. **Pre-validate anchors.** Before posting anything, check every inline comment's `file:line` against the diff hunks: the line must appear as an added or context line in the NEW version of the file. Platforms reject comments on lines outside the diff — and GitHub's batch review endpoint rejects the ENTIRE review with HTTP 422 if a single comment fails to anchor. Comments that fail pre-validation are folded into the general summary comment instead, with their `file:line` reference.
+2. Post the general summary comment first.
+3. Post each inline comment anchored to the correct diff line using the platform-specific position format.
+4. Post the 💬 suggested comment text verbatim — do not rephrase.
+5. Verify anchoring success after posting (GitLab: check `type == "DiffNote"` in the response; GitHub batch: on 422, retry comments individually to isolate the failing one). Report any failure to the user with the file:line reference.
 
 ## 7.4 — Large Review Batching
 

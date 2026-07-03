@@ -88,7 +88,6 @@ componente React não trata o estado de loading adequadamente durante a migraç�
 
 #### 1. Breaking change no contrato da API: campo renomeado
 - **File:** `api/docs/openapi.yaml:87`
-- **Agent:** api-contracts-reviewer
 - **What:** The response field `user_name` was renamed to `username` in the OpenAPI spec, but the React frontend (`web/src/api/userApi.ts:12`) still maps the response using `user_name`. This will cause `undefined` values in production.
 - **Why:** Field renames in API contracts are breaking changes. Both producer (Go handler) and consumer (React) must be updated simultaneously, or the old field must be preserved for backward compatibility.
 - **Cross-reference:**
@@ -116,7 +115,6 @@ type UserResponse struct {
 
 #### 2. Go handler ignora erros com _ (underscore)
 - **File:** `api/internal/handlers/user_handler.go:34`
-- **Agent:** architecture-reviewer
 - **What:** The handler discards the error from `json.Marshal`:
 ```go
 data, _ := json.Marshal(user)
@@ -133,7 +131,6 @@ if err != nil {
 
 #### 3. React component renders stale data during API migration
 - **File:** `web/src/components/UserProfile/UserProfile.tsx:18`
-- **Agent:** frontend-reviewer
 - **What:** The `useUser` hook uses `staleTime: Infinity` in React Query config, which means once the data is fetched from the old API, it will never re-fetch from the new API endpoint until the user refreshes the entire page.
 - **Why:** During a rolling deployment, some users will have cached responses from the old Node.js service. With `staleTime: Infinity`, they will never see updated data from the new Go service until they hard-refresh.
 - **Fix:** Set a reasonable stale time during migration, then increase after stabilization:
@@ -145,7 +142,6 @@ const { data: user } = useUser(userId, {
 
 #### 4. Go test uses real HTTP calls instead of mocking the service layer
 - **File:** `api/internal/handlers/user_handler_test.go:23`
-- **Agent:** testing-reviewer
 - **What:** Test creates a real Gin engine and makes HTTP calls to the handler, but injects the real `UserService` instead of a mock/interface. This makes the test an integration test rather than a unit test.
 - **Why:** Go handler tests should inject a mock service (via interface) to test handler logic in isolation. Integration tests should be in a separate `_integration_test.go` file.
 - **Fix:** Define an interface for `UserService` and inject a mock:
@@ -165,13 +161,11 @@ func (m *MockUserService) GetUser(ctx context.Context, id string) (*models.User,
 
 #### 5. Go package name does not follow Go conventions
 - **File:** `api/internal/handlers/user_handler.go:1`
-- **Agent:** simplicity-reviewer
 - **What:** Package is named `userHandlers` (camelCase) but Go convention requires lowercase, single-word package names. The file is in the `handlers` directory, so the package should be `handlers`.
 - **Fix:** `package handlers`
 
 #### 6. React test has commented-out test case
 - **File:** `web/src/components/UserProfile/UserProfile.test.tsx:67-75`
-- **Agent:** simplicity-reviewer
 - **What:** A test case for "should display error state" is commented out with `// TODO: fix after migration`. Commented-out code in a PR suggests incomplete work.
 - **Fix:** Either implement the test or remove it and track in an issue.
 

@@ -98,13 +98,16 @@ conditional_agents:
           - "**/lang/**"
           - "**/messages/**"
           - "**/*.arb"  # Flutter
+        # Regex patterns matched against ADDED diff lines only.
+        # Word-boundary anchors matter: a bare "t(" would match print(, format(,
+        # sort( — i.e., nearly every diff — and turn this conditional agent
+        # into an always-on one.
         content_patterns:
-          - "useTranslation"
-          - "use(I18N)"
-          - "t("
-          - "$t("
-          - "i18n."
-          - "intl."
+          - "useTranslation\\s*\\("
+          - "\\bi18n\\.t\\("
+          - "(^|[^\\w.])t\\(['\"]"    # t('key') / t("key") calls, not foo.t() or format(
+          - "\\$t\\(['\"]"            # Vue-style $t('key')
+          - "\\bintl\\."
           - "AppLocalizations"
         extra_variables:
           I18N_FILES: "filtered list of i18n files from diff"
@@ -112,17 +115,33 @@ conditional_agents:
     - name: error-handling-reviewer
       template: agents/error-handling-reviewer.md
       conditions:
-        complexity_threshold: "diff > 200 lines or touches error handling code"
+        # Fires when the diff is large OR when ADDED lines introduce/modify
+        # error-handling constructs. Bare keywords like "try"/"Error" are
+        # intentionally avoided — they appear in almost any diff and would
+        # defeat the purpose of conditional dispatch.
+        complexity_threshold: "diff > 200 lines"
         content_patterns:
-          - "catch"
-          - "try"
-          - "throw"
-          - "raise"
-          - "except"
-          - "Error"
-          - "Exception"
-          - "Result.failed"
-          - "Result.err"
+          - "\\btry\\s*[{:]"
+          - "catch\\s*[({]"
+          - "\\.catch\\("
+          - "\\bthrow\\s+"
+          - "\\braise\\s+"
+          - "\\bexcept\\s+\\w"
+          - "\\brescue\\b"
+          - "extends\\s+\\w*(Error|Exception)"
+          - "Result\\.(failed|err|ok)"
+          - "ErrorBoundary"
+
+shared_lenses:
+  description: >
+    Lenses without a dedicated agent. Their content is appended to the
+    {LENS_CONTENT} of the listed agents so every check has an owner.
+  lenses:
+    - lens: references/lenses/performance.md
+      appended_to:
+        - architecture-reviewer   # async patterns, concurrency
+        - database-reviewer       # query efficiency, resource management
+        - frontend-reviewer       # rendering, payload size
 
 mutual_exclusion:
   description: "Groups where only one agent fires"

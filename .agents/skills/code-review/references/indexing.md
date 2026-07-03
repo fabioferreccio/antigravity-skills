@@ -311,7 +311,7 @@ Detect CI/CD, git hosting, and branching strategy.
 | `.circleci/config.yml`               | CI: `circleci`                          |
 | `.bitbucket-pipelines.yml`           | CI: `bitbucket-pipelines`               |
 | `.git/config` remote URL             | Git host: `github.com` / `gitlab.com` / etc. |
-| `git branch --show-current`          | Default branch                          |
+| `git symbolic-ref refs/remotes/origin/HEAD` | Default branch (`git branch --show-current` returns the CURRENT branch, not the default) |
 
 **Agent commands:**
 
