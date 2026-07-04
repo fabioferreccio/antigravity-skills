@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - **Level 2.5 Disclaimer**: Orchestrators module notes this is a practical extension, not canonical.
 
 - **Skills Registry**:
+  - `code-review` (v1.0.0) — Polyglot code review skill that analyzes MRs/PRs or individual files across any language and framework. Generates anchored inline comments on GitHub, GitLab, or Bitbucket via MCP or pre-generated scripts. Uses project indexing for context persistence and delegates to complementary skills when detected. Level 5 complexity with dynamic agent routing, lenses, examples, and test suite.
   - `ux-specialist` (v1.0.0) - UX Specialist Agent for usability, accessibility, and user experience.
   - `devops-agent` (v1.0.0) — DevOps Engineer Agent for platform stability, automation, continuous integration/delivery, and observability. Level 2 complexity with examples and test suite.
   - `enterprise-architect` (v1.0.0) — Enterprise Architect Agent for architectural integrity, governance, and systemic risk analysis. Level 4 complexity with references, graph, examples, and test suite.
