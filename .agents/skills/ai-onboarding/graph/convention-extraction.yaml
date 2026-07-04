@@ -1,0 +1,616 @@
+# ==============================================================================
+# Convention Extraction Rules
+# ==============================================================================
+# Defines how to read linter / formatter / testing / commit convention config
+# files and distill them into concise convention statements that are injected
+# into generated AI-tool context files.
+#
+# Each rule specifies:
+#   - file:   file name or glob to look for
+#   - fields: JSON/YAML paths to extract
+#   - emit:   template for the convention statement produced
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. JavaScript / TypeScript Conventions
+# ------------------------------------------------------------------------------
+javascript_typescript:
+
+  # --- ESLint (legacy config) -----------------------------------------------
+  - id: conv-eslint-legacy
+    files:
+      - .eslintrc
+      - .eslintrc.js
+      - .eslintrc.cjs
+      - .eslintrc.json
+      - .eslintrc.yml
+      - .eslintrc.yaml
+    fields:
+      - path: "extends"
+        description: "Base rule sets (e.g., airbnb, standard, plugin:@typescript-eslint/recommended)"
+      - path: "plugins"
+        description: "Active plugins"
+      - path: "rules"
+        description: "Custom rule overrides — extract only rules set to error or off"
+      - path: "parser"
+        description: "Parser in use (e.g., @typescript-eslint/parser)"
+      - path: "parserOptions.ecmaVersion"
+        description: "Target ECMAScript version"
+      - path: "parserOptions.sourceType"
+        description: "Module system (module / commonjs)"
+    emit: |
+      - ESLint (legacy config): extends `{extends}`, plugins: {plugins}.
+      - Key rules enforced: {rules_summary}.
+      - Parser: {parser}, ECMAScript {ecmaVersion}, source type {sourceType}.
+
+  # --- ESLint (flat config) -------------------------------------------------
+  - id: conv-eslint-flat
+    files:
+      - eslint.config.js
+      - eslint.config.mjs
+      - eslint.config.cjs
+      - eslint.config.ts
+      - eslint.config.mts
+    fields:
+      - path: "default export array items"
+        description: "Iterate config objects to extract plugins, rules, languageOptions"
+    emit: |
+      - ESLint (flat config): detected.  Parse the config export to extract
+        active rule-sets, plugins, and parser configuration.
+
+  # --- TypeScript -----------------------------------------------------------
+  - id: conv-tsconfig
+    files:
+      - tsconfig.json
+      - tsconfig.base.json
+      - tsconfig.app.json
+    fields:
+      - path: "compilerOptions.strict"
+        description: "Strict mode enabled?"
+      - path: "compilerOptions.target"
+        description: "Compilation target (ES2020, ESNext, etc.)"
+      - path: "compilerOptions.module"
+        description: "Module system (ESNext, CommonJS, NodeNext)"
+      - path: "compilerOptions.moduleResolution"
+        description: "Resolution strategy (bundler, node16, nodenext)"
+      - path: "compilerOptions.paths"
+        description: "Path aliases (e.g., @/* → src/*)"
+      - path: "compilerOptions.baseUrl"
+        description: "Base URL for module resolution"
+      - path: "compilerOptions.jsx"
+        description: "JSX handling (react-jsx, preserve)"
+      - path: "compilerOptions.noEmit"
+        description: "Whether TS only type-checks"
+      - path: "compilerOptions.declaration"
+        description: "Generate .d.ts files"
+      - path: "compilerOptions.isolatedModules"
+        description: "Compatibility with Babel/SWC transpilers"
+      - path: "compilerOptions.skipLibCheck"
+        description: "Skip type-checking .d.ts files"
+      - path: "compilerOptions.esModuleInterop"
+        description: "CJS/ESM interop"
+      - path: "compilerOptions.forceConsistentCasingInFileNames"
+        description: "Enforce consistent casing in imports"
+    emit: |
+      - TypeScript: strict={strict}, target={target}, module={module},
+        moduleResolution={moduleResolution}.
+      - Path aliases: {paths}.
+      - JSX: {jsx}.
+
+  # --- Prettier -------------------------------------------------------------
+  - id: conv-prettier
+    files:
+      - .prettierrc
+      - .prettierrc.js
+      - .prettierrc.cjs
+      - .prettierrc.mjs
+      - .prettierrc.json
+      - .prettierrc.yml
+      - .prettierrc.yaml
+      - .prettierrc.toml
+      - prettier.config.js
+      - prettier.config.cjs
+      - prettier.config.mjs
+      - prettier.config.ts
+    fields:
+      - path: "semi"
+        description: "Use semicolons? (true/false)"
+      - path: "singleQuote"
+        description: "Single quotes? (true/false)"
+      - path: "trailingComma"
+        description: "Trailing commas (all, es5, none)"
+      - path: "tabWidth"
+        description: "Spaces per indentation level"
+      - path: "useTabs"
+        description: "Tabs instead of spaces?"
+      - path: "printWidth"
+        description: "Max line width"
+      - path: "bracketSpacing"
+        description: "Spaces in object literals?"
+      - path: "arrowParens"
+        description: "Parens around single arrow params (always, avoid)"
+      - path: "endOfLine"
+        description: "Line ending style (lf, crlf, auto)"
+      - path: "proseWrap"
+        description: "Markdown wrapping"
+    emit: |
+      - Prettier: {semi_desc}, {quote_desc}, trailing commas={trailingComma},
+        tab width={tabWidth}, print width={printWidth}, {endOfLine} line endings.
+
+  # --- Biome ----------------------------------------------------------------
+  - id: conv-biome
+    files:
+      - biome.json
+      - biome.jsonc
+    fields:
+      - path: "formatter.indentStyle"
+        description: "tab or space"
+      - path: "formatter.indentWidth"
+        description: "Number of spaces"
+      - path: "formatter.lineWidth"
+        description: "Max line width"
+      - path: "linter.rules.recommended"
+        description: "Are recommended rules enabled?"
+      - path: "linter.rules"
+        description: "Custom rule overrides"
+      - path: "javascript.formatter.quoteStyle"
+        description: "single or double"
+      - path: "javascript.formatter.semicolons"
+        description: "always or asNeeded"
+      - path: "organizeImports.enabled"
+        description: "Auto-organize imports?"
+    emit: |
+      - Biome: indent={indentStyle} ×{indentWidth}, line width={lineWidth},
+        quotes={quoteStyle}, semicolons={semicolons}.
+      - Import organizing: {organizeImports}.
+
+  # --- Stylelint ------------------------------------------------------------
+  - id: conv-stylelint
+    files:
+      - .stylelintrc
+      - .stylelintrc.js
+      - .stylelintrc.cjs
+      - .stylelintrc.json
+      - .stylelintrc.yml
+      - .stylelintrc.yaml
+      - stylelint.config.js
+      - stylelint.config.cjs
+      - stylelint.config.mjs
+    fields:
+      - path: "extends"
+        description: "Base configs (stylelint-config-standard, etc.)"
+      - path: "plugins"
+        description: "Active plugins"
+      - path: "rules"
+        description: "Custom rule overrides"
+    emit: |
+      - Stylelint: extends {extends}. Key rules: {rules_summary}.
+
+# ------------------------------------------------------------------------------
+# 2. Python Conventions
+# ------------------------------------------------------------------------------
+python:
+
+  # --- pyproject.toml sections ----------------------------------------------
+  - id: conv-pyproject-ruff
+    files: [pyproject.toml]
+    sections:
+      - path: "[tool.ruff]"
+        fields:
+          - "line-length"
+          - "target-version"
+          - "select"
+          - "ignore"
+          - "fixable"
+          - "unfixable"
+        emit: |
+          - Ruff: line length={line-length}, target={target-version}.
+          - Selected rules: {select}. Ignored: {ignore}.
+
+      - path: "[tool.ruff.format]"
+        fields:
+          - "quote-style"
+          - "indent-style"
+          - "line-ending"
+          - "docstring-code-format"
+        emit: |
+          - Ruff formatter: {quote-style} quotes, {indent-style} indent, {line-ending} endings.
+
+      - path: "[tool.ruff.isort]"
+        fields:
+          - "known-first-party"
+          - "known-third-party"
+          - "combine-as-imports"
+          - "force-sort-within-sections"
+        emit: |
+          - Import sorting (ruff/isort): first-party={known-first-party}.
+
+  - id: conv-pyproject-black
+    files: [pyproject.toml]
+    sections:
+      - path: "[tool.black]"
+        fields:
+          - "line-length"
+          - "target-version"
+          - "skip-string-normalization"
+        emit: |
+          - Black: line length={line-length}, target={target-version}.
+
+  - id: conv-pyproject-isort
+    files: [pyproject.toml]
+    sections:
+      - path: "[tool.isort]"
+        fields:
+          - "profile"
+          - "known_first_party"
+          - "line_length"
+          - "multi_line_output"
+        emit: |
+          - isort: profile={profile}, first-party={known_first_party}.
+
+  - id: conv-pyproject-mypy
+    files: [pyproject.toml]
+    sections:
+      - path: "[tool.mypy]"
+        fields:
+          - "python_version"
+          - "strict"
+          - "warn_return_any"
+          - "warn_unused_configs"
+          - "disallow_untyped_defs"
+          - "check_untyped_defs"
+          - "ignore_missing_imports"
+        emit: |
+          - mypy: Python {python_version}, strict={strict}.
+          - Disallow untyped defs: {disallow_untyped_defs}.
+
+  - id: conv-pyproject-pytest
+    files: [pyproject.toml]
+    sections:
+      - path: "[tool.pytest.ini_options]"
+        fields:
+          - "testpaths"
+          - "python_files"
+          - "python_classes"
+          - "python_functions"
+          - "addopts"
+          - "markers"
+          - "filterwarnings"
+          - "asyncio_mode"
+        emit: |
+          - pytest: testpaths={testpaths}, addopts={addopts}.
+          - Async mode: {asyncio_mode}.
+
+  # --- Standalone configs ---------------------------------------------------
+  - id: conv-flake8
+    files: [.flake8, setup.cfg]
+    fields:
+      - path: "[flake8] / max-line-length"
+      - path: "[flake8] / extend-ignore"
+      - path: "[flake8] / per-file-ignores"
+    emit: |
+      - flake8: max line length={max-line-length}. Ignored: {extend-ignore}.
+
+  - id: conv-pytest-ini
+    files: [pytest.ini]
+    fields:
+      - path: "testpaths"
+      - path: "addopts"
+    emit: |
+      - pytest (ini): testpaths={testpaths}, addopts={addopts}.
+
+  - id: conv-conftest
+    files: [conftest.py]
+    extraction: "Parse to find fixture names, scope, and parametrize patterns"
+    emit: |
+      - Shared fixtures found in conftest.py: {fixture_list}.
+
+# ------------------------------------------------------------------------------
+# 3. Go Conventions
+# ------------------------------------------------------------------------------
+go:
+  - id: conv-golangci
+    files:
+      - .golangci.yml
+      - .golangci.yaml
+      - .golangci.json
+      - .golangci.toml
+    fields:
+      - path: "linters.enable"
+        description: "Enabled linters"
+      - path: "linters.disable"
+        description: "Disabled linters"
+      - path: "linters-settings"
+        description: "Per-linter settings"
+      - path: "run.timeout"
+        description: "Lint timeout"
+      - path: "issues.exclude-rules"
+        description: "Excluded patterns"
+    emit: |
+      - golangci-lint: enabled={enable_list}. Disabled={disable_list}.
+      - Timeout: {timeout}.
+
+# ------------------------------------------------------------------------------
+# 4. Rust Conventions
+# ------------------------------------------------------------------------------
+rust:
+  - id: conv-rustfmt
+    files: [rustfmt.toml, .rustfmt.toml]
+    fields:
+      - path: "max_width"
+      - path: "tab_spaces"
+      - path: "use_field_init_shorthand"
+      - path: "edition"
+      - path: "imports_granularity"
+      - path: "group_imports"
+      - path: "reorder_imports"
+      - path: "wrap_comments"
+    emit: |
+      - rustfmt: max_width={max_width}, tab_spaces={tab_spaces},
+        edition={edition}, imports_granularity={imports_granularity}.
+
+  - id: conv-clippy
+    files: [clippy.toml, .clippy.toml]
+    fields:
+      - path: "cognitive-complexity-threshold"
+      - path: "too-many-arguments-threshold"
+      - path: "type-complexity-threshold"
+      - path: "msrv"
+    emit: |
+      - Clippy: cognitive complexity threshold={cognitive-complexity-threshold},
+        MSRV={msrv}.
+
+# ------------------------------------------------------------------------------
+# 5. General / Cross-Language Conventions
+# ------------------------------------------------------------------------------
+general:
+  # --- EditorConfig ---------------------------------------------------------
+  - id: conv-editorconfig
+    files: [.editorconfig]
+    fields:
+      - path: "root"
+        description: "Is this the root editorconfig?"
+      - path: "[*].indent_style"
+        description: "space or tab"
+      - path: "[*].indent_size"
+        description: "Number of spaces"
+      - path: "[*].end_of_line"
+        description: "lf, crlf, cr"
+      - path: "[*].charset"
+        description: "Character encoding (utf-8)"
+      - path: "[*].trim_trailing_whitespace"
+        description: "Remove trailing whitespace?"
+      - path: "[*].insert_final_newline"
+        description: "Ensure file ends with newline?"
+      - path: "[*].max_line_length"
+        description: "Maximum line length"
+    emit: |
+      - EditorConfig: indent={indent_style} ×{indent_size}, {end_of_line} endings,
+        charset={charset}, trailing whitespace={trim_trailing_whitespace}.
+
+  # --- gitattributes -------------------------------------------------------
+  - id: conv-gitattributes
+    files: [.gitattributes]
+    extraction: >
+      Parse lines to detect: line-ending normalization (text=auto, eol=lf),
+      diff drivers, merge strategies, linguist overrides.
+    emit: |
+      - gitattributes: line-ending policy = {eol_policy}.
+      - Linguist overrides: {linguist_notes}.
+
+# ------------------------------------------------------------------------------
+# 6. Commit Conventions
+# ------------------------------------------------------------------------------
+commit:
+  # --- Commitlint -----------------------------------------------------------
+  - id: conv-commitlint
+    files:
+      - commitlint.config.js
+      - commitlint.config.cjs
+      - commitlint.config.mjs
+      - commitlint.config.ts
+      - .commitlintrc
+      - .commitlintrc.js
+      - .commitlintrc.cjs
+      - .commitlintrc.json
+      - .commitlintrc.yml
+      - .commitlintrc.yaml
+    fields:
+      - path: "extends"
+        description: "Base config (e.g., @commitlint/config-conventional)"
+      - path: "rules"
+        description: "Custom rules"
+      - path: "parserPreset"
+        description: "Parser configuration"
+    emit: |
+      - Commit conventions: commitlint extends {extends}.
+      - Follow Conventional Commits format: <type>(<scope>): <subject>.
+
+  # --- Husky / lint-staged --------------------------------------------------
+  - id: conv-husky
+    files: []
+    directories:
+      - .husky/
+    extraction: >
+      Check for pre-commit, commit-msg, pre-push hooks.
+      Parse each hook file to see which commands are run.
+    emit: |
+      - Git hooks via Husky: {hooks_list}.
+
+  - id: conv-lint-staged
+    files:
+      - .lintstagedrc
+      - .lintstagedrc.js
+      - .lintstagedrc.cjs
+      - .lintstagedrc.mjs
+      - .lintstagedrc.json
+      - .lintstagedrc.yml
+      - .lintstagedrc.yaml
+      - lint-staged.config.js
+      - lint-staged.config.cjs
+      - lint-staged.config.mjs
+    fields:
+      - path: "glob → command mappings"
+        description: "Which linters/formatters run on which file patterns"
+    emit: |
+      - lint-staged: {mappings_summary}.
+
+  # --- Commitizen -----------------------------------------------------------
+  - id: conv-commitizen
+    files:
+      - .cz.json
+      - .cz.toml
+      - .czrc
+    fields:
+      - path: "path"
+        description: "Adapter path (e.g., cz-conventional-changelog)"
+      - path: "types"
+        description: "Allowed commit types"
+    also_check:
+      - file: package.json
+        path: "config.commitizen"
+    emit: |
+      - Commitizen: adapter={path}. Use `cz commit` for interactive commits.
+
+# ------------------------------------------------------------------------------
+# 7. Testing Conventions
+# ------------------------------------------------------------------------------
+testing:
+
+  # --- Jest -----------------------------------------------------------------
+  - id: conv-jest
+    files:
+      - jest.config.js
+      - jest.config.cjs
+      - jest.config.mjs
+      - jest.config.ts
+      - jest.config.json
+    fields:
+      - path: "preset"
+        description: "Base preset (ts-jest, etc.)"
+      - path: "testEnvironment"
+        description: "jsdom, node, etc."
+      - path: "roots"
+        description: "Test root directories"
+      - path: "testMatch"
+        description: "Test file patterns"
+      - path: "moduleNameMapper"
+        description: "Module path aliases"
+      - path: "collectCoverageFrom"
+        description: "Coverage collection patterns"
+      - path: "coverageThreshold"
+        description: "Minimum coverage requirements"
+      - path: "setupFilesAfterSetup"
+        description: "Test setup files"
+      - path: "transform"
+        description: "File transformers"
+    also_check:
+      - file: package.json
+        path: "jest"
+    emit: |
+      - Jest: preset={preset}, environment={testEnvironment}.
+      - Test pattern: {testMatch}. Coverage threshold: {coverageThreshold}.
+
+  # --- Vitest ---------------------------------------------------------------
+  - id: conv-vitest
+    files:
+      - vitest.config.ts
+      - vitest.config.js
+      - vitest.config.mts
+      - vitest.config.mjs
+      - vitest.workspace.ts
+    fields:
+      - path: "test.environment"
+        description: "jsdom, happy-dom, node"
+      - path: "test.globals"
+        description: "Enable global test APIs?"
+      - path: "test.include"
+        description: "Test file patterns"
+      - path: "test.coverage"
+        description: "Coverage configuration"
+      - path: "test.setupFiles"
+        description: "Setup files"
+    emit: |
+      - Vitest: environment={environment}, globals={globals}.
+      - Include: {include}. Coverage: {coverage_summary}.
+
+  # --- Testing Library (detection) ------------------------------------------
+  - id: conv-testing-library
+    detection:
+      - type: dependency
+        file: package.json
+        packages:
+          - "@testing-library/react"
+          - "@testing-library/vue"
+          - "@testing-library/svelte"
+          - "@testing-library/jest-dom"
+          - "@testing-library/user-event"
+    emit: |
+      - Testing Library detected: prefer `screen.getByRole()` over `getByTestId()`.
+      - Use `userEvent` over `fireEvent` for realistic interactions.
+
+  # --- NYC / Istanbul -------------------------------------------------------
+  - id: conv-nyc
+    files:
+      - .nycrc
+      - .nycrc.json
+      - .nycrc.yml
+      - .nycrc.yaml
+    fields:
+      - path: "branches"
+      - path: "lines"
+      - path: "functions"
+      - path: "statements"
+      - path: "reporter"
+      - path: "include"
+      - path: "exclude"
+    emit: |
+      - NYC/Istanbul coverage: branches≥{branches}%, lines≥{lines}%,
+        functions≥{functions}%, statements≥{statements}%.
+
+  # --- Playwright -----------------------------------------------------------
+  - id: conv-playwright
+    files:
+      - playwright.config.ts
+      - playwright.config.js
+    fields:
+      - path: "projects"
+        description: "Browser configurations"
+      - path: "testDir"
+        description: "E2E test directory"
+      - path: "webServer"
+        description: "Dev server to start before tests"
+      - path: "use.baseURL"
+        description: "Base URL for navigation"
+      - path: "retries"
+        description: "Retry count"
+    emit: |
+      - Playwright: testDir={testDir}, browsers={projects_summary}.
+      - Base URL: {baseURL}. Retries: {retries}.
+
+  # --- Cypress --------------------------------------------------------------
+  - id: conv-cypress
+    files:
+      - cypress.config.ts
+      - cypress.config.js
+      - cypress.config.cjs
+      - cypress.config.mjs
+    fields:
+      - path: "e2e.baseUrl"
+      - path: "e2e.specPattern"
+      - path: "component.specPattern"
+      - path: "viewportWidth"
+      - path: "viewportHeight"
+    emit: |
+      - Cypress: baseUrl={baseUrl}, spec={specPattern}.
+
+  # --- Python pytest (standalone) ------------------------------------------
+  - id: conv-pytest-standalone
+    files: [pytest.ini, setup.cfg, tox.ini]
+    fields:
+      - path: "[pytest] / testpaths"
+      - path: "[pytest] / addopts"
+      - path: "[pytest] / python_files"
+      - path: "[pytest] / markers"
+    emit: |
+      - pytest: testpaths={testpaths}, addopts={addopts}.

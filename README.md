@@ -120,15 +120,22 @@ Additionally, the CLI automatically injects a `postinstall` script pointing to t
 
 | Skill | Version | Description | Tags |
 |---|---|---|---|
+| `ai-onboarding` | 1.0.0 | Supreme autonomous skill that analyzes any repository and generates all AI initialization files for 7+ tools (Antigravity, Claude Code, Cursor, Copilot, Windsurf, Aider, Gemini) | onboarding, multi-tool, ai-config, bootstrap |
+| `apply-structural-patch` | 1.0.0 | Apply surgical code changes using unified Git patch format to drastically reduce output tokens and speed up file modifications | patch, git, token-optimization, surgical-edit |
 | `clean-architecture` | 1.1.0 | Expert cognitive system for designing and refactoring systems using Clean Architecture, SOLID, DDD, CQRS, and comprehensive contracts catalog | architecture, clean-code, ddd, cqrs |
 | `code-review` | 1.0.0 | Polyglot code review skill that analyzes MRs/PRs or individual files across any language and framework and generates anchored inline comments | code-review, pull-request, architecture, security |
 | `dba-agent` | 1.0.0 | DBA Agent specialized in database performance, integrity, and security | database, performance, sql |
 | `devops-agent` | 1.0.0 | Acts as a DevOps Engineer Agent focusing on automation, infrastructure as code, observability, and platform resilience | devops, sre, automation, cicd |
 | `enterprise-architect` | 1.0.0 | Enterprise Architect Agent responsible for preserving architectural integrity, scalability, and corporate governance | architecture, governance, adr, c4 |
+| `execute-in-sandbox` | 1.0.0 | Executes unit tests, build commands, or arbitrary scripts safely inside a Docker sandbox to self-correct code | testing, sandbox, security, docker |
+| `explore-codebase-ast` | 1.0.0 | Maps the file tree of a project analyzing the internal structure (AST) to identify inheritances, entities, interfaces, and controllers without blowing up the context window | architecture, analysis, ast, codebase-mapping |
+| `local-ai-orchestrator` | 1.0.0 | A unified TypeScript orchestrator that exposes hyper-optimized local AI tools with strict JSON Schemas and async execution wrappers compatible with Ollama, Claude, and Antigravity | orchestrator, typescript, ollama, mcp, local-ai |
 | `migration-reviewer` | 1.0.0 | Migration Reviewer Agent that analyzes migrations (Knex, Prisma, SQL, etc.) and generates Slack-ready approval reports | migration, dba, approval, slack |
 | `product-manager` | 1.0.0 | Guides product discovery, prioritization, and strategy as a Senior Product Manager Agent | product-management, strategy, prd |
 | `prompt-engineering` | 1.0.0 | Elite system for designing, auditing, and optimizing high-performance prompt architectures | prompts, optimization, llm |
 | `qa-engineer` | 1.0.0 | QA Engineer Agent specialized in defect prevention and destructive testing | qa, testing, edge-cases, automation |
+| `query-homelab-state` | 1.0.0 | Query the health, CPU/RAM, and logs of containers in Docker or Kubernetes to debug infrastructure autonomously | devops, monitoring, docker, kubernetes, sre |
+| `read-file-chunked` | 1.0.0 | Reads large files in specific chunks with pagination, providing exact lines to prevent context window overflow | context-optimization, file-reading, pagination |
 | `repository-maintainer` | 1.0.0 | AI-powered repository governance, auditing, and quality enforcement | governance, validation |
 | `security-engineer` | 1.0.0 | Security Engineer Agent specialized in Security by Design and defense in depth | security, appsec, threat-modeling |
 | `skill-creator` | 2.0.0 | Guided skill scaffolding with modular architecture and internal agentic reasoning | scaffolding, meta-skill |
