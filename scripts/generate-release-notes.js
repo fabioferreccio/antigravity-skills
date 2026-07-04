@@ -15,7 +15,7 @@ const tag = process.argv[2] || 'v1.0.0';
 const version = tag.replace(/^v/, '');
 
 const changelog = readFileSync(join(ROOT, 'CHANGELOG.md'), 'utf8');
-const regex = new RegExp(`## \\[${version.replace(/\./g, '\\.')}\\].*?\\n([\\s\\S]*?)(?=## \\[|$)`);
+const regex = new RegExp(`## \\[${version.replace(/\./g, '\\.')}\\][^\\n]*\\n([\\s\\S]*?)(?=## \\[\n|$)`);
 const match = changelog.match(regex);
 
 if (match) {
