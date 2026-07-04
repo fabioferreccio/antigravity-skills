@@ -29,8 +29,8 @@ import { parse as parseYaml } from 'yaml';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ROOT = resolve(__dirname, '..');
-const SKILLS_DIR = join(ROOT, '.agents', 'skills');
-const CATALOG_PATH = join(ROOT, '.agents', 'catalog.json');
+const SKILLS_DIR = process.env.ANTIGRAVITY_SKILLS_ROOT || join(ROOT, '.agents', 'skills');
+const CATALOG_PATH = process.env.ANTIGRAVITY_CATALOG_PATH || join(ROOT, '.agents', 'catalog.json');
 
 // ─── Parse CLI Flags ─────────────────────────────────────────────
 const args = process.argv.slice(2);
@@ -67,7 +67,10 @@ function fail(msg) {
 
 // ─── Get All Skill Directories ──────────────────────────────────
 function getSkillDirs() {
-  if (!existsSync(SKILLS_DIR)) return [];
+  if (!existsSync(SKILLS_DIR)) {
+    fail(`Skills directory not found: ${SKILLS_DIR}`);
+    return [];
+  }
   return readdirSync(SKILLS_DIR, { withFileTypes: true })
     .filter((d) => d.isDirectory())
     .map((d) => d.name);
@@ -238,7 +241,7 @@ console.log('  ═════════════════════�
 const skills = getSkillDirs();
 
 if (skills.length === 0) {
-  warn('No skill directories found in .agents/skills/');
+  fail(`No skill directories found in ${SKILLS_DIR}`);
 } else {
   console.log(`  Found ${skills.length} skill(s): ${skills.join(', ')}\n`);
 

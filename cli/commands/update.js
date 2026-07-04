@@ -35,14 +35,14 @@ function getInstalledVersion(skillDir) {
 function getLocations() {
   const locations = [];
   for (const client of Object.keys(CLIENTS)) {
-    // We pass a dummy formattedName '' and resolve its parent directory
+    // Pass a dummy skill name and extract the directory
     locations.push({
-      dir: resolve(getTargetDir('', client, false), '..'),
+      dir: dirname(getTargetDir('__DUMMY__', client, false)),
       scope: 'workspace',
       client: CLIENTS[client].name
     });
     locations.push({
-      dir: resolve(getTargetDir('', client, true), '..'),
+      dir: dirname(getTargetDir('__DUMMY__', client, true)),
       scope: 'global',
       client: CLIENTS[client].name
     });
