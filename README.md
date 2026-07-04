@@ -45,6 +45,9 @@ npx github:fabioferreccio/antigravity-skills install clean-architecture
 # Install multiple skills at once
 npx github:fabioferreccio/antigravity-skills install clean-architecture dba-agent
 
+# Install ALL skills from the registry
+npx github:fabioferreccio/antigravity-skills install all
+
 # Install globally (available in all projects)
 npx github:fabioferreccio/antigravity-skills install clean-architecture --global
 
@@ -68,7 +71,7 @@ npx github:fabioferreccio/antigravity-skills list
 ### Update Skills
 
 ```bash
-# Check for updates for all installed skills
+# Check for updates for all installed skills (local and global, across all clients)
 npx github:fabioferreccio/antigravity-skills update
 
 # Apply all available updates

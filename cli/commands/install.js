@@ -27,7 +27,7 @@ const REGISTRY_ROOT = resolve(__dirname, '..', '..', '.agents', 'skills');
  * Supported client configurations.
  * Each client defines its workspace and global installation paths.
  */
-const CLIENTS = {
+export const CLIENTS = {
   antigravity: {
     name: 'Antigravity',
     workspacePath: (skillName) => join(process.cwd(), '.agents', 'skills', skillName),
@@ -48,7 +48,7 @@ const CLIENTS = {
  * @param {boolean} isGlobal - Whether to install globally
  * @returns {string} The resolved target directory path
  */
-function getTargetDir(skillName, client, isGlobal) {
+export function getTargetDir(skillName, client, isGlobal) {
   const config = CLIENTS[client];
   if (!config) {
     throw new Error(`Unknown client: "${client}". Supported clients: ${Object.keys(CLIENTS).join(', ')}`);

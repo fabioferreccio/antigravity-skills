@@ -11,6 +11,7 @@ import { homedir } from 'os';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { loadCatalog, printBanner, printSuccess, printWarning, printError } from '../utils/helpers.js';
+import { CLIENTS, getTargetDir } from './install.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -29,35 +30,24 @@ function getInstalledVersion(skillDir) {
 }
 
 /**
- * Get all installed skill directories.
+ * Get all installed skill directories dynamically from supported clients.
  */
-function getInstalledSkills() {
-  const locations = [
-    join(process.cwd(), '.agents', 'skills'),
-    join(homedir(), '.gemini', 'antigravity', 'skills'),
-  ];
-
-  const installed = [];
-
-  for (const loc of locations) {
-    if (!existsSync(loc)) continue;
-    const { readdirSync } = await import('fs');
-    const entries = readdirSync(loc, { withFileTypes: true });
-
-    for (const entry of entries) {
-      if (entry.isDirectory()) {
-        const version = getInstalledVersion(join(loc, entry.name));
-        installed.push({
-          name: entry.name,
-          version,
-          path: join(loc, entry.name),
-          scope: loc.includes('.gemini') ? 'global' : 'workspace',
-        });
-      }
-    }
+function getLocations() {
+  const locations = [];
+  for (const client of Object.keys(CLIENTS)) {
+    // We pass a dummy formattedName '' and resolve its parent directory
+    locations.push({
+      dir: resolve(getTargetDir('', client, false), '..'),
+      scope: 'workspace',
+      client: CLIENTS[client].name
+    });
+    locations.push({
+      dir: resolve(getTargetDir('', client, true), '..'),
+      scope: 'global',
+      client: CLIENTS[client].name
+    });
   }
-
-  return installed;
+  return locations;
 }
 
 /**
@@ -70,10 +60,7 @@ export async function update(options = {}) {
   console.log('\n  🔄 Checking for updates...\n');
 
   const { readdirSync } = await import('fs');
-  const locations = [
-    { dir: join(process.cwd(), '.agents', 'skills'), scope: 'workspace' },
-    { dir: join(homedir(), '.gemini', 'antigravity', 'skills'), scope: 'global' },
-  ];
+  const locations = getLocations();
 
   let updatesFound = 0;
   const updatedSkills = new Map(); // name -> version
