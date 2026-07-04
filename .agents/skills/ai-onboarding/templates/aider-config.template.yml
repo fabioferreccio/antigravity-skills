@@ -1,0 +1,29 @@
+# Aider configuration: .aider.conf.yml
+# Fill {{PLACEHOLDER}} values from repo analysis.
+# See https://aider.chat/docs/config/aider_conf.html
+
+## Context files to auto-load into every chat session
+read:
+{{CONTEXT_FILES}}
+# e.g.:
+#   - AGENTS.md
+#   - CONVENTIONS.md
+#   - docs/ARCHITECTURE.md
+
+## Lint commands per language
+## Aider runs these automatically after edits when auto-lint is enabled.
+lint-cmd:
+{{LINT_COMMANDS}}
+# e.g.:
+#   - "python: ruff check --fix"
+#   - "javascript: eslint --fix"
+#   - "typescript: eslint --fix"
+
+## Auto-lint after every edit
+auto-lint: true
+
+## Auto-commit after successful edits
+auto-commits: true
+
+## Allow commits even when the repo has uncommitted changes
+dirty-commits: true

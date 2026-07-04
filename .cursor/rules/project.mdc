@@ -1,0 +1,7 @@
+---
+description: General project rules and conventions
+globs: *
+---
+> See AGENTS.md for full project context.
+
+Read `.agents/rules/governance.md` for strict code style and governance rules.

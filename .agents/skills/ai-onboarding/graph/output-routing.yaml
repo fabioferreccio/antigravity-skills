@@ -1,0 +1,444 @@
+# ==============================================================================
+# Output Routing — Decision Matrix for Generated Files
+# ==============================================================================
+# Determines which files to create/update for each AI coding tool, how to
+# deduplicate shared content, how to merge with existing configs, and how to
+# resolve conflicts when multiple AI tools are configured simultaneously.
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Per-Tool Output Specifications
+# ------------------------------------------------------------------------------
+tools:
+
+  # ---------- Antigravity / AGY ---------------------------------------------
+  antigravity:
+    id: antigravity
+    primary_context_file: ".agents/AGENTS.md"
+    outputs:
+      always:
+        - file: ".agents/AGENTS.md"
+          description: "Primary context file with project overview, conventions, commands, architecture"
+          content_sections:
+            - project_overview
+            - tech_stack
+            - architecture_summary
+            - coding_conventions
+            - commands
+            - testing_strategy
+            - directory_structure
+            - important_notes
+        - file: ".agents/settings.json"
+          description: "MCP server configuration"
+          content_sections:
+            - mcp_servers
+      conditional:
+        - file: ".agents/skills/{skill_name}/SKILL.md"
+          condition: "Custom skills detected or requested"
+          description: "Custom skill definitions"
+        - file: ".agents/rules/{rule_name}.md"
+          condition: "Additional rule files needed for organization"
+          description: "Modular rule files for specific concerns"
+    scope_hierarchy:
+      - global: "~/.gemini/config/AGENTS.md"
+      - workspace: ".agents/AGENTS.md"
+      - directory: "{subdir}/AGENTS.md"
+
+  # ---------- Claude Code / Claude ------------------------------------------
+  claude_code:
+    id: claude_code
+    primary_context_file: "CLAUDE.md"
+    outputs:
+      always:
+        - file: "CLAUDE.md"
+          description: "Root-level context file for Claude Code"
+          content_sections:
+            - project_overview
+            - tech_stack
+            - coding_conventions
+            - commands
+            - testing_strategy
+            - architecture_summary
+            - important_notes
+      conditional:
+        - file: ".claude/settings.json"
+          condition: "MCP servers detected"
+          description: "MCP server configuration for Claude"
+          content_sections:
+            - mcp_servers
+            - permissions
+        - file: ".claude/commands/{command_name}.md"
+          condition: "Custom slash commands desired"
+          description: "Custom Claude commands"
+        - file: "{subdir}/CLAUDE.md"
+          condition: "Monorepo with distinct sub-project conventions"
+          description: "Directory-scoped context overrides"
+    scope_hierarchy:
+      - global: "~/.claude/CLAUDE.md"
+      - workspace: "CLAUDE.md"
+      - directory: "{subdir}/CLAUDE.md"
+
+  # ---------- Cursor --------------------------------------------------------
+  cursor:
+    id: cursor
+    primary_context_file: ".cursor/rules/*.mdc"
+    outputs:
+      always:
+        - file: ".cursor/rules/project-context.mdc"
+          description: "Main project context with YAML frontmatter"
+          content_sections:
+            - project_overview
+            - tech_stack
+            - coding_conventions
+            - architecture_summary
+          frontmatter:
+            description: "Project context and coding conventions"
+            globs: ["**/*"]
+            alwaysApply: true
+        - file: ".cursor/rules/commands.mdc"
+          description: "Available project commands"
+          content_sections:
+            - commands
+            - testing_strategy
+          frontmatter:
+            description: "Project commands and scripts"
+            globs: ["**/*"]
+            alwaysApply: false
+      conditional:
+        - file: ".cursor/rules/{framework}-patterns.mdc"
+          condition: "Specific framework detected (React, Next.js, etc.)"
+          description: "Framework-specific patterns and best practices"
+          frontmatter:
+            description: "{Framework} patterns and conventions"
+            globs: ["{framework_glob}"]
+            alwaysApply: false
+        - file: ".cursor/rules/testing.mdc"
+          condition: "Testing framework detected"
+          description: "Testing conventions and patterns"
+          frontmatter:
+            description: "Testing conventions"
+            globs: ["**/*.test.*", "**/*.spec.*", "**/tests/**"]
+            alwaysApply: false
+        - file: ".cursorrules"
+          condition: "Legacy Cursor installation detected"
+          description: "Legacy flat rules file (deprecated but still supported)"
+          content_sections:
+            - project_overview
+            - tech_stack
+            - coding_conventions
+            - commands
+    scope_hierarchy:
+      - global: "~/.cursor/rules/*.mdc"
+      - workspace: ".cursor/rules/*.mdc"
+      - legacy: ".cursorrules"
+
+  # ---------- GitHub Copilot ------------------------------------------------
+  github_copilot:
+    id: github_copilot
+    primary_context_file: ".github/copilot-instructions.md"
+    outputs:
+      always:
+        - file: ".github/copilot-instructions.md"
+          description: "Primary Copilot instructions file"
+          content_sections:
+            - project_overview
+            - tech_stack
+            - coding_conventions
+            - commands
+            - architecture_summary
+            - testing_strategy
+      conditional:
+        - file: ".github/copilot-instructions/{topic}.md"
+          condition: "Multiple instruction domains needed"
+          description: "Topic-specific instruction files"
+        - file: ".vscode/settings.json"
+          condition: "VS Code workspace settings for Copilot"
+          description: "Copilot-related VS Code settings"
+          merge_fields:
+            - "github.copilot.chat.codeGeneration.instructions"
+            - "github.copilot.chat.testGeneration.instructions"
+            - "github.copilot.chat.reviewSelection.instructions"
+    scope_hierarchy:
+      - global: "N/A (via VS Code settings.json)"
+      - workspace: ".github/copilot-instructions.md"
+      - multi_file: ".github/copilot-instructions/*.md"
+
+  # ---------- Windsurf / Codeium -------------------------------------------
+  windsurf:
+    id: windsurf
+    primary_context_file: ".windsurfrules"
+    outputs:
+      always:
+        - file: ".windsurfrules"
+          description: "Primary Windsurf rules file"
+          content_sections:
+            - project_overview
+            - tech_stack
+            - coding_conventions
+            - commands
+            - architecture_summary
+            - testing_strategy
+            - important_notes
+      conditional:
+        - file: ".windsurf/rules/{rule_name}.md"
+          condition: "Workspace-level rule organization needed"
+          description: "Modular workspace rules with YAML frontmatter"
+          frontmatter:
+            trigger: "always_on | glob | manual"
+            globs: ["{pattern}"]
+    scope_hierarchy:
+      - global: "~/.codeium/windsurf/global_rules/*.md"
+      - workspace: ".windsurfrules OR .windsurf/rules/*.md"
+
+  # ---------- Aider ---------------------------------------------------------
+  aider:
+    id: aider
+    primary_context_file: ".aider.conf.yml"
+    outputs:
+      always:
+        - file: "CONVENTIONS.md"
+          description: "Project conventions file read by aider"
+          content_sections:
+            - project_overview
+            - tech_stack
+            - coding_conventions
+            - commands
+            - architecture_summary
+            - testing_strategy
+        - file: ".aider.conf.yml"
+          description: "Aider configuration file"
+          content_sections:
+            - read_files
+            - lint_cmd
+            - test_cmd
+            - auto_commits
+      conditional:
+        - file: ".aiderignore"
+          condition: "Files/directories to exclude from aider context"
+          description: "Gitignore-style exclusion patterns"
+    scope_hierarchy:
+      - global: "~/.aider.conf.yml"
+      - workspace: ".aider.conf.yml"
+      - conventions: "CONVENTIONS.md (via --read flag)"
+
+  # ---------- Gemini (Google AI Studio / CLI) --------------------------------
+  gemini:
+    id: gemini
+    primary_context_file: "GEMINI.md"
+    outputs:
+      always:
+        - file: "GEMINI.md"
+          description: "Root-level context file for Gemini CLI / AI Studio"
+          content_sections:
+            - project_overview
+            - tech_stack
+            - coding_conventions
+            - commands
+            - architecture_summary
+            - testing_strategy
+      conditional:
+        - file: ".gemini/settings.json"
+          condition: "MCP servers or custom tools needed"
+          description: "Gemini tool and MCP configuration"
+          content_sections:
+            - mcp_servers
+        - file: "{subdir}/GEMINI.md"
+          condition: "Monorepo with distinct sub-project conventions"
+          description: "Directory-scoped context"
+    scope_hierarchy:
+      - global: "~/.gemini/GEMINI.md"
+      - workspace: "GEMINI.md"
+      - directory: "{subdir}/GEMINI.md"
+
+# ------------------------------------------------------------------------------
+# 2. Cross-Tool Shared File: AGENTS.md
+# ------------------------------------------------------------------------------
+cross_tool_shared:
+  agents_md:
+    file: "AGENTS.md"
+    description: >
+      AGENTS.md is an emerging cross-tool standard recognized by Antigravity,
+      Claude Code, Gemini CLI, and (partially) Cursor.  When generating for
+      multiple tools, prefer placing shared content here and referencing it
+      from tool-specific files to minimize duplication.
+    supported_by:
+      - antigravity   # primary format
+      - claude_code   # reads AGENTS.md if present
+      - gemini        # reads AGENTS.md if present
+      - cursor        # partial support via include
+    not_supported_by:
+      - github_copilot
+      - windsurf
+      - aider
+
+# ------------------------------------------------------------------------------
+# 3. Deduplication Rules
+# ------------------------------------------------------------------------------
+deduplication_rules:
+  strategy: "canonical_source_with_references"
+  description: >
+    When generating files for multiple AI tools simultaneously, avoid repeating
+    the same content across AGENTS.md, CLAUDE.md, GEMINI.md, etc.
+
+  rules:
+    - id: dedup-shared-context
+      rule: >
+        Place the full project context (overview, conventions, architecture,
+        commands) in AGENTS.md as the canonical source.  In tool-specific files
+        (CLAUDE.md, GEMINI.md), add only a reference line:
+        `> See AGENTS.md for full project context.`
+        followed by tool-specific instructions only.
+      applies_when: "Two or more of [antigravity, claude_code, gemini] are targets"
+
+    - id: dedup-mcp-config
+      rule: >
+        MCP server configurations should be placed in only ONE config file.
+        Priority order: .agents/settings.json > .claude/settings.json > .gemini/settings.json.
+        Other tools should reference or symlink to the primary config.
+      applies_when: "Multiple tools with MCP support are targets"
+
+    - id: dedup-cursor-standalone
+      rule: >
+        Cursor uses .mdc files with YAML frontmatter and glob-based activation.
+        Its content model is fundamentally different (rule-based vs. document-based).
+        Always generate Cursor files independently; do NOT reference AGENTS.md.
+      applies_when: "Cursor is a target"
+
+    - id: dedup-copilot-standalone
+      rule: >
+        GitHub Copilot uses .github/copilot-instructions.md which must be
+        self-contained.  Generate independently.
+      applies_when: "GitHub Copilot is a target"
+
+    - id: dedup-windsurf-standalone
+      rule: >
+        Windsurf uses .windsurfrules which must be self-contained.
+        Generate independently.
+      applies_when: "Windsurf is a target"
+
+    - id: dedup-aider-standalone
+      rule: >
+        Aider reads CONVENTIONS.md via --read flag and .aider.conf.yml.
+        Generate both independently.
+      applies_when: "Aider is a target"
+
+# ------------------------------------------------------------------------------
+# 4. Update Mode Rules
+# ------------------------------------------------------------------------------
+update_mode_rules:
+  description: >
+    Defines how to handle existing AI config files when running onboarding
+    on a project that already has some configuration.
+
+  modes:
+    - id: mode-create
+      mode: create
+      behavior: >
+        Create the file only if it does not exist.  If the file already exists,
+        skip it entirely and log a warning.
+      applies_when: "First-time onboarding"
+
+    - id: mode-merge
+      mode: merge
+      behavior: >
+        Parse the existing file, identify sections by headers (## headings),
+        and merge new content section by section:
+        - New sections: append at the end.
+        - Existing sections: preserve user content, append new items not already present.
+        - Never delete existing content.
+      applies_when: "Re-running onboarding after stack changes"
+      section_markers:
+        markdown: "## heading text"
+        yaml: "top-level keys"
+        json: "top-level keys"
+
+    - id: mode-overwrite
+      mode: overwrite
+      behavior: >
+        Replace the entire file with freshly generated content.
+        Create a backup (.bak) of the original first.
+      applies_when: "User explicitly requests a fresh start"
+      requires_confirmation: true
+
+    - id: mode-append
+      mode: append
+      behavior: >
+        Append new content to the end of the existing file without
+        parsing or modifying existing content.
+      applies_when: "Adding new detected services or conventions"
+
+  default_mode: merge
+
+  backup_strategy:
+    enabled: true
+    format: "{filename}.bak.{timestamp}"
+    location: "Same directory as the original file"
+    timestamp_format: "YYYYMMDD-HHmmss"
+
+# ------------------------------------------------------------------------------
+# 5. Conflict Resolution
+# ------------------------------------------------------------------------------
+conflict_resolution:
+  description: >
+    Handles contradictions between existing AI config files when multiple
+    tools are configured in the same project.
+
+  rules:
+    - id: conflict-conventions-mismatch
+      scenario: >
+        CLAUDE.md says "use single quotes" but .cursor/rules/project-context.mdc
+        says "use double quotes".
+      resolution: >
+        1. Check project's Prettier/ESLint/Biome config for the authoritative setting.
+        2. If found, use the config file as the source of truth.
+        3. If no config file, flag as CONFLICT and ask the user.
+      priority: "config_file > existing_ai_config > detected_default"
+
+    - id: conflict-commands-mismatch
+      scenario: >
+        One file says `npm test` but another says `yarn test`.
+      resolution: >
+        1. Detect the actual package manager from lockfile.
+        2. Use the detected package manager's command.
+        3. Update all files to be consistent.
+      priority: "detected_package_manager > existing_ai_config"
+
+    - id: conflict-mcp-servers-overlap
+      scenario: >
+        Both .agents/settings.json and .claude/settings.json define the
+        same MCP server with different configurations.
+      resolution: >
+        1. Compare configurations.
+        2. If identical, deduplicate to the primary config (see dedup-mcp-config).
+        3. If different, flag as CONFLICT and ask the user which to keep.
+        4. Ensure env var names are consistent across configs.
+      priority: "user_choice > newer_config > older_config"
+
+    - id: conflict-framework-disagreement
+      scenario: >
+        AGENTS.md mentions React but .cursorrules mentions Vue.
+      resolution: >
+        1. Re-detect from package.json / dependencies.
+        2. Use the detection result as source of truth.
+        3. Update all files to reflect the correct framework.
+      priority: "detected_from_source > existing_ai_config"
+
+    - id: conflict-directory-structure
+      scenario: >
+        Different AI configs describe different directory structures.
+      resolution: >
+        1. Scan actual filesystem.
+        2. Generate directory structure from real files.
+        3. Update all configs with the actual structure.
+      priority: "filesystem_reality > existing_ai_config"
+
+  conflict_log:
+    enabled: true
+    file: ".agents/onboarding-conflicts.log"
+    format: |
+      [{timestamp}] CONFLICT: {conflict_id}
+        Files: {file_a} vs {file_b}
+        Field: {field_name}
+        Value A: {value_a}
+        Value B: {value_b}
+        Resolution: {resolution_applied}

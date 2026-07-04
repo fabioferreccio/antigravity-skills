@@ -1,0 +1,53 @@
+{
+  "_comment": "MCP server configuration: .antigravity/mcp.json — Fill {{MCP_SERVERS}} with detected or requested servers. ALL secret values MUST use ${ENV_VAR} syntax. Never hardcode credentials.",
+
+  "mcpServers": {
+    {{MCP_SERVERS}}
+  }
+}
+
+/*
+  Template Guide — Replace {{MCP_SERVERS}} with server entries.
+
+  LOCAL SERVER SHAPE (stdio transport):
+  "server-name": {
+    "_comment": "Description of what this MCP server provides",
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-name"],
+    "env": {
+      "API_KEY": "${SERVER_NAME_API_KEY}"
+    }
+  }
+
+  REMOTE SERVER SHAPE (SSE/streamable-http transport):
+  "server-name": {
+    "_comment": "Description of what this MCP server provides",
+    "serverUrl": "https://mcp.example.com/sse",
+    "env": {
+      "API_KEY": "${SERVER_NAME_API_KEY}"
+    }
+  }
+
+  COMMON SERVERS (examples):
+  "filesystem": {
+    "_comment": "Read/write access to project files",
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-filesystem", "./"]
+  },
+  "github": {
+    "_comment": "GitHub API access for issues, PRs, and repos",
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-github"],
+    "env": {
+      "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+    }
+  },
+  "postgres": {
+    "_comment": "PostgreSQL database access",
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-postgres"],
+    "env": {
+      "DATABASE_URL": "${DATABASE_URL}"
+    }
+  }
+*/

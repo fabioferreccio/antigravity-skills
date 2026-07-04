@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "local-ai-orchestrator": {
+      "command": "node",
+      "args": [".agents/skills/local-ai-orchestrator/dist/index.js"]
+    }
+  }
+}
