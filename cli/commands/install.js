@@ -27,7 +27,7 @@ const REGISTRY_ROOT = resolve(__dirname, '..', '..', '.agents', 'skills');
  * Supported client configurations.
  * Each client defines its workspace and global installation paths.
  */
-const CLIENTS = {
+export const CLIENTS = {
   antigravity: {
     name: 'Antigravity',
     workspacePath: (skillName) => join(process.cwd(), '.agents', 'skills', skillName),
@@ -48,7 +48,7 @@ const CLIENTS = {
  * @param {boolean} isGlobal - Whether to install globally
  * @returns {string} The resolved target directory path
  */
-function getTargetDir(skillName, client, isGlobal) {
+export function getTargetDir(skillName, client, isGlobal) {
   const config = CLIENTS[client];
   if (!config) {
     throw new Error(`Unknown client: "${client}". Supported clients: ${Object.keys(CLIENTS).join(', ')}`);
@@ -104,8 +104,12 @@ export async function install(skillNames, options = {}) {
 
   const catalog = loadCatalog();
 
-  // If no skill names provided, attempt to load them from package.json in the current working directory
-  if (names.length === 0) {
+  // If the user provided the "all" keyword, install every skill in the registry
+  if (names.length === 1 && names[0].toLowerCase() === 'all') {
+    names = catalog.skills.map(s => s.name);
+    console.log(`  Flag 'all' detected. Preparing to install all ${names.length} skills from the registry...`);
+  } else if (names.length === 0) {
+    // If no skill names provided, attempt to load them from package.json in the current working directory
     const localPkgPath = join(process.cwd(), 'package.json');
     if (existsSync(localPkgPath)) {
       try {
