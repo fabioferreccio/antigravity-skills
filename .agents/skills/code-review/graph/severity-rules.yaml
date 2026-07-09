@@ -16,6 +16,10 @@ severity_levels:
       - "Breaking API change without versioning"
       - "New code with zero test coverage"
       - "Memory leak or resource leak"
+      - "Function name promises validation but silently accepts invalid input"
+      - "Classification logic that misclassifies valid inputs (false dichotomy)"
+      - "Incorrect implementation of a well-known domain algorithm (checksum, Luhn, mod-11)"
+      - "Financial calculation with floating-point precision loss"
     posting_behavior: "Always post as inline comment"
 
   importante:
@@ -32,6 +36,10 @@ severity_levels:
       - "Missing error handling on non-critical paths"
       - "Schema/type issues (varchar vs text)"
       - "Repository pattern violations"
+      - "Naming mismatch between function intent and actual behavior"
+      - "Incomplete domain validation (partial algorithm, missing checksum)"
+      - "Unverified invariants on production-critical paths"
+      - "Binary classification of multi-class domain problem (missing INVALID/UNKNOWN)"
     posting_behavior: "Post as inline comment"
 
   menor:
@@ -46,6 +54,8 @@ severity_levels:
       - "Readability improvements"
       - "Documentation gaps"
       - "Minor simplification opportunities"
+      - "Opportunity to add stricter domain validation"
+      - "Defensive programming improvement (guard clause, early return)"
     posting_behavior: "Include in general comment only, not inline"
 
 escalation_rules:

@@ -203,6 +203,40 @@ Expected behavior:
   - Agent proceeds with full review only if user explicitly confirms
 ```
 
+### E-04: Business Logic — False Dichotomy in Document Classification
+```
+Input: "revisa o arquivo src/utils/document.ts" (file contains the following code)
+
+  const NON_ALPHANUMERIC_REGEX = /[^A-Z0-9]/g;
+  const CPF_LENGTH = 11;
+
+  function normalizeDocument(value?: string | null): string {
+    return (value ?? "").toUpperCase().replace(NON_ALPHANUMERIC_REGEX, "");
+  }
+
+  function getDocumentType(value?: string | null): PlaceDocumentTypeEnum {
+    return normalizeDocument(value).length === CPF_LENGTH
+      ? PlaceDocumentTypeEnum.CPF
+      : PlaceDocumentTypeEnum.CNPJ;
+  }
+
+  export function isCnpj(value?: string | null): boolean {
+    return getDocumentType(value) === PlaceDocumentTypeEnum.CNPJ;
+  }
+
+Expected behavior:
+  - Agent activates business-logic-reviewer as a core agent
+  - Agent detects AT LEAST 3 of these 5 issues:
+    1. [Crítico] isCnpj("A00") returns true — 3 chars is not a CNPJ
+    2. [Crítico] False dichotomy: anything not CPF is classified as CNPJ (no INVALID state)
+    3. [Importante] isCnpj name implies validation but only checks length
+    4. [Importante] No checksum/mod-11 validation for either CPF or CNPJ
+    5. [Importante] Documents with same length (NIE/NIF) would be misclassified
+  - Agent provides concrete fix with proper validation logic
+  - Agent includes Migration Plan with risk-ordered steps
+  - Finding severity is Crítico (not Importante or Menor)
+```
+
 ---
 
 ## Quality Assertions
@@ -223,8 +257,15 @@ Expected behavior:
 ### Agent Orchestration
 - [ ] Complementary skills are detected and utilized when available
 - [ ] Review agents are selected based on detected languages and changed files
-- [ ] Agent conflict resolution follows priority rules (security > architecture > simplicity)
+- [ ] Agent conflict resolution follows priority rules (security > architecture > business-logic > simplicity)
 - [ ] Agents that find no issues do not produce empty sections in the output
+
+### Business Logic Correctness
+- [ ] Functions named `is*`, `validate*`, `check*` are verified against their implementation
+- [ ] Classification logic is checked for false dichotomies and non-exhaustive partitions
+- [ ] Domain algorithms (CPF, CNPJ, Luhn, IBAN) are verified against canonical implementations
+- [ ] Boundary inputs (null, empty, too short, too long) are traced through the code path
+- [ ] Financial/monetary calculations are flagged when using floating-point arithmetic
 
 ### Project Context
 - [ ] Project index is created on first run and reused on subsequent runs
