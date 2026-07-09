@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "generated": "2026-07-04T17:40:49.729Z",
+  "generated": "2026-07-09T18:02:35.575Z",
   "total_skills": 23,
   "skills": [
     {
@@ -85,7 +85,7 @@
     },
     {
       "name": "code-review",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "description": "Elite polyglot code review system that analyzes MRs/PRs, branches, or individual files across any language and framework, producing severity-classified findings with file:line anchors and posting inline comments on GitHub, GitLab, or Bitbucket via MCP, CLI, or generated scripts. Use this skill whenever the user asks for any kind of code review, in any language or phrasing — \"review my code\", \"revisa meu código\", \"revisa o MR/PR\", \"review this PR\", \"pode revisar\", \"review before merge\", \"revisa meu branch\" — or pastes a GitHub/GitLab/Bitbucket MR/PR URL, or names a branch or file with review intent, even without the word \"review\". Uses project indexing for context persistence and delegates to complementary skills when detected.",
       "author": "Fábio Ferreccio",
       "tags": [
