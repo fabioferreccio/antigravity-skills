@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
-  "generated": "2026-07-04T11:05:23.510Z",
-  "total_skills": 22,
+  "generated": "2026-07-04T17:40:49.729Z",
+  "total_skills": 23,
   "skills": [
     {
       "name": "ai-onboarding",
@@ -37,6 +37,26 @@
       ],
       "scope": "workspace",
       "path": ".agents/skills/apply-structural-patch",
+      "security": {
+        "network": false,
+        "filesystem": "read-write"
+      }
+    },
+    {
+      "name": "bug-hunter",
+      "version": "1.0.0",
+      "description": "Supreme autonomous skill that performs a comprehensive, multi-agent codebase sweep to identify concrete bugs (correctness, concurrency, monetary, logic, memory, and security flaws). Uses an adversarial verification process via sub-agents to refute false positives before generating a highly detailed, actionable markdown report.",
+      "author": "Fábio Ferreccio",
+      "tags": [
+        "auditing",
+        "bug-hunting",
+        "multi-agent",
+        "adversarial-review",
+        "quality-assurance",
+        "cybersecurity"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/bug-hunter",
       "security": {
         "network": false,
         "filesystem": "read-write"

@@ -5,10 +5,11 @@ Rules for resolving conflicts when multiple review agents flag the same code:
 ## Priority (highest → lowest)
 1. **Security findings** → always take precedence
 2. **Architecture findings** → take precedence over simplicity
-3. **Database/Performance findings** → independent, never downgraded
-4. **Testing findings** → independent
-5. **Simplicity findings** → framed as suggestions ("considere", "uma alternativa seria")
-6. **Style/naming findings** → lowest priority, never blocks
+3. **Business logic findings** → domain correctness, naming integrity, algorithm accuracy
+4. **Database/Performance findings** → independent, never downgraded
+5. **Testing findings** → independent
+6. **Simplicity findings** → framed as suggestions ("considere", "uma alternativa seria")
+7. **Style/naming findings** → lowest priority, never blocks
 
 ## Deduplication rules
 - Same file:line, same concern → keep the more detailed finding
@@ -20,6 +21,8 @@ Rules for resolving conflicts when multiple review agents flag the same code:
 - **Security vs Simplicity:** Security always wins. Never remove validation for simplicity.
 - **Testing vs Simplicity:** If testing recommends more tests but simplicity says it's over-testing, note both perspectives.
 - **Frontend vs Architecture:** Architecture wins on layer violations; frontend wins on component API and a11y.
+- **Business Logic vs Testing:** If business-logic-reviewer flags incorrect domain logic and testing-reviewer flags missing tests for the same code, keep both — they complement each other (fix the logic AND add tests).
+- **Business Logic vs Simplicity:** If business-logic says "add validation" and simplicity says "this is over-engineered", business logic wins — correctness trumps simplicity.
 - **Complementary skill vs core reviewer:** Complementary skill findings are additive, never contradictory.
 
 ## Change-related vs Pre-existing

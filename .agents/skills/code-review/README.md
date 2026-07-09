@@ -1,10 +1,10 @@
 # code-review
 
-> **Version**: 1.1.0 · **Scope**: workspace · **Author**: Fábio Ferreccio
+> **Version**: 1.2.0 · **Scope**: workspace · **Author**: Fábio Ferreccio
 
 ## Overview
 
-Code Review is a polyglot cognitive system that performs comprehensive code review across architecture, security, simplicity, testing, database, frontend, API contracts, i18n, and error handling lenses. It works with any programming language and framework, orchestrating up to 9 specialized parallel review agents to produce a unified, severity-classified report. When a MR/PR URL is provided, the skill can post anchored inline comments directly on GitHub, GitLab, or Bitbucket.
+Code Review is a polyglot cognitive system that performs comprehensive code review across architecture, security, business logic, simplicity, testing, database, frontend, API contracts, i18n, and error handling lenses. It works with any programming language and framework, orchestrating up to 10 specialized parallel review agents to produce a unified, severity-classified report. When a MR/PR URL is provided, the skill can post anchored inline comments directly on GitHub, GitLab, or Bitbucket.
 
 The agent simulates a Staff Engineer review pipeline — Index → Detect → Dispatch → Analyze → Aggregate → Present — to ensure every code change is thoroughly evaluated before merging.
 
@@ -115,6 +115,7 @@ Input (branch name / MR URL / file path / generic request)
 |---|---|
 | architecture-reviewer | Layer violations, dependency direction, coupling, cohesion |
 | security-reviewer | Injection, auth flaws, secrets exposure, OWASP patterns |
+| business-logic-reviewer | Semantic correctness, naming integrity, domain algorithms, classification soundness |
 | simplicity-reviewer | Unnecessary complexity, dead code, over-engineering |
 | testing-reviewer | Coverage gaps, missing edge cases, test quality |
 | database-reviewer | N+1 queries, missing indexes, raw SQL injection |
@@ -147,9 +148,9 @@ For single-file reviews, a **Migration Plan** section is appended with steps ord
 
 - **Polyglot**: Applies language-appropriate conventions for 10+ languages
 - **Project Indexing**: Builds a persistent context index on first run, reuses on subsequent reviews
-- **Complementary Skill Detection**: Automatically detects and delegates to skills like `clean-architecture`, `dba-agent`, or `security-engineer` when specialized knowledge is needed
+- **Complementary Skill Detection**: Automatically detects and delegates to skills like `clean-architecture`, `dba-agent`, `security-engineer`, or `domain-expert` when specialized knowledge is needed
 - **Anchored Inline Comments**: Posts comments on the exact diff line in GitHub, GitLab, or Bitbucket using platform APIs
-- **Parallel Review Agents**: Up to 9 specialized agents run concurrently for fast, thorough reviews
+- **Parallel Review Agents**: Up to 10 specialized agents run concurrently for fast, thorough reviews
 - **Finding Verification**: Every Crítico/Importante finding is re-checked against the actual source before being reported — false positives are discarded, unconfirmable findings are downgraded and phrased as questions
 - **Severity Classification**: Consistent Crítico / Importante / Menor classification across all languages
 - **Pre-existing Issue Detection**: Separates issues that already existed from issues introduced by the current change

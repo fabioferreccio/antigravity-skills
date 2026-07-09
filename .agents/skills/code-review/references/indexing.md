@@ -288,6 +288,7 @@ that complement the code review based on detected project characteristics.
 | Project has migration files (`migrations/`, `db/migrate/`, `prisma/migrations/`) | `migration-reviewer` |
 | Project has frontend framework (React, Vue, Angular, Svelte, Flutter) | `ux-specialist`   |
 | Project has CI/CD config (`.github/workflows/`, `Jenkinsfile`, `.gitlab-ci.yml`) | `devops-agent` |
+| Always (if skill exists in registry)                           | `domain-expert`          |
 
 **Agent procedure:**
 1. List available skills in `.agents/skills/`

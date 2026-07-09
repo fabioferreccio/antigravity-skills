@@ -12,7 +12,7 @@ description: >
   file with review intent, even without the word "review". Uses project
   indexing for context persistence and delegates to complementary skills when
   detected.
-version: 1.1.0
+version: 1.2.0
 author: Fábio Ferreccio
 tags:
   - code-review
@@ -64,6 +64,7 @@ Load reference files on-demand from `references/` and `agents/` to optimize toke
 RESOURCE                                  PHASE          PURPOSE
 ──────────────────────────────────────────────────────────────────────────────────
 references/lenses/*.md                    Phase 4        Review criteria per dimension
+references/lenses/business-logic.md       Phase 4        Business logic correctness criteria
 references/platforms/detection.md         Phase 1        URL pattern matching rules
 references/platforms/github.md            Phase 7        GitHub comment posting
 references/platforms/gitlab.md            Phase 7        GitLab comment posting
@@ -220,6 +221,7 @@ Check the skill registries available in the environment — `.claude/skills/` (p
 | Diff touches security-sensitive code | `security-engineer` | Enrich security-reviewer context |
 | Diff touches test files or coverage config | `qa-engineer` | Enrich testing-reviewer context |
 | Diff touches UX/frontend interaction patterns | `ux-specialist` | Add usability lens |
+| Always (if skill exists in registry) | `domain-expert` | Inject domain-specific validation rules and algorithms into business-logic-reviewer context |
 
 **If more than 3 complementary skills are detected**, ask the user which ones to activate before proceeding.
 
@@ -258,7 +260,7 @@ Gather the full diff content and the list of affected files.
 
 ## Core Reviewers (Always Launched)
 
-These four agents run on every review, regardless of diff content:
+These five agents run on every review, regardless of diff content:
 
 | Agent | Focus | Template |
 |---|---|---|
@@ -266,6 +268,7 @@ These four agents run on every review, regardless of diff content:
 | `security-reviewer` | Injection, auth, secrets, input validation, OWASP Top 10 | `agents/security-reviewer.md` |
 | `simplicity-reviewer` | Over-engineering, unnecessary abstraction, readability, DRY, KISS | `agents/simplicity-reviewer.md` |
 | `testing-reviewer` | Coverage gaps, fragile tests, missing edge cases, test quality | `agents/testing-reviewer.md` |
+| `business-logic-reviewer` | Semantic correctness, naming integrity, domain algorithms, classification soundness, boundary blindness, invariant violations | `agents/business-logic-reviewer.md` |
 
 ## Conditional Reviewers (Launched Based on Diff Content)
 
@@ -276,15 +279,6 @@ These four agents run on every review, regardless of diff content:
 | `api-contracts-reviewer` | Diff touches API definitions: OpenAPI specs, GraphQL schemas, gRPC protos, REST contracts | `agents/api-contracts-reviewer.md` |
 | `i18n-reviewer` | Diff touches i18n/translation files or code contains i18n function calls (`t()`, `i18n()`, `$t()`) | `agents/i18n-reviewer.md` |
 | `error-handling-reviewer` | Diff is complex (>200 lines) or touches error handling code (try/catch, error boundaries, Result types) | `agents/error-handling-reviewer.md` |
-
-## Complementary Skill Delegation
-
-When complementary skills are detected in Phase 3.2, enrich agent context:
-
-- **`clean-architecture` skill** → Load its reference files and inject into `architecture-reviewer` context.
-- **`dba-agent` skill** → Inject DBA-grade analysis rules into `database-reviewer` context.
-- **`security-engineer` skill** → Merge its threat model and checklist into `security-reviewer` context.
-- **`qa-engineer` skill** → Inject test strategy and edge-case patterns into `testing-reviewer` context.
 
 ## Agent Launch Protocol
 
@@ -307,6 +301,16 @@ For each applicable agent:
 **Shared performance lens:** `references/lenses/performance.md` has no dedicated agent. Append its content to `{LENS_CONTENT}` for `architecture-reviewer` (async/concurrency), `database-reviewer` (query efficiency), and `frontend-reviewer` (rendering) so performance findings have an owner.
 
 **Launch ALL applicable agents in parallel** — a single message containing one subagent invocation per applicable agent. Do not wait for one agent to finish before launching the next.
+
+## Complementary Skill Delegation
+
+When complementary skills are detected in Phase 3.2, enrich agent context:
+
+- **`clean-architecture` skill** → Load its reference files and inject into `architecture-reviewer` context.
+- **`dba-agent` skill** → Inject DBA-grade analysis rules into `database-reviewer` context.
+- **`security-engineer` skill** → Merge its threat model and checklist into `security-reviewer` context.
+- **`qa-engineer` skill** → Inject test strategy and edge-case patterns into `testing-reviewer` context.
+- **`domain-expert` skill** → Inject domain-specific validation rules, algorithms, and invariants into `business-logic-reviewer` context.
 
 # Phase 5: Aggregate & Deduplicate
 
@@ -349,7 +353,7 @@ Apply severity classification from `graph/severity-rules.yaml`:
 When agents disagree on the same finding, apply priority order:
 
 ```
-security > architecture > database > testing > simplicity > frontend > i18n > error-handling
+security > architecture > business-logic > database > testing > simplicity > frontend > i18n > error-handling
 ```
 
 The higher-priority agent's recommendation takes precedence. Merge supporting context from the lower-priority agent if it adds value.
@@ -363,7 +367,7 @@ Partition all findings into two groups:
 
 ## 5.7 — Extract Positive Observations
 
-Collect positive observations from all agents — good patterns, strong design choices, effective test coverage — and aggregate into a unified "Pontos Fortes" section.
+Collect positive observations from all agents — good patterns, strong design choices, effective test coverage, correct domain logic implementations — and aggregate into a unified "Pontos Fortes" section.
 
 ## 5.8 — Unified Voice
 

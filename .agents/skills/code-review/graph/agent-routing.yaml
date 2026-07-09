@@ -23,6 +23,14 @@ core_agents:
       template: agents/testing-reviewer.md
       always: true
 
+    - name: business-logic-reviewer
+      template: agents/business-logic-reviewer.md
+      always: true
+      complementary_skills:
+        - skill: domain-expert
+          condition: "domain-expert skill exists in registry"
+          action: "Load domain-specific validation rules, algorithms, and invariants into COMPLEMENTARY_CONTEXT"
+
 conditional_agents:
   description: "Launched based on diff content and project type"
   agents:

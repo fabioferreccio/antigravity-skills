@@ -18,8 +18,8 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ROOT = resolve(__dirname, '..');
-const SKILLS_DIR = join(ROOT, '.agents', 'skills');
-const CATALOG_PATH = join(ROOT, '.agents', 'catalog.json');
+const SKILLS_DIR = process.env.ANTIGRAVITY_SKILLS_ROOT || join(ROOT, '.agents', 'skills');
+const CATALOG_PATH = process.env.ANTIGRAVITY_CATALOG_PATH || join(ROOT, '.agents', 'catalog.json');
 const PKG_PATH = join(ROOT, 'package.json');
 
 /**
