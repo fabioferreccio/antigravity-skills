@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "generated": "2026-07-09T18:02:35.575Z",
+  "generated": "2026-07-13T14:41:36.369Z",
   "total_skills": 23,
   "skills": [
     {
@@ -44,12 +44,13 @@
     },
     {
       "name": "bug-hunter",
-      "version": "1.0.0",
-      "description": "Supreme autonomous skill that performs a comprehensive, multi-agent codebase sweep to identify concrete bugs (correctness, concurrency, monetary, logic, memory, and security flaws). Uses an adversarial verification process via sub-agents to refute false positives before generating a highly detailed, actionable markdown report.",
+      "version": "1.1.0",
+      "description": "Supreme autonomous skill that performs a comprehensive, multi-agent codebase sweep to identify concrete bugs AND structurally audit existing tests. It uses an adversarial verification process to refute false positives for bugs, and evaluates test effectiveness, fragility, and coverage gaps, generating a highly detailed, dual-dashboard markdown report.",
       "author": "Fábio Ferreccio",
       "tags": [
         "auditing",
         "bug-hunting",
+        "test-quality",
         "multi-agent",
         "adversarial-review",
         "quality-assurance",
