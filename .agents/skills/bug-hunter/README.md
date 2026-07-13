@@ -1,16 +1,18 @@
 # bug-hunter
 
-> **Version**: 1.0.0 · **Scope**: workspace · **Author**: Fábio Ferreccio
+> **Version**: 1.1.0 · **Scope**: workspace · **Author**: Fábio Ferreccio
 
 ## Overview
 
-A supreme, elite meta-skill designed to perform comprehensive, project-wide sweeps for concrete bugs. It operates on a multi-agent adversarial architecture: it hunts for issues spanning concurrency (race conditions), money precision, null-safety, unhandled async states, logic flaws, memory leaks, resource exhaustion, and security vulnerabilities (injections, weak crypto, auth bypass). It actively invokes sub-agents to act as "skeptics" to refute found bugs, ensuring zero false positives and high-signal reporting.
+A supreme, elite meta-skill designed to perform comprehensive, project-wide sweeps for concrete bugs **and** audit test quality. It operates on a multi-agent adversarial architecture:
+- **Bug Hunting**: Hunts for issues spanning concurrency (race conditions), money precision, null-safety, logic flaws, memory leaks, resource exhaustion, and security vulnerabilities. It actively invokes sub-agents to act as "skeptics" to refute found bugs, ensuring zero false positives and high-signal reporting.
+- **Test Auditing**: Evaluates existing test files, classifying them by effectiveness (efetivo, frágil, inconclusivo), diagnosing gaps, and recommending actions. It automatically infers financial risk to group tests into Tiers (e.g., Tier 1 for monetary paths).
 
 ## When to Use
 
 - When preparing for a major release and needing a strict correctness audit.
-- When stabilizing a legacy codebase filled with silent bugs.
-- When the user asks for a deep bug hunt across the entire project or specific critical modules.
+- When stabilizing a legacy codebase filled with silent bugs or fragile tests.
+- When you need a deep, visually-rich dashboard report of test quality and bug findings.
 
 ## When NOT to Use
 
@@ -38,29 +40,22 @@ This skill activates automatically when:
 - "faça um workflow amplo para identificar bugs de incorretudes e possíveis problemas concretos por todo o projeto"
 - "varredura completa de bugs no projeto"
 - "encontre bugs concretos e race conditions"
-- "realize uma auditoria adversarial de corretude"
+- "realize uma auditoria adversarial de corretude e de testes"
+- "gere um relatório profundo de bugs reais e qualidade de testes"
+- "audite os testes e classifique a eficácia"
 
 ## Examples
 
-### Example 1: Full Project Sweep
+### Example 1: Full Project Sweep and Test Audit
 
-**User says**: "faça um workflow amplo para identificar bugs de incorretudes e possíveis problemas concretos por todo o projeto. colete tudo e coloque em um markdown de bugs para eu resolver depois."
+**User says**: "faça um workflow amplo para identificar bugs e auditar a qualidade dos nossos testes. gere um relatorio estruturado."
 
 **Agent does**:
 1. Maps the project using `explore-codebase-ast` or chunked reading.
-2. Identifies a race condition in `payment.service.ts` and a null-safety issue in `webhook.service.ts`.
-3. Spawns a sub-agent (`qa-engineer` or `security-engineer`) to adversarially verify both findings.
-4. The sub-agent refutes the null-safety issue but confirms the race condition.
-5. The primary agent generates a detailed `BUGS.md` report with the confirmed finding.
-
-**Output**:
-```markdown
-# 🐛 Relatório de Bugs — zig-payments
-...
-## ✅ Confirmados por verificação adversarial (1)
-### 1. refundPayment e cancelPayment têm check-then-act sem lock
-...
-```
+2. Identifies bugs (e.g., a race condition) and invokes a sub-agent to verify them.
+3. Groups test files into Tiers (e.g., `payment` = Tier 1, `user` = Tier 3).
+4. Evaluates tests, marking fragile tautological tests or identifying gaps.
+5. Generates a comprehensive dual-part `BUGS.md` / `TEST-AUDIT.md` report.
 
 ## Limitations
 
