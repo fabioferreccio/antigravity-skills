@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
-  "generated": "2026-07-13T14:41:36.369Z",
-  "total_skills": 23,
+  "generated": "2026-07-19T22:33:40.396Z",
+  "total_skills": 24,
   "skills": [
     {
       "name": "ai-onboarding",
@@ -305,6 +305,28 @@
       ],
       "scope": "workspace",
       "path": ".agents/skills/qa-engineer",
+      "security": {
+        "network": false,
+        "filesystem": "read-write"
+      }
+    },
+    {
+      "name": "quality-gate",
+      "version": "1.1.0",
+      "description": "Supreme epic meta-skill that acts as an unforgiving, polyglot Quality Gate for production readiness. It builds a persistent project index, performs ruthless bug hunting and code review, runs a dedicated security audit (OWASP Top 10, secrets, injection sinks, authz), and enforces strict QA strategy (AAA/TDD). Every critical finding passes adversarial verification before being reported — no false-positive noise. It automatically sets up and executes integration test infrastructure (Docker/Testcontainers) if missing, enforcing >70% coverage with a target of 90%. It does not sugarcoat findings; it identifies bad logic, naive paths, security holes, and architectural flaws ruthlessly.",
+      "author": "Fábio Ferreccio",
+      "tags": [
+        "quality-assurance",
+        "release-gate",
+        "bug-hunting",
+        "security-audit",
+        "test-automation",
+        "polyglot",
+        "supreme",
+        "infrastructure"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/quality-gate",
       "security": {
         "network": false,
         "filesystem": "read-write"
