@@ -138,6 +138,7 @@ Additionally, the CLI automatically injects a `postinstall` script pointing to t
 | `product-manager` | 1.0.0 | Guides product discovery, prioritization, and strategy as a Senior Product Manager Agent | product-management, strategy, prd |
 | `prompt-engineering` | 1.0.0 | Elite system for designing, auditing, and optimizing high-performance prompt architectures | prompts, optimization, llm |
 | `qa-engineer` | 1.0.0 | QA Engineer Agent specialized in defect prevention and destructive testing | qa, testing, edge-cases, automation |
+| `quality-gate` | 1.1.0 | Unforgiving polyglot Quality Gate with project indexing, ruthless review, OWASP security audit, adversarial verification, and automated test infrastructure | quality-assurance, release-gate, security-audit, test-automation |
 | `query-homelab-state` | 1.0.0 | Query the health, CPU/RAM, and logs of containers in Docker or Kubernetes to debug infrastructure autonomously | devops, monitoring, docker, kubernetes, sre |
 | `read-file-chunked` | 1.0.0 | Reads large files in specific chunks with pagination, providing exact lines to prevent context window overflow | context-optimization, file-reading, pagination |
 | `repository-maintainer` | 1.0.0 | AI-powered repository governance, auditing, and quality enforcement | governance, validation |
