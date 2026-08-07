@@ -1,0 +1,102 @@
+{
+  "skill": "frontend-architect",
+  "version": "1.0.0",
+  "prompts": [
+    {
+      "id": "p1",
+      "type": "activation",
+      "query": "Como devo estruturar a arquitetura de componentes de um Design System com React e Tailwind?",
+      "expected_behavior": "Activates frontend-architect, asks clarifying questions if scope is vague, uses compound components reference."
+    },
+    {
+      "id": "p2",
+      "type": "activation",
+      "query": "Como separar estado local, global e de servidor (TanStack Query) em uma app React?",
+      "expected_behavior": "Loads references/state-management.md and provides 5-tier taxonomy."
+    },
+    {
+      "id": "p3",
+      "type": "activation",
+      "query": "Auditar acessibilidade WCAG 2.2 e usabilidade nesta tela de checkout",
+      "expected_behavior": "Loads references/ux-accessibility.md and performs Nielsen heuristic audit."
+    },
+    {
+      "id": "p4",
+      "type": "activation",
+      "query": "Como otimizar re-renderizacao excessiva de Virtual DOM no React?",
+      "expected_behavior": "Loads references/performance-rendering.md and suggests state colocation and memoization."
+    },
+    {
+      "id": "p5",
+      "type": "activation",
+      "query": "Configurar Turborepo monorepo com pnpm workspaces, Vite e TypeScript strict mode",
+      "expected_behavior": "Loads references/monorepo-tooling.md."
+    },
+    {
+      "id": "p6",
+      "type": "activation",
+      "query": "Escrever um teste TDD com Vitest seguindo o padrao Triple AAA",
+      "expected_behavior": "Loads references/testing-tdd.md, places all expects at the bottom of the test function."
+    },
+    {
+      "id": "p7",
+      "type": "activation",
+      "query": "Como implementar Headless UI com Radix primitives e Tailwind CVA?",
+      "expected_behavior": "Loads references/design-systems.md and component-patterns.md."
+    },
+    {
+      "id": "p8",
+      "type": "activation",
+      "query": "Qual a melhor estratégia para Micro-frontends com Module Federation?",
+      "expected_behavior": "Loads references/micro-frontends.md."
+    },
+    {
+      "id": "p9",
+      "type": "activation",
+      "query": "Como fazer cache key factory no TanStack Query v5?",
+      "expected_behavior": "Provides userKeys factory example."
+    },
+    {
+      "id": "p10",
+      "type": "activation",
+      "query": "Auditar este componente React e me dizer se há falhas de arquitetura ou maus padroes",
+      "expected_behavior": "Uses tools to view component file, asks clarification questions if needed, points out smells."
+    },
+    {
+      "id": "m1",
+      "type": "misuse",
+      "query": "Otimizar uma query SQL lentíssima no Postgres",
+      "expected_behavior": "Does NOT activate frontend-architect; redirects to dba-agent."
+    },
+    {
+      "id": "m2",
+      "type": "misuse",
+      "query": "Criar um cluster Kubernetes com Helm chart",
+      "expected_behavior": "Does NOT activate frontend-architect; redirects to devops-agent."
+    },
+    {
+      "id": "m3",
+      "type": "misuse",
+      "query": "Revisar um script Python de machine learning",
+      "expected_behavior": "Does NOT activate frontend-architect."
+    },
+    {
+      "id": "e1",
+      "type": "edge_case",
+      "query": "Qual arquitetura usar para uma app React simples de 1 pagina?",
+      "expected_behavior": "Asks user questions to avoid overengineering Turborepo/Micro-frontends unnecessarily."
+    },
+    {
+      "id": "e2",
+      "type": "edge_case",
+      "query": "Reescrever todo o front-end de uma vez",
+      "expected_behavior": "Questions the user and advises incremental refactoring by component tiers."
+    },
+    {
+      "id": "e3",
+      "type": "edge_case",
+      "query": "Testar um componente sem colocar os expects no final",
+      "expected_behavior": "Corrects the pattern to enforce strict Triple AAA with expects at the end."
+    }
+  ]
+}

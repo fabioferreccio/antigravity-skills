@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "generated": "2026-07-19T22:33:40.396Z",
+  "generated": "2026-08-06T19:13:14.189Z",
   "total_skills": 24,
   "skills": [
     {
@@ -202,6 +202,30 @@
       ],
       "scope": "workspace",
       "path": ".agents/skills/explore-codebase-ast",
+      "security": {
+        "network": false,
+        "filesystem": "read-write"
+      }
+    },
+    {
+      "name": "frontend-architect",
+      "version": "1.0.0",
+      "description": "Supreme Front-End Architecture & Component Engineering Skill. Expert cognitive system for component design (Atomic, Compound, Headless), state management, monorepos, performance optimization, tooling, testing (TDD/Triple AAA), and UX/Accessibility (WCAG 2.2).",
+      "author": "Fábio Ferreccio <fabio@example.com>",
+      "tags": [
+        "frontend",
+        "react",
+        "typescript",
+        "component-architecture",
+        "ux",
+        "accessibility",
+        "monorepo",
+        "performance",
+        "tailwindcss",
+        "tdd"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/frontend-architect",
       "security": {
         "network": false,
         "filesystem": "read-write"
@@ -466,25 +490,6 @@
       "security": {
         "network": false,
         "filesystem": "read-write"
-      }
-    },
-    {
-      "name": "ux-specialist",
-      "version": "1.0.0",
-      "description": "Atua como um UX Specialist Agent focado em usabilidade, acessibilidade e experiência do usuário, garantindo interfaces intuitivas que reduzem a fricção.",
-      "author": "Fabio Ferreccio <fabio@example.com>",
-      "tags": [
-        "ux",
-        "ui",
-        "accessibility",
-        "usability",
-        "design"
-      ],
-      "scope": "workspace",
-      "path": ".agents/skills/ux-specialist",
-      "security": {
-        "network": false,
-        "filesystem": "read"
       }
     }
   ]
