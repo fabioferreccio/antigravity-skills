@@ -4,7 +4,7 @@ description: >
   Supreme Front-End Architecture & Component Engineering Skill. Expert cognitive system
   for component design (Atomic, Compound, Headless), state management, monorepos,
   performance optimization, tooling, testing (TDD/Triple AAA), and UX/Accessibility (WCAG 2.2).
-version: 1.0.0
+version: 1.1.0
 author: Fábio Ferreccio <fabio@example.com>
 tags:
   - frontend
@@ -17,6 +17,8 @@ tags:
   - performance
   - tailwindcss
   - tdd
+  - mobile-design-system
+  - yuno-sdk
 triggers:
   - "frontend architecture"
   - "arquitetura de front-end"
@@ -57,6 +59,10 @@ triggers:
   - "i18n recursos traducao"
   - "sdkgen rpc contratos"
   - "sdkgen api client"
+  - "mobile design system"
+  - "base ui mds"
+  - "yuno sdk pagamento"
+  - "yuno hosted fields pci"
 scope: workspace
 tools:
   - filesystem
@@ -137,6 +143,8 @@ To optimize context efficiency, use `view_file` to load relevant references from
 | **Refactoring Mentorship, Migration Playbooks, Dependency CVEs, Task Breakdown** | `.agents/skills/frontend-architect/references/refactoring-planning-security.md` |
 | **HTML/JS/TS Standards, OKLCH/HSL Math Color Systems, i18n Currency, Virtual Tables** | `.agents/skills/frontend-architect/references/core-standards-color-i18n-tables.md` |
 | **sdkgen RPC Contracts, Code Generation, Error Normalization & Adapter Isolation** | `.agents/skills/frontend-architect/references/sdkgen-rpc-contracts.md` |
+| **Mobile Design System (MDS), Base UI Primitives, OKLCH Tokens, Superior Components** | `.agents/skills/frontend-architect/references/mobile-design-system.md` |
+| **Yuno SDK Integration (Seamless, Lite, Headless, PCI SAQ A Hosted Fields vs Direct)** | `.agents/skills/frontend-architect/references/yuno-sdk-integration.md` |
 
 ---
 

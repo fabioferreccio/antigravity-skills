@@ -26,8 +26,10 @@ This skill follows a **Reference-Based System (Level 4 Complexity)**. The kernel
 - `state-management.md`
 - `performance-rendering.md`
 - `monorepo-tooling.md`
-- `testing-tdd.md`
-- `design-systems.md`
+- `core-standards-color-i18n-tables.md`
+- `sdkgen-rpc-contracts.md`
+- `mobile-design-system.md`
+- `yuno-sdk-integration.md`
 - `micro-frontends.md`
 
 ## Usage & Triggers

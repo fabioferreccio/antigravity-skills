@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "generated": "2026-08-07T13:55:02.216Z",
+  "generated": "2026-08-07T14:39:06.904Z",
   "total_skills": 24,
   "skills": [
     {
@@ -209,7 +209,7 @@
     },
     {
       "name": "frontend-architect",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "Supreme Front-End Architecture & Component Engineering Skill. Expert cognitive system for component design (Atomic, Compound, Headless), state management, monorepos, performance optimization, tooling, testing (TDD/Triple AAA), and UX/Accessibility (WCAG 2.2).",
       "author": "Fábio Ferreccio <fabio@example.com>",
       "tags": [
@@ -222,7 +222,9 @@
         "monorepo",
         "performance",
         "tailwindcss",
-        "tdd"
+        "tdd",
+        "mobile-design-system",
+        "yuno-sdk"
       ],
       "scope": "workspace",
       "path": ".agents/skills/frontend-architect",
