@@ -146,7 +146,7 @@ Additionally, the CLI automatically injects a `postinstall` script pointing to t
 | `skill-creator` | 2.0.0 | Guided skill scaffolding with modular architecture and internal agentic reasoning | scaffolding, meta-skill |
 | `spec-driven-development` | 1.0.0 | Guide the team through SDD workflow with Specs, Plans, and Tasks | sdd, specification, architecture |
 | `staff-engineer` | 1.0.0 | Staff Engineer Agent for cross-functional engineering diagnosis, redundancy elimination, and DORA analysis | staff-engineer, refactoring, dora |
-| `frontend-architect` | 1.1.0 | Supreme Front-End Architecture & Component Engineering Skill (Atomic, Compound, Headless, State, Monorepos, A11y/WCAG 2.2, TDD/Triple AAA, Mobile DS, Yuno SDK) | frontend, react, typescript, component-architecture, ux, accessibility, monorepo, performance, mobile-design-system, yuno-sdk |
+| `frontend-architect` | 1.1.1 | Supreme Front-End Architecture & Component Engineering Skill (Atomic, Compound, Headless, State, Monorepos, A11y/WCAG 2.2, TDD/Triple AAA, Mobile DS, Yuno SDK, Tooling Verification) | frontend, react, typescript, component-architecture, ux, accessibility, monorepo, performance, mobile-design-system, yuno-sdk, tooling-verification |
 
 > 💡 **This registry grows with contributions.** See [Creating Skills](#-creating-skills) to add yours.
 

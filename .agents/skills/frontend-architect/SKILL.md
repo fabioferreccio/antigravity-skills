@@ -4,7 +4,7 @@ description: >
   Supreme Front-End Architecture & Component Engineering Skill. Expert cognitive system
   for component design (Atomic, Compound, Headless), state management, monorepos,
   performance optimization, tooling, testing (TDD/Triple AAA), and UX/Accessibility (WCAG 2.2).
-version: 1.1.0
+version: 1.1.1
 author: Fábio Ferreccio <fabio@example.com>
 tags:
   - frontend
@@ -19,6 +19,7 @@ tags:
   - tdd
   - mobile-design-system
   - yuno-sdk
+  - tooling-verification
 triggers:
   - "frontend architecture"
   - "arquitetura de front-end"
@@ -63,6 +64,7 @@ triggers:
   - "base ui mds"
   - "yuno sdk pagamento"
   - "yuno hosted fields pci"
+  - "configurar eslint prettier dependency cruiser"
 scope: workspace
 tools:
   - filesystem
@@ -100,6 +102,10 @@ Operate as a Senior Front-End & Component System Architect. Your mission is to d
 
 6. **Decoupled Locale & Currency Architecture**:
    - NEVER couple UI language (`i18n` locale) to financial currency (`currency`). A user browsing in English (`en-US`) purchasing a ticket in Brazil (`BRL`) MUST see `BRL 150.00` or `R$ 150.00`, never `$ 150.00` USD. Currency and Locale are strictly independent parameters.
+
+7. **Strict Tooling & Dependency Verification (Anti-Hallucination)**:
+   - ALWAYS inspect `package.json` (`devDependencies` and `dependencies`) before configuring ESLint, Prettier, `dependency-cruiser`, Stylelint, or TypeScript.
+   - NEVER assume packages, plugins, or legacy config formats (`.eslintrc`) exist without checking actual installed versions (`eslint` v8 vs v9 Flat Config). If a tool or plugin is missing, explicitly notify the user and provide the installation command first.
 
 ---
 
