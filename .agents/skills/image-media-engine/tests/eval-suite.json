@@ -1,0 +1,125 @@
+{
+  "skillName": "image-media-engine",
+  "version": "1.0.0",
+  "testCases": [
+    {
+      "id": "tc-00",
+      "type": "positive",
+      "prompt": "Preciso fazer um alinhamento e discovery para criar a nova identidade visual da minha empresa de tecnologia.",
+      "expectedActivation": true,
+      "expectedFocus": ["branding-identity-brandbook.md", "Discovery Interview Matrix"]
+    },
+    {
+      "id": "tc-01",
+      "type": "positive",
+      "prompt": "Preciso otimizar uma foto de produto em lote para e-commerce em WebP e AVIF com srcset responsivo.",
+      "expectedActivation": true,
+      "expectedFocus": ["web-performance-frontend.md", "process-web-image.js"]
+    },
+    {
+      "id": "tc-02",
+      "type": "positive",
+      "prompt": "Como preparar um folder A4 para impressão gráfica com sangria de 3mm e conversão CMYK FOGRA39?",
+      "expectedActivation": true,
+      "expectedFocus": ["print-preflight-production.md", "print-preflight-convert.py"]
+    },
+    {
+      "id": "tc-03",
+      "type": "positive",
+      "prompt": "Faça um tratamento de cor na pele de uma modelo usando separação de frequências e dodge and burn sem perder a textura.",
+      "expectedActivation": true,
+      "expectedFocus": ["retouching-composition-ai.md"]
+    },
+    {
+      "id": "tc-04",
+      "type": "positive",
+      "prompt": "Crie uma identidade visual completa de logomarca com defesa da tese, grid geométrico, matriz de cores Pantone/CMYK/OKLCH e manual Brandbook em PDF.",
+      "expectedActivation": true,
+      "expectedFocus": ["branding-identity-brandbook.md", "generate-brandbook-assets.py"]
+    },
+    {
+      "id": "tc-05",
+      "type": "positive",
+      "prompt": "Gere o pacote completo de entrega de assets da logo (SVG, EPS, PDF vetorial, PNG @1x/@2x/@3x transparente, WebP e TIFF CMYK 300 DPI).",
+      "expectedActivation": true,
+      "expectedFocus": ["branding-identity-brandbook.md", "generate-brandbook-assets.py"]
+    },
+    {
+      "id": "tc-06",
+      "type": "positive",
+      "prompt": "Preciso fazer recorte de cabelo complexo com alpha matting e remoção de halo azul de fundo.",
+      "expectedActivation": true,
+      "expectedFocus": ["retouching-composition-ai.md"]
+    },
+    {
+      "id": "tc-07",
+      "type": "positive",
+      "prompt": "Monte um pipeline em Sharp / OpenCV para tratar 500 fotos de booking imobiliário com balanço de branco e exposure.",
+      "expectedActivation": true,
+      "expectedFocus": ["software-pipelines-code.md", "batch-image-processor.py"]
+    },
+    {
+      "id": "tc-08",
+      "type": "positive",
+      "prompt": "Como ajustar a temperatura de cor e iluminação de um sujeito recortado para combinar com o novo fundo de IA?",
+      "expectedActivation": true,
+      "expectedFocus": ["retouching-composition-ai.md"]
+    },
+    {
+      "id": "tc-09",
+      "type": "positive",
+      "prompt": "Qual a diferença entre sRGB, Display P3 e OKLCH para componentes web responsivos com /frontend-architect?",
+      "expectedActivation": true,
+      "expectedFocus": ["fundamentals-color-math.md", "web-performance-frontend.md"]
+    },
+    {
+      "id": "tc-10",
+      "type": "positive",
+      "prompt": "Como aplicar um LUT .cube em lote em imagens de catálogo mantendo profundidade de 16 bits?",
+      "expectedActivation": true,
+      "expectedFocus": ["fundamentals-color-math.md", "batch-image-processor.py"]
+    },
+    {
+      "id": "tc-11",
+      "type": "misuse",
+      "prompt": "Escreva uma consulta SQL para agrupar vendas mensais por cliente.",
+      "expectedActivation": false,
+      "reason": "Out of domain - database task should activate dba-agent"
+    },
+    {
+      "id": "tc-12",
+      "type": "misuse",
+      "prompt": "Crie um pipeline de CI/CD no GitHub Actions para rodar testes com Docker.",
+      "expectedActivation": false,
+      "reason": "Out of domain - DevOps pipeline task should activate devops-agent"
+    },
+    {
+      "id": "tc-13",
+      "type": "misuse",
+      "prompt": "Refatore a lógica de negócios da minha API em Node.js usando Clean Architecture.",
+      "expectedActivation": false,
+      "reason": "Out of domain - clean architecture task should activate clean-architecture"
+    },
+    {
+      "id": "tc-14",
+      "type": "edge_case",
+      "prompt": "Preciso converter uma foto de 8000px em um vetor SVG sem perder nenhum gradiente fotográfico.",
+      "expectedActivation": true,
+      "expectedHandling": "Warn user that vectorizing complex photographic gradients leads to massive file sizes and poor scaling, and recommend raster WebP/AVIF instead."
+    },
+    {
+      "id": "tc-15",
+      "type": "edge_case",
+      "prompt": "Envie uma imagem sRGB diretamente para a gráfica offset sem converter para CMYK.",
+      "expectedActivation": true,
+      "expectedHandling": "Flag out-of-gamut risk, require target ICC profile assignment, and enforce CMYK preflight check."
+    },
+    {
+      "id": "tc-16",
+      "type": "edge_case",
+      "prompt": "Estique uma foto de 300x300 px para virar um banner impresso de 3 metros a 300 DPI.",
+      "expectedActivation": true,
+      "expectedHandling": "Calculate missing pixel density, explain that AI super-resolution cannot invent 35,000 pixels without severe hallucination, and adjust PPI expectation for viewing distance."
+    }
+  ]
+}

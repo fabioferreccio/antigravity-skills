@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Skills Registry**:
+  - `image-media-engine` (v1.0.0) — Supreme Image Processing, Color Engineering, AI Generation, Corporate Branding Identity Systems & Brandbooks, Retouching, Print Preflight, and Web Media Optimization System. Operates as an expert cognitive agent covering the full spectrum of image workflows starting with an Mandatory Interactive Discovery Protocol (bate-papo de alinhamento em PT-BR para mitigar premissas arbitrárias), corporate branding identity (brandbooks, Pantone/CMYK specs, logo defense, corporate stationery, apparel/uniforms, tote bags, keepsakes, 16:9 presentation slide templates, graphic press die-lines) to batch e-commerce packshots, high-fashion retouching, AI compositing, real estate media, CMYK print preparation (3mm sangria/bleed), and seamless UI/UX component synergy with `/frontend-architect`. Includes 6 modular reference guides, 3 real-world examples, 17-case eval suite, and 4 pre-built parametric CLI scripts (`generate-brandbook-assets.py`, `process-web-image.js`, `print-preflight-convert.py`, `batch-image-processor.py`).
+
 - **AI Coding Tool Configurations (Workspace)**:
   - Repository is now fully onboarded with configuration files for Antigravity, Claude Code, Cursor, GitHub Copilot, and Gemini Code Assist.
   - Native MCP configuration for the local orchestrator (`.antigravity/mcp.json`).

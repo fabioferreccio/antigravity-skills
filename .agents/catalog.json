@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
-  "generated": "2026-08-07T16:50:24.076Z",
-  "total_skills": 24,
+  "generated": "2026-08-13T14:07:01.451Z",
+  "total_skills": 25,
   "skills": [
     {
       "name": "ai-onboarding",
@@ -228,6 +228,33 @@
       ],
       "scope": "workspace",
       "path": ".agents/skills/frontend-architect",
+      "security": {
+        "network": false,
+        "filesystem": "read-write"
+      }
+    },
+    {
+      "name": "image-media-engine",
+      "version": "1.0.0",
+      "description": "Supreme Image Processing, Color Engineering, AI Generation, Retouching, Print Preflight, Branding Identity Systems, Corporate Merchandising, Slide Templates, Interactive Discovery, Product Strategy Vision, and Web Media Optimization System. Operates as an expert cognitive agent capable of processing images across all professional workflows, from interactive discovery interviews (bate-papo de alinhamento de produto e negócio), simple edits, corporate branding identity (brandbooks, logos, Pantone/CMYK specs, stationery, apparel, tote bags, PowerPoint templates, die-lines), and batch e-commerce packshots to high-fashion retouching, AI compositing, real estate media, CMYK print preparation, and seamless UI/UX integration with frontend-architect.",
+      "author": "Fábio Ferreccio <fabio@example.com>",
+      "tags": [
+        "image-processing",
+        "color-engineering",
+        "photo-retouching",
+        "ai-generation",
+        "web-optimization",
+        "print-preflight",
+        "branding-identity",
+        "brandbook",
+        "merchandise",
+        "presentation-templates",
+        "discovery-interview",
+        "product-strategy",
+        "frontend-architect"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/image-media-engine",
       "security": {
         "network": false,
         "filesystem": "read-write"

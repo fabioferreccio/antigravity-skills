@@ -147,6 +147,7 @@ Additionally, the CLI automatically injects a `postinstall` script pointing to t
 | `spec-driven-development` | 1.0.0 | Guide the team through SDD workflow with Specs, Plans, and Tasks | sdd, specification, architecture |
 | `staff-engineer` | 1.0.0 | Staff Engineer Agent for cross-functional engineering diagnosis, redundancy elimination, and DORA analysis | staff-engineer, refactoring, dora |
 | `frontend-architect` | 1.1.0 | Supreme Front-End Architecture & Component Engineering Skill (Atomic, Compound, Headless, State, Monorepos, A11y/WCAG 2.2, TDD/Triple AAA, Mobile DS, Yuno SDK) | frontend, react, typescript, component-architecture, ux, accessibility, monorepo, performance, mobile-design-system, yuno-sdk |
+| `image-media-engine` | 1.0.0 | Supreme Image Processing, Color Engineering, AI Generation, Branding Identity Systems (Brandbooks, Stationery, Apparel/Merchandise, PowerPoint Templates, Press Die-Lines), Retouching, Print Preflight, and Web Media Optimization System (Pantone/CMYK, Sangria 3mm, Frequency Separation, SAM, AVIF/WebP, Sharp/OpenCV, `/frontend-architect` Synergy) | image-processing, color-engineering, photo-retouching, ai-generation, web-optimization, print-preflight, branding-identity, brandbook, merchandise, presentation-templates, frontend-architect |
 
 > 💡 **This registry grows with contributions.** See [Creating Skills](#-creating-skills) to add yours.
 
