@@ -10,6 +10,76 @@
       "expectedFocus": ["branding-identity-brandbook.md", "Discovery Interview Matrix"]
     },
     {
+      "id": "tc-00b",
+      "type": "positive",
+      "prompt": "Gere os entregáveis finais mestre após a aprovação do cliente garantindo 100% de qualidade e fidelidade gráfica sem nenhuma degradação ou compressão perdedora.",
+      "expectedActivation": true,
+      "expectedFocus": ["branding-identity-brandbook.md", "Master Quality Safeguards"]
+    },
+    {
+      "id": "tc-00c",
+      "type": "positive",
+      "prompt": "Assegure que os formatos exportados SVG, PNG, WebP e JPG da logomarca sejam 100% idênticos visualmente sem diferenças de forma ou cor.",
+      "expectedActivation": true,
+      "expectedFocus": ["generate-brandbook-assets.py", "Vector-to-Raster Parity"]
+    },
+    {
+      "id": "tc-00d",
+      "type": "positive",
+      "prompt": "Carregue e registre a especificação mestre BRAND_SPEC.md do cliente na memória de projeto persistente em .media-engine/projects/acme-corp/.",
+      "expectedActivation": true,
+      "expectedFocus": ["orchestration-memory-sdd.md", "BRAND_SPEC.md"]
+    },
+    {
+      "id": "tc-00e",
+      "type": "positive",
+      "prompt": "Execute a compactação de janela de contexto e limpeza de rascunhos antigos mantendo apenas o estado resumido e as regras da marca.",
+      "expectedActivation": true,
+      "expectedFocus": ["orchestration-memory-sdd.md", "Context Compaction Engine"]
+    },
+    {
+      "id": "tc-00f",
+      "type": "positive",
+      "prompt": "Coordene os sub-agentes com loop de avaliação de qualidade e refinamento interno antes de entregar a versão final da logo ao usuário.",
+      "expectedActivation": true,
+      "expectedFocus": ["orchestration-memory-sdd.md", "Sub-Agent Reflection Loop"]
+    },
+    {
+      "id": "tc-00g",
+      "type": "positive",
+      "prompt": "Vetorize uma imagem bitmap JPG/PNG de marca para SVG de alta precisão reconstruindo contornos e curvas Bézier com total fidelidade geométrica.",
+      "expectedActivation": true,
+      "expectedFocus": ["vectorize-image.py", "High-Precision Vectorization"]
+    },
+    {
+      "id": "tc-00h",
+      "type": "positive",
+      "prompt": "Exporte o Brandbook e Ecossistema Digital completo em PDF 300 DPI de 10 páginas de forma automática via script sem solicitar uso do Ctrl+P.",
+      "expectedActivation": true,
+      "expectedFocus": ["export-brandbook-pdf.py", "brandbook-pdf-agency-template.md"]
+    },
+    {
+      "id": "tc-00i",
+      "type": "positive",
+      "prompt": "Gere a vetorização SVG pura com fill-rule=evenodd sem utilizar nenhum wrapper Base64 raster dentro do arquivo de vetor.",
+      "expectedActivation": true,
+      "expectedFocus": ["vectorize-image.py", "True Vectoring", "Loss Function Reward Matrix"]
+    },
+    {
+      "id": "tc-00j",
+      "type": "positive",
+      "prompt": "Aplique um ajuste fino cirúrgico na letra A da logo mantendo as letras B e K homologadas totalmente congeladas (State Locking).",
+      "expectedActivation": true,
+      "expectedFocus": ["Surgical State Locking", "orchestration-memory-sdd.md"]
+    },
+    {
+      "id": "tc-00k",
+      "type": "positive",
+      "prompt": "Traduza a intenção geométrica de um rascunho do MS Paint (fenda a 45 graus) aplicando cortes vetoriais precisos sobre a anatomia aprovada.",
+      "expectedActivation": true,
+      "expectedFocus": ["Paint Sketch Translation Protocol", "orchestration-memory-sdd.md"]
+    },
+    {
       "id": "tc-01",
       "type": "positive",
       "prompt": "Preciso otimizar uma foto de produto em lote para e-commerce em WebP e AVIF com srcset responsivo.",
