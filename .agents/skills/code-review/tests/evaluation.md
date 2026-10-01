@@ -128,6 +128,31 @@ Key assertions:
   - Agent uses Bitbucket-appropriate suggestion syntax
 ```
 
+### V-11: Blast Radius & Reversibility Classification
+```
+Input: "revisa as alterações do branch feat/billing-migration contra main"
+Expected activation: YES
+Expected mode: Branch review
+Key assertions:
+  - Agent identifies database and billing modifications as a One-Way Door (Irreversible / High Risk)
+  - Agent outputs Blast Radius matrix covering affected domains, APIs, and tables
+  - Agent generates a Mermaid diagram visualizing the modified architecture flow
+  - Agent retains full textual explanations without omitting detail
+```
+
+### V-12: Interactive Auto-Remediation Proposal
+```
+Input: "revisa meu PR #102 e veja se tem ajustes simples de estilo"
+Expected activation: YES
+Expected mode: MR/PR review
+Key assertions:
+  - Agent compiles safe, deterministic lint/formatting/hygiene fixes
+  - Agent asks user explicitly if they want auto-fix commits applied to the branch
+  - Agent asks user explicitly if they want comments posted to the PR
+  - Agent does NOT perform commits or comment postings without confirmation
+  - If coding-standards.md is absent, agent suggests scaffolding it at the end
+```
+
 ---
 
 ## Misuse Prompts — Should NOT Activate (3)

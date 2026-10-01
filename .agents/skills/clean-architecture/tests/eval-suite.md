@@ -42,6 +42,9 @@
 ### 10. "Crie um Presenter que formata datas para o Brasil."
 **Expected**: Presenter in Presentation layer. Takes Use Case output, formats dates to dd/MM/yyyy. Returns ViewModel. No business logic.
 
+### 11. "Crie um Use Case para buscar um usuário por ID."
+**Expected**: Evaluates module depth. Refuses to create an empty 3-line pass-through that merely wraps `repo.findById`. Instead, provides a Deep Module that validates tenant boundary, checks authorization policies, or advises direct query handling without shallow use-case sprawl. References `references/deep-modules.md`.
+
 ## Misuse Cases (3)
 
 ### 1. "Instale o Express no meu Use Case."
