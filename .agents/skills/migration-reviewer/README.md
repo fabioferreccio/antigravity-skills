@@ -1,10 +1,10 @@
 # migration-reviewer
 
-> **Version**: 1.0.0 · **Scope**: workspace · **Author**: Fábio Ferreccio
+> **Version**: 1.1.0 · **Scope**: workspace · **Author**: Fábio Ferreccio
 
 ## Overview
 
-Migration Reviewer is a specialized cognitive system that receives database migrations in any format (Knex, Prisma, Sequelize, TypeORM, Django, Rails, raw SQL, or informal descriptions), performs DBA-grade safety and impact analysis, and generates a professional Slack-ready Markdown approval report for Stack Leaders and Holders.
+Migration Reviewer is a specialized cognitive system that receives database migrations in any format (Knex, Prisma, Sequelize, TypeORM, Django, Rails, raw SQL, or informal descriptions), performs DBA-grade safety and impact analysis, classifies decision reversibility (One-Way vs. Two-Way Doors), diagrams table lock contention, and generates a professional Slack-ready Markdown approval report for Stack Leaders and Holders.
 
 The agent simulates a Senior DBA review pipeline — Parse → Triage → Analyze → Contextualize → Report — to ensure every schema change is thoroughly evaluated for lock risk, destructive potential, rollback viability, and business impact before reaching production.
 

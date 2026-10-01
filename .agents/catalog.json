@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
-  "generated": "2026-10-01T19:30:47.466Z",
-  "total_skills": 27,
+  "generated": "2026-10-01T20:34:29.840Z",
+  "total_skills": 29,
   "skills": [
     {
       "name": "ai-onboarding",
@@ -44,7 +44,7 @@
     },
     {
       "name": "bug-hunter",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "description": "Supreme autonomous skill that performs a comprehensive, multi-agent codebase sweep to identify concrete bugs AND structurally audit existing tests. It uses an adversarial verification process to refute false positives for bugs, and evaluates test effectiveness, fragility, and coverage gaps, generating a highly detailed, dual-dashboard markdown report.",
       "author": "Fábio Ferreccio",
       "tags": [
@@ -65,7 +65,7 @@
     },
     {
       "name": "clean-architecture",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "description": "Expert cognitive system for designing and refactoring systems using Clean Architecture. Enforces strict dependency rules and modularity through a reference-based knowledge system.",
       "author": "Fábio Ferreccio <fabio@example.com>",
       "tags": [
@@ -73,6 +73,7 @@
         "clean-code",
         "domain-driven-design",
         "modularity",
+        "deep-modules",
         "cqrs",
         "error-handling",
         "contracts"
@@ -86,7 +87,7 @@
     },
     {
       "name": "code-review",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "description": "Elite polyglot code review system that analyzes MRs/PRs, branches, or individual files across any language and framework, producing severity-classified findings with file:line anchors and posting inline comments on GitHub, GitLab, or Bitbucket via MCP, CLI, or generated scripts. Use this skill whenever the user asks for any kind of code review, in any language or phrasing — \"review my code\", \"revisa meu código\", \"revisa o MR/PR\", \"review this PR\", \"pode revisar\", \"review before merge\", \"revisa meu branch\" — or pastes a GitHub/GitLab/Bitbucket MR/PR URL, or names a branch or file with review intent, even without the word \"review\". Uses project indexing for context persistence and delegates to complementary skills when detected.",
       "author": "Fábio Ferreccio",
       "tags": [
@@ -96,10 +97,33 @@
         "architecture",
         "security",
         "testing",
-        "polyglot"
+        "polyglot",
+        "blast-radius",
+        "one-way-door"
       ],
       "scope": "workspace",
       "path": ".agents/skills/code-review",
+      "security": {
+        "network": false,
+        "filesystem": "read-write"
+      }
+    },
+    {
+      "name": "codebase-design",
+      "version": "1.0.0",
+      "description": "Supreme software design and architecture skill based on John Ousterhout's Philosophy of Software Design. Identifies shallow modules, anemic pass-throughs, and information leakage across codebases, providing structured recipes to consolidate code into high-leverage deep modules with narrow interfaces and rich encapsulated complexity.",
+      "author": "Fábio Ferreccio",
+      "tags": [
+        "architecture",
+        "deep-modules",
+        "design",
+        "ousterhout",
+        "refactoring",
+        "code-quality",
+        "supreme"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/codebase-design",
       "security": {
         "network": false,
         "filesystem": "read-write"
@@ -291,7 +315,7 @@
     },
     {
       "name": "migration-reviewer",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "Migration Reviewer Agent that receives database migrations in any format (Knex, Prisma, Sequelize, TypeORM, raw SQL, etc.), performs DBA-grade analysis for safety, performance, and rollback viability, then generates a structured Slack-ready Markdown approval report for Stack Leaders and Holders. Use when reviewing, analyzing, or approving database migrations, or when generating DB change reports for stakeholders.",
       "author": "Fábio Ferreccio",
       "tags": [
@@ -302,7 +326,9 @@
         "dba",
         "review",
         "knex",
-        "prisma"
+        "prisma",
+        "one-way-door",
+        "blast-radius"
       ],
       "scope": "workspace",
       "path": ".agents/skills/migration-reviewer",
@@ -310,6 +336,26 @@
         "network": false,
         "filesystem": "read-write",
         "terminal": "sandboxed"
+      }
+    },
+    {
+      "name": "pr-craftsman",
+      "version": "1.0.0",
+      "description": "Supreme Pull Request engineering skill that analyzes changesets to calculate operational blast radius, classifies decision reversibility (One-Way vs. Two-Way Doors), produces concise visual Mermaid architectural diagrams, and composes high-signal, human-friendly PR descriptions that eliminate reviewer fatigue.",
+      "author": "Fábio Ferreccio",
+      "tags": [
+        "pull-request",
+        "blast-radius",
+        "one-way-door",
+        "mermaid",
+        "code-review",
+        "supreme"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/pr-craftsman",
+      "security": {
+        "network": false,
+        "filesystem": "read-write"
       }
     },
     {
@@ -353,7 +399,7 @@
     },
     {
       "name": "qa-engineer",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "QA Engineer Agent specialized in defect prevention and destructive testing. Identifies missing edge cases, race conditions, flaky scenarios, and systemic failures. Generates test strategies, mocks, E2E suites, stress tests, and regression plans to ensure robustness, stability, and predictability.",
       "author": "Antigravity Skill Creator",
       "tags": [
@@ -364,7 +410,8 @@
         "regression",
         "e2e",
         "performance",
-        "tdd"
+        "tdd",
+        "anti-tautological"
       ],
       "scope": "workspace",
       "path": ".agents/skills/qa-engineer",
@@ -375,7 +422,7 @@
     },
     {
       "name": "quality-gate",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "description": "Supreme epic meta-skill that acts as an unforgiving, polyglot Quality Gate for production readiness. It builds a persistent project index, performs ruthless bug hunting and code review, runs a dedicated security audit (OWASP Top 10, secrets, injection sinks, authz), and enforces strict QA strategy (AAA/TDD). Every critical finding passes adversarial verification before being reported — no false-positive noise. It automatically sets up and executes integration test infrastructure (Docker/Testcontainers) if missing, enforcing >70% coverage with a target of 90%. It does not sugarcoat findings; it identifies bad logic, naive paths, security holes, and architectural flaws ruthlessly.",
       "author": "Fábio Ferreccio",
       "tags": [
@@ -386,7 +433,9 @@
         "test-automation",
         "polyglot",
         "supreme",
-        "infrastructure"
+        "infrastructure",
+        "mock-inflation",
+        "one-way-door"
       ],
       "scope": "workspace",
       "path": ".agents/skills/quality-gate",
@@ -507,7 +556,7 @@
     },
     {
       "name": "spec-driven-development",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "Guide the development team through the rigorous Spec-Driven Development (SDD) workflow, creating and maintaining specifications, plans, and tasks as the single source of truth before any code generation, eliminating \"vibe coding\".",
       "author": "Fábio Ferreccio",
       "tags": [
@@ -515,7 +564,9 @@
         "specification",
         "architecture",
         "workflow",
-        "speckit"
+        "speckit",
+        "retrospective",
+        "pull-request"
       ],
       "scope": "workspace",
       "path": ".agents/skills/spec-driven-development",
