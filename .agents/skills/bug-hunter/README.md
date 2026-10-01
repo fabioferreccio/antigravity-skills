@@ -1,12 +1,12 @@
 # bug-hunter
 
-> **Version**: 1.1.0 · **Scope**: workspace · **Author**: Fábio Ferreccio
+> **Version**: 1.2.0 · **Scope**: workspace · **Author**: Fábio Ferreccio
 
 ## Overview
 
 A supreme, elite meta-skill designed to perform comprehensive, project-wide sweeps for concrete bugs **and** audit test quality. It operates on a multi-agent adversarial architecture:
 - **Bug Hunting**: Hunts for issues spanning concurrency (race conditions), money precision, null-safety, logic flaws, memory leaks, resource exhaustion, and security vulnerabilities. It actively invokes sub-agents to act as "skeptics" to refute found bugs, ensuring zero false positives and high-signal reporting.
-- **Test Auditing**: Evaluates existing test files, classifying them by effectiveness (efetivo, frágil, inconclusivo), diagnosing gaps, and recommending actions. It automatically infers financial risk to group tests into Tiers (e.g., Tier 1 for monetary paths).
+- **Test Auditing**: Evaluates existing test files, classifying them by effectiveness (`efetivo`, `tautologico`, `fragil`, `inconclusivo`), diagnosing layer placement (Unit vs. Integration), and detecting mock inflation. It automatically infers financial risk to group tests into Tiers (e.g., Tier 1 for monetary paths).
 
 ## When to Use
 

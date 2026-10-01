@@ -1,10 +1,10 @@
 # code-review
 
-> **Version**: 1.2.0 · **Scope**: workspace · **Author**: Fábio Ferreccio
+> **Version**: 1.3.0 · **Scope**: workspace · **Author**: Fábio Ferreccio
 
 ## Overview
 
-Code Review is a polyglot cognitive system that performs comprehensive code review across architecture, security, business logic, simplicity, testing, database, frontend, API contracts, i18n, and error handling lenses. It works with any programming language and framework, orchestrating up to 10 specialized parallel review agents to produce a unified, severity-classified report. When a MR/PR URL is provided, the skill can post anchored inline comments directly on GitHub, GitLab, or Bitbucket.
+Code Review is a polyglot cognitive system that performs comprehensive code review across architecture, security, business logic, simplicity, testing, database, frontend, API contracts, i18n, and error handling lenses. It works with any programming language and framework, orchestrating up to 10 specialized parallel review agents to produce a unified, severity-classified report. It categorizes changes into One-Way vs. Two-Way Doors, maps operational blast radius, produces visual architectural diagrams (Show-Me lens), and interactively suggests safe auto-fix commits before offering to post inline comments directly on GitHub, GitLab, or Bitbucket.
 
 The agent simulates a Staff Engineer review pipeline — Index → Detect → Dispatch → Analyze → Aggregate → Present — to ensure every code change is thoroughly evaluated before merging.
 

@@ -1,15 +1,17 @@
 # clean-architecture
 
-> **Version**: 1.1.0 · **Scope**: workspace · **Author**: Fábio Ferreccio
+> **Version**: 1.2.0 · **Scope**: workspace · **Author**: Fábio Ferreccio
 
 ## Overview
 
-A world-class, senior-level cognitive skill for designing, refactoring, and auditing software systems using **Clean Architecture**, **SOLID** principles, and **DDD (Domain-Driven Design)**. It uses a modular, reference-based knowledge system to provide precise guidance while maintaining high token efficiency.
+A world-class, senior-level cognitive skill for designing, refactoring, and auditing software systems using **Clean Architecture**, **Deep Modules (John Ousterhout)**, **SOLID** principles, and **DDD (Domain-Driven Design)**. It prevents Shallow Module Sprawl and anemic pass-throughs by maximizing interface leverage and protecting business invariants.
 
 > **Note**: While examples use TypeScript, all principles are **language-agnostic** and apply equally to Go, Java, C#, Python, and other languages.
 
 ## Key Features
 
+- **Deep Modules (High Leverage)**: Prevents agentic shallow sprawl (long chains of pass-through classes) by designing narrow interfaces with deep domain implementation.
+- **Anti-Anemic Guardrails**: Enforces rich domain invariants and rejects empty pass-through use cases.
 - **Layer-Specific Modules**: Specialized logic for Domain (Entities/Services), Application (Use Cases/Sagas), Infrastructure (Repositories/Gateways), and Presentation (Controllers/Presenters).
 - **Complexity Escalation**: Automatic guidance on when to transition from simple Use Cases to complex **Orchestrators** or **Sagas**.
 - **SOLID Guidance**: Every architectural suggestion is backed by SRP, OCP, LSP, ISP, and DIP.
@@ -17,10 +19,16 @@ A world-class, senior-level cognitive skill for designing, refactoring, and audi
 - **CQRS & Events**: Command/Query separation, Domain Events vs Integration Events, Event Bus/Message Bus patterns.
 - **Error Handling**: Structured error boundaries across layers with Result pattern support.
 - **Contracts Catalog**: Comprehensive interface reference covering ~50 contracts organized by layer.
-- **Anti-Patterns**: Before/after refactoring examples for common Clean Architecture violations.
+- **Anti-Patterns**: Before/after refactoring examples for common Clean Architecture violations and shallow module sprawl.
 - **Observability**: Logging, metrics, and tracing guidance following cross-cutting best practices.
-- **Testing Mastery**: Integrated strategy for Unit, Integration, and E2E testing using TDD and Triple AAA (Arrange, Act, Assert).
+- **Testing Mastery**: Integrated strategy for Unit, Integration, and E2E testing avoiding tautological mocks.
 - **Framework as Plugin**: Ensuring your business logic remains agnostic of Web Frameworks (Express/Fastify) or ORMs (Prisma/TypeORM).
+
+## What's New in v1.2.0
+
+- **Deep Modules Architecture**: Added `references/deep-modules.md` integrating John Ousterhout's *Philosophy of Software Design* with Clean Architecture.
+- **Anti-Anemic Use Cases**: Added Anti-Pattern 9 in `references/anti-patterns.md` to prevent shallow pass-throughs that hurt agent context and PR reviewability.
+- **Depth Assessment in Output**: Multi-agent simulation now audits module depth before generating code.
 
 ## What's New in v1.1.0
 
