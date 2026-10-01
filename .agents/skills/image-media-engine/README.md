@@ -4,7 +4,7 @@
 
 ## Overview
 
-`image-media-engine` is a supreme Antigravity skill for complete digital image processing, color engineering, corporate branding identity systems (logos, Brandbooks, Pantone/CMYK/OKLCH matrices, corporate stationery, apparel/uniforms, tote bags, keepsakes, 16:9 presentation slide templates, graphic press die-lines), Product Strategy & Business Vision alignment, AI generative manipulation, portrait/model retouching, print preflight (CMYK, 3mm bleed, PDF/X), web media optimization (AVIF/WebP, DPR scaling), and seamless UI/UX component synergy with `/frontend-architect`.
+`image-media-engine` is a supreme Antigravity skill for complete digital image processing, color engineering, corporate branding identity systems (logos, Brandbooks, Pantone/CMYK/OKLCH matrices, corporate stationery, apparel/uniforms, tote bags, keepsakes, 16:9 presentation slide templates, graphic press die-lines), Product Strategy & Business Vision alignment, Sub-Agent Orchestration, Persistent Client/Project Memory (`.media-engine/projects/<client_id>/`), Spec-Driven Development (SDD) single source of truth specifications (`BRAND_SPEC.md`), Prompt-Engineering cognitive optimization, context compaction & garbage collection, AI generative manipulation, portrait/model retouching, print preflight (CMYK, 3mm bleed, PDF/X), web media optimization (AVIF/WebP, DPR scaling), and seamless UI/UX component synergy with `/frontend-architect`.
 
 ## When to Use
 

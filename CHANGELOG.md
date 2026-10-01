@@ -9,8 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+
 - **Skills Registry**:
-  - `image-media-engine` (v1.0.0) — Supreme Image Processing, Color Engineering, AI Generation, Corporate Branding Identity Systems & Brandbooks, Retouching, Print Preflight, and Web Media Optimization System. Operates as an expert cognitive agent covering the full spectrum of image workflows starting with an Mandatory Interactive Discovery Protocol (bate-papo de alinhamento em PT-BR para mitigar premissas arbitrárias), corporate branding identity (brandbooks, Pantone/CMYK specs, logo defense, corporate stationery, apparel/uniforms, tote bags, keepsakes, 16:9 presentation slide templates, graphic press die-lines) to batch e-commerce packshots, high-fashion retouching, AI compositing, real estate media, CMYK print preparation (3mm sangria/bleed), and seamless UI/UX component synergy with `/frontend-architect`. Includes 6 modular reference guides, 3 real-world examples, 17-case eval suite, and 4 pre-built parametric CLI scripts (`generate-brandbook-assets.py`, `process-web-image.js`, `print-preflight-convert.py`, `batch-image-processor.py`).
+  - `image-media-engine` bumped to **v1.1.0**:
+    - **New Script**: `vectorize-image.py` — High-precision bitmap-to-SVG vectorizer using OpenCV contour extraction, Bézier curve fitting, `fill-rule="evenodd"` for transparent cutouts, and optional linear gradients.
+    - **New Script**: `export-brandbook-pdf.py` — Automated 10-page 300 DPI agency Brandbook PDF exporter via PIL (no browser Ctrl+P required).
+    - **New Reference**: `orchestration-memory-sdd.md` — Sub-agent orchestration architecture, persistent project memory (`.media-engine/projects/<client_id>/`), Loss Function Reward Matrix, Surgical State Locking, and SDD/Prompt-Engineering synergy framework.
+    - **New Reference**: `brandbook-pdf-agency-template.md` — Pentagram/Landor-style 10-page PDF layout specification.
+    - **New Example**: `high-precision-vectorization-pipeline.md` — End-to-end vectorization workflow.
+    - **Expanded SKILL.md**: Discovery matrix updated with persistent memory and PDF automation questions; response format expanded to 5 phases (Discovery, SDD/Vectorization, Sub-Agent Orchestration, Automation Scripts, Frontend Integration).
+    - **Eval Suite**: Expanded from 17 to 27 test cases (+10 covering vectorization, PDF export, state locking, orchestration, context compaction, and sketch translation).
 
 - **AI Coding Tool Configurations (Workspace)**:
   - Repository is now fully onboarded with configuration files for Antigravity, Claude Code, Cursor, GitHub Copilot, and Gemini Code Assist.
