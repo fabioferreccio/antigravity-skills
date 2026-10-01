@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
-  "generated": "2026-10-01T20:34:09.829Z",
-  "total_skills": 28,
+  "generated": "2026-10-01T20:34:29.840Z",
+  "total_skills": 29,
   "skills": [
     {
       "name": "ai-onboarding",
@@ -499,6 +499,20 @@
         "network": false,
         "filesystem": "read-write"
       }
+    },
+    {
+      "name": "retrospective-agent",
+      "version": "1.0.0",
+      "description": "Analyzes session transcripts, commits, and PR review outcomes to extract institutional learnings, update coding-standards.md and AGENTS.md, and prune obsolete rules.",
+      "author": "Fabio Ferreccio <fabioferreccio@gmail.com>",
+      "tags": [
+        "retrospective",
+        "compound-learning",
+        "governance",
+        "prompt-engineering"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/retrospective-agent"
     },
     {
       "name": "security-engineer",
