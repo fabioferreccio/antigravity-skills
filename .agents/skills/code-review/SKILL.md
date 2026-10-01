@@ -12,7 +12,7 @@ description: >
   file with review intent, even without the word "review". Uses project
   indexing for context persistence and delegates to complementary skills when
   detected.
-version: 1.2.0
+version: 1.3.0
 author: Fábio Ferreccio
 tags:
   - code-review
@@ -22,6 +22,8 @@ tags:
   - security
   - testing
   - polyglot
+  - blast-radius
+  - one-way-door
 triggers:
   - "review my code"
   - "code review"
@@ -47,7 +49,7 @@ security:
 
 # Goal
 
-Operate as an elite polyglot code review system. Analyze MRs/PRs, branches, or individual files across any programming language and framework. Produce actionable, severity-classified findings with file:line anchoring. Post inline comments on GitHub, GitLab, or Bitbucket. Use project indexing to persist context across sessions and intelligently delegate to complementary skills.
+Operate as an elite polyglot code review system. Analyze MRs/PRs, branches, or individual files across any programming language and framework. Produce actionable, severity-classified findings with file:line anchoring. Post inline comments on GitHub, GitLab, or Bitbucket. Use project indexing to persist context across sessions, evaluate operational blast radius and decision reversibility (One-Way vs. Two-Way Doors), provide visual architecture diagrams, and intelligently suggest human-approved automated remediations.
 
 # Language Policy
 
@@ -65,12 +67,14 @@ RESOURCE                                  PHASE          PURPOSE
 ──────────────────────────────────────────────────────────────────────────────────
 references/lenses/*.md                    Phase 4        Review criteria per dimension
 references/lenses/business-logic.md       Phase 4        Business logic correctness criteria
+references/lenses/blast-radius-doors.md   Phase 4/6      Risk reversibility & blast radius
 references/platforms/detection.md         Phase 1        URL pattern matching rules
 references/platforms/github.md            Phase 7        GitHub comment posting
 references/platforms/gitlab.md            Phase 7        GitLab comment posting
 references/platforms/bitbucket.md         Phase 7        Bitbucket comment posting
 references/indexing.md                    Phase 2        Project indexing protocol
 references/conflict-resolution.md         Phase 5        Agent conflict resolution
+references/remediation-protocol.md        Phase 6/7      Interactive auto-fix commits & actions
 graph/agent-routing.yaml                  Phase 4        Subagent dispatch rules
 graph/severity-rules.yaml                 Phase 5        Severity classification
 ```
@@ -191,24 +195,28 @@ Compare the stored `project_hash` with a hash of the key config files (`package.
 
 # Phase 3: Context Enrichment
 
-## 3.1 — Load Project Rules
+## 3.1 — Load Project Rules & Coding Standards
 
-Read configuration files that define project conventions:
+Read configuration and standard files that define project conventions:
 
 ```
-FILE                      PURPOSE
-────────────────────────────────────────────────────────
-AGENTS.md                 Agent-specific project rules
-CLAUDE.md                 Claude-specific project rules
-.editorconfig             Whitespace, indent, encoding rules
-.eslintrc / eslint.config  Linting rules (JS/TS)
-.prettierrc               Formatting rules
-tsconfig.json             TypeScript compiler config
-pyproject.toml            Python project config
-.rubocop.yml              Ruby style rules
+FILE                                  PURPOSE
+──────────────────────────────────────────────────────────────────
+coding-standards.md / standards.md    Explicit team coding standards & invariants
+.agents/rules/coding-standards.md     Antigravity-specific team coding rules
+AGENTS.md                             Agent-specific project rules
+CLAUDE.md                             Claude-specific project rules
+.editorconfig                         Whitespace, indent, encoding rules
+.eslintrc / eslint.config              Linting rules (JS/TS)
+.prettierrc                           Formatting rules
+tsconfig.json                         TypeScript compiler config
+pyproject.toml                        Python project config
+.rubocop.yml                          Ruby style rules
 ```
 
-Load only the files that exist. Absence is not an error.
+**Standard Availability & Graceful Fallback**:
+- **If `coding-standards.md` exists**: Inject its exact guidelines into all subagents as primary rule authority.
+- **If absent**: Proceed with full review rigor using standard polyglot lenses (`references/lenses/*.md`). The baseline review quality is NEVER degraded by the absence of this file. Flag `standards_file_missing = true` to suggest creating an initial `coding-standards.md` in Phase 6/7.
 
 ## 3.2 — Detect Complementary Skills
 
@@ -395,6 +403,31 @@ Do NOT indicate which internal agent produced which finding. Present the review 
 ```markdown
 ## Revisão de Código — {BRANCH_OR_MR_TITLE}
 
+### 🛡️ Triagem de Risco e Raio de Explosão
+- **Decisão**: 🔴 **Porta de Mão Única (Irreversível)** | 🟢 **Porta de Mão Dupla (Reversível)**
+- **Justificativa**: {1-2 sentences on reversibility, risk to production, rollback complexity}
+- **Raio de Explosão (Blast Radius)**:
+  - **Domínios Afetados**: `{domain-1}`, `{domain-2}`
+  - **Contratos & APIs**: `{stable | breaking changes detected | none}`
+  - **Dados & Migrations**: `{safe | lock risk | table rewrite | none}`
+  - **Plano de Rollback Viável**: `{Sim, git revert imediato | Não, requer script de rollback de dados}`
+
+### 🗺️ Visão Arquitetural das Alterações (Show Me)
+{Mermaid flowchart, sequence diagram, or state diagram illustrating the changes, module boundaries, or affected flow}
+
+```mermaid
+graph LR
+  subgraph Before
+    A[Component A] --> B[Component B]
+  end
+  subgraph After
+    A --> C[New Adapter]
+    C --> B
+  end
+```
+
+> **Atenção:** O diagrama visual serve para acelerar a compreensão cognitiva do revisor, mas **NÃO substitui nem inibe o detalhamento textual**. Todas as explicações e análises abaixo são mantidas na íntegra.
+
 ### Resumo
 {2-4 sentences. Overall health assessment. Direct. No filler.}
 
@@ -416,6 +449,19 @@ Do NOT indicate which internal agent produced which finding. Present the review 
 {Pre-existing issues organized by severity}
 
 </details>
+
+---
+
+### 🛠️ Próximos Passos & Remediação Interativa
+
+{If safe auto-fixable items exist (lint, imports, formatting, style conventions):}
+> Foram identificados **{N} ajustes automáticos seguros** elegíveis para correção direta.
+
+**Como deseja proceder?**
+1. **Aplicar correções seguras via commit**: Deseja que eu aplique essas correções diretamente em um commit nesta branch? *(Sim / Não)*
+2. **Publicar comentários no MR/PR**: Deseja que eu publique os apontamentos detalhados diretamente como comentários inline na plataforma? *(Sim / Não)*
+{If standards_file_missing == true:}
+3. **Padrões de Código**: Notei que o projeto não possui um arquivo `coding-standards.md`. Deseja que eu gere um arquivo inicial baseado nos padrões identificados nesta revisão? *(Sim / Não)*
 ```
 
 **For each finding, use this structure:**
@@ -433,6 +479,7 @@ Do NOT indicate which internal agent produced which finding. Present the review 
 - Code snippets in fixes must be syntactically correct and directly applicable.
 - Each finding must have a `file:line` anchor — no vague references.
 - The 💬 comment text is what will be posted inline on the MR/PR if the user confirms.
+- **Never perform auto-commits or comment postings unilaterally** without explicit confirmation.
 
 ## Single-File Mode Addendum: Migration Plan
 
@@ -451,11 +498,6 @@ Single-file reviews (Phase 1.3) append a **📋 Migration Plan** section after P
 ```
 
 Risk ordering rationale: low-risk steps (adding `readonly`, adding tests) build a safety net that makes the high-risk steps (changing return types, refactoring calculations) safer to execute. Diff-based reviews (MR/branch) do NOT include this section — the change is already in flight.
-
-**After the review:**
-
-- If the target is an MR/PR (or the branch has an open MR/PR) → ask: _"Quer que eu poste esses comentários inline no MR/PR?"_
-- Otherwise → end with the report. There is nowhere to post inline comments; do not offer.
 
 # Phase 7: Post Comments (Optional)
 
