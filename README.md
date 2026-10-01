@@ -127,6 +127,7 @@ Additionally, the CLI automatically injects a `postinstall` script pointing to t
 | `apply-structural-patch` | 1.0.0 | Apply surgical code changes using unified Git patch format to drastically reduce output tokens and speed up file modifications | patch, git, token-optimization, surgical-edit |
 | `bug-hunter` | 1.0.0 | Supreme autonomous skill that performs a comprehensive, multi-agent codebase sweep to identify concrete bugs with adversarial verification | auditing, bug-hunting, multi-agent, adversarial-review |
 | `clean-architecture` | 1.1.0 | Expert cognitive system for designing and refactoring systems using Clean Architecture, SOLID, DDD, CQRS, and comprehensive contracts catalog | architecture, clean-code, ddd, cqrs |
+| `codebase-design` | 1.0.0 | Supreme software design skill based on John Ousterhout's Philosophy of Software Design — identifies deep modules, collapses shallow abstractions, eliminates classitis, and finds high-leverage architectural seams | architecture, software-design, deep-modules, refactoring |
 | `code-review` | 1.2.0 | Polyglot code review skill that analyzes MRs/PRs or individual files across any language and framework and generates anchored inline comments | code-review, pull-request, architecture, security |
 | `dba-agent` | 1.0.0 | DBA Agent specialized in database performance, integrity, and security | database, performance, sql |
 | `devops-agent` | 1.0.0 | Acts as a DevOps Engineer Agent focusing on automation, infrastructure as code, observability, and platform resilience | devops, sre, automation, cicd |
