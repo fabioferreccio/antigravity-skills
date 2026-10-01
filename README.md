@@ -148,6 +148,7 @@ Additionally, the CLI automatically injects a `postinstall` script pointing to t
 | `staff-engineer` | 1.0.0 | Staff Engineer Agent for cross-functional engineering diagnosis, redundancy elimination, and DORA analysis | staff-engineer, refactoring, dora |
 | `frontend-architect` | 1.1.0 | Supreme Front-End Architecture & Component Engineering Skill (Atomic, Compound, Headless, State, Monorepos, A11y/WCAG 2.2, TDD/Triple AAA, Mobile DS, Yuno SDK) | frontend, react, typescript, component-architecture, ux, accessibility, monorepo, performance, mobile-design-system, yuno-sdk |
 | `image-media-engine` | 1.1.0 | Supreme Image Processing, Color Engineering, AI Generation, Branding Identity Systems, Retouching, Print Preflight, Web Optimization, High-Precision Vectorization, Automated 300 DPI PDF Brandbook Export, Sub-Agent Orchestration, Persistent Project Memory, State Locking (`/frontend-architect` Synergy) | image-processing, color-engineering, branding-identity, brandbook, vectorization, pdf-exporter, state-locking, subagent-orchestration, persistent-memory |
+| `web-pentest-agent` | 1.0.0 | Autonomous web penetration testing skill — passive recon, OWASP Top 10, JWT/auth/API analysis, adversarial verification, CVSS v3.1 scoring, and professional HTML/PDF report generation. Guided onboarding for non-technical users. | pentesting, web-security, owasp, vulnerability-assessment, cvss, report-generation, security-audit |
 
 > 💡 **This registry grows with contributions.** See [Creating Skills](#-creating-skills) to add yours.
 

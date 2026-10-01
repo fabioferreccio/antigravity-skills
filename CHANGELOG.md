@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Skills Registry**:
+  - `web-pentest-agent` (v1.0.0) — Autonomous web penetration testing skill. Orchestrates a 6-phase security assessment:
+    - Guided onboarding with SDD-style scoping and mandatory legal authorization gate.
+    - Passive reconnaissance (DNS/WHOIS/TLS/headers/tech fingerprinting).
+    - Attack surface mapping and parallel vulnerability analysis (OWASP Top 10, security headers, JWT/OAuth, CVE identification).
+    - Adversarial verification of CRITICAL/HIGH findings via skeptic sub-agent.
+    - CVSS v3.1 scoring with P0/P1/P2 prioritization.
+    - Dual-format professional report generation (Executive + Technical HTML/PDF).
+    - Integrates `security-engineer`, `quality-gate`, `prompt-engineering`, and `spec-driven-development` as internal sub-systems.
+    - Includes 5 references, 3 workflow graphs, 3 examples, 16-case eval suite, and 2 Node.js scripts.
+
 ## [1.1.0] - 2026-07-04
 
 ### Added
