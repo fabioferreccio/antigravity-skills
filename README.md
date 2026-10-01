@@ -136,6 +136,7 @@ Additionally, the CLI automatically injects a `postinstall` script pointing to t
 | `explore-codebase-ast` | 1.0.0 | Maps the file tree of a project analyzing the internal structure (AST) to identify inheritances, entities, interfaces, and controllers without blowing up the context window | architecture, analysis, ast, codebase-mapping |
 | `local-ai-orchestrator` | 1.0.0 | A unified TypeScript orchestrator that exposes hyper-optimized local AI tools with strict JSON Schemas and async execution wrappers compatible with Ollama, Claude, and Antigravity | orchestrator, typescript, ollama, mcp, local-ai |
 | `migration-reviewer` | 1.0.0 | Migration Reviewer Agent that analyzes migrations (Knex, Prisma, SQL, etc.) and generates Slack-ready approval reports | migration, dba, approval, slack |
+| `pr-craftsman` | 1.0.0 | Supreme Pull Request engineering skill that analyzes changesets, calculates blast radius, classifies One-Way vs. Two-Way Doors, and renders Mermaid visual diagrams | pull-request, blast-radius, one-way-door, mermaid |
 | `product-manager` | 1.0.0 | Guides product discovery, prioritization, and strategy as a Senior Product Manager Agent | product-management, strategy, prd |
 | `prompt-engineering` | 1.0.0 | Elite system for designing, auditing, and optimizing high-performance prompt architectures | prompts, optimization, llm |
 | `qa-engineer` | 1.0.0 | QA Engineer Agent specialized in defect prevention and destructive testing | qa, testing, edge-cases, automation |
