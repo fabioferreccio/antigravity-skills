@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
-  "generated": "2026-10-01T20:31:34.968Z",
-  "total_skills": 27,
+  "generated": "2026-10-01T20:32:19.787Z",
+  "total_skills": 28,
   "skills": [
     {
       "name": "ai-onboarding",
@@ -103,6 +103,27 @@
       ],
       "scope": "workspace",
       "path": ".agents/skills/code-review",
+      "security": {
+        "network": false,
+        "filesystem": "read-write"
+      }
+    },
+    {
+      "name": "codebase-design",
+      "version": "1.0.0",
+      "description": "Supreme software design and architecture skill based on John Ousterhout's Philosophy of Software Design. Identifies shallow modules, anemic pass-throughs, and information leakage across codebases, providing structured recipes to consolidate code into high-leverage deep modules with narrow interfaces and rich encapsulated complexity.",
+      "author": "Fábio Ferreccio",
+      "tags": [
+        "architecture",
+        "deep-modules",
+        "design",
+        "ousterhout",
+        "refactoring",
+        "code-quality",
+        "supreme"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/codebase-design",
       "security": {
         "network": false,
         "filesystem": "read-write"
