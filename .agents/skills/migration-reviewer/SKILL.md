@@ -1,7 +1,7 @@
 ---
 name: migration-reviewer
 description: Migration Reviewer Agent that receives database migrations in any format (Knex, Prisma, Sequelize, TypeORM, raw SQL, etc.), performs DBA-grade analysis for safety, performance, and rollback viability, then generates a structured Slack-ready Markdown approval report for Stack Leaders and Holders. Use when reviewing, analyzing, or approving database migrations, or when generating DB change reports for stakeholders.
-version: 1.0.0
+version: 1.1.0
 author: Fábio Ferreccio
 compatibility: Compatible with Antigravity (Google), Claude Code (Anthropic), and any Agent Skills spec-compliant client. Requires filesystem read-write access. No network access needed.
 tags:
@@ -13,6 +13,8 @@ tags:
   - review
   - knex
   - prisma
+  - one-way-door
+  - blast-radius
 triggers:
   - "revisar migration"
   - "analisar migration"
@@ -169,6 +171,12 @@ Generate the report using this EXACT structure. Replace placeholders with actual
 ```markdown
 **[DB Change] <concise title describing the change>**
 
+**🚪 Classificação de Decisão & Reversibilidade**
+- **Decisão**: 🔴 **Porta de Mão Única (Irreversível / Alto Risco)** | 🟢 **Porta de Mão Dupla (Reversível / Baixo Risco)**
+- **Justificativa**: <explicação direta sobre facilidade ou risco do rollback e integridade de dados>
+
+---
+
 **Contexto**
 <business motivation — why this change is needed>
 
@@ -192,15 +200,24 @@ Generate the report using this EXACT structure. Replace placeholders with actual
 
 ---
 
-**Análise de Segurança**
+**Análise de Segurança & Concorrência**
 - Risco de lock: <none / baixo / médio / alto / crítico>
+- Nível do lock requerido: <ACCESS EXCLUSIVE / SHARE UPDATE EXCLUSIVE / ROW EXCLUSIVE / nenhum>
 - Estimativa de duração: <instant / segundos / minutos / depende do volume>
 - Requer janela de manutenção: sim/não
 - Compatível com deploy zero-downtime: sim/não
 
+**Visualização de Lock & Concorrência (Mermaid)**:
+```mermaid
+graph TD
+  Migration[Migration: <DDL Operation>] -->|Requer Lock| LockType[<Tipo de Lock: ACCESS EXCLUSIVE>]
+  LockType --> Table[(Tabela: <nome_tabela>)]
+  Table -->|Impacto em Produção| Queue[Fila de Escrita: <Bloqueada durante DDL / Não Bloqueada>]
+```
+
 ---
 
-**Impacto**
+**Impacto & Raio de Explosão**
 - Tabelas afetadas: `<table1>`, `<table2>`
 - Endpoints afetados: <list or "a confirmar com o time">
 - Destrutiva: sim/não

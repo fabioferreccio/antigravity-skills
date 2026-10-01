@@ -8,7 +8,7 @@ description: >
   It automatically sets up and executes integration test infrastructure (Docker/Testcontainers) if missing,
   enforcing >70% coverage with a target of 90%. It does not sugarcoat findings; it identifies bad logic,
   naive paths, security holes, and architectural flaws ruthlessly.
-version: 1.1.0
+version: 1.2.0
 author: Fábio Ferreccio
 tags:
   - quality-assurance
@@ -19,6 +19,8 @@ tags:
   - polyglot
   - supreme
   - infrastructure
+  - mock-inflation
+  - one-way-door
 triggers:
   - "run quality gate"
   - "verificar prontidão para produção"
@@ -39,7 +41,7 @@ security:
 
 # Goal
 
-Act as the ultimate, unforgiving Quality Gate for production readiness. This skill orchestrates deep repository analysis backed by a persistent index, harsh code reviews, a dedicated security audit, strict QA standards (AAA, TDD), and automatically provisions and executes integration test infrastructure across any programming language. Findings are adversarially verified before being reported. It refuses to pass code that is logically flawed, insecure, untested on edge cases, or structurally weak.
+Act as the ultimate, unforgiving Quality Gate for production readiness. This skill orchestrates deep repository analysis backed by a persistent index, harsh code reviews, a dedicated security audit, strict QA standards (AAA, TDD, mock inflation audits), visual blast radius architecture panels, and automatically provisions and executes integration test infrastructure across any programming language. Findings are adversarially verified before being reported. It refuses to pass code that is logically flawed, insecure, untested on edge cases, or structurally weak.
 
 # Language
 
@@ -96,13 +98,17 @@ The index is what makes subsequent runs fast and subagent prompts precise: every
 4. The auditor hunts: injection sinks (SQL/NoSQL/command/template/path), broken authz (IDOR, missing ownership checks), secrets in code or history-adjacent files, crypto misuse, SSRF, unsafe deserialization, dependency risk (lockfile audit — offline best-effort; see reference).
 5. Every finding must carry `file:line`, an exploit scenario, and an OWASP category.
 
-## Phase 4: Estratégia de QA e Cobertura (QA Engineer)
+## Phase 4: Estratégia de QA, Mock Inflation e Cobertura (QA Engineer)
 
 1. Invoke the **QA Strategist** subagent using `agents/qa-strategist.md`.
 2. Evaluate existing tests for AAA (Arrange, Act, Assert) compliance.
-3. Map all code not covered by tests (unit/integrated) where unit tests cannot guarantee efficiency.
-4. Identify critical missing scenarios (TDD mindset - failure cases).
-5. Enforce minimum 70% coverage, target 90%.
+3. **Auditoria de Mock Inflation & Densidade Arquitetural**:
+   - Detect suites where >70% of assertions verify mock calls (`toHaveBeenCalledWith`) rather than observable state mutations.
+   - Flag "falsa cobertura": suites with high reported line coverage achieved by mocking away every collaborator.
+   - Verify proper test layer distribution: domain logic in Unit (no mocks); database queries and infrastructure in Integration (real adapters / containers).
+4. Map all code not covered by tests where unit tests cannot guarantee efficiency.
+5. Identify critical missing scenarios (TDD mindset - failure cases).
+6. Enforce minimum 70% coverage, target 90%.
 
 ## Phase 5: Orquestração de Infraestrutura (Test Execution)
 
@@ -146,7 +152,17 @@ The final report must follow this exact structure:
 **STATUS**: 🔴 REPROVADO | 🟡 REPROVADO (COM RESSALVAS) | 🟢 APROVADO
 *(Seja duro. Qualquer vulnerabilidade CRÍTICA, falha lógica crítica ou < 70% de cobertura ⇒ REPROVADO).*
 
-**Confiabilidade**: <N> achados confirmados por verificação adversarial · <M> refutados e descartados.
+- **Decisão**: 🔴 **Porta de Mão Única (Irreversível / Alto Risco)** | 🟢 **Porta de Mão Dupla (Reversível / Baixo Risco)**
+- **Confiabilidade**: <N> achados confirmados por verificação adversarial · <M> refutados e descartados.
+
+### 🗺️ Painel Visual de Risco e Arquitetura (Show Me)
+```mermaid
+graph TD
+  Entrypoint[Entrypoint / API] --> Service[Core Domain Logic]
+  Service --> SecurityCheck{Security Boundary}
+  SecurityCheck -->|Pass| SafePersistence[(Database / External)]
+  SecurityCheck -->|Fail: SQLi / Authz| Vulnerability[🔴 Vulnerabilidade Crítica Identificada]
+```
 
 ## 2. Infraestrutura de Testes e Execução
 - **Setup Gerado/Utilizado**: <Descrição do Testcontainer/Docker, ou DEGRADED se Docker indisponível>
@@ -166,12 +182,13 @@ The final report must follow this exact structure:
 - `<Arquivo>:<Linha>`: <Descrição impiedosa da falha e por que a lógica está ruim/errada>.
 
 ### Arquitetura e Anti-patterns
-- <Descrição de acoplamento, N+1, ou classes infladas>.
+- <Descrição de acoplamento, N+1, módulos rasos, ou classes infladas>.
 
-## 5. Estratégia de QA, AAA e Cobertura
-- **Métricas Atuais**: <X>% (Mínimo exigido: 70%, Meta: 90%)
-- **Gaps Críticos Identificados**: <Onde os testes unitários falham em garantir qualidade>
-- **Testes Tautológicos/Frágeis**: <Apontar testes que zombam (mock) da realidade em vez de testá-la>
+## 5. Estratégia de QA, AAA e Mock Inflation
+- **Métricas Atuais de Cobertura**: <X>% (Mínimo exigido: 70%, Meta: 90%)
+- **Auditoria de Mock Inflation**: <Índice de asserções em mocks vs estado real; alerta se a cobertura for puramente cosmética>
+- **Separação de Camadas**: <Validação se lógica de domínio está em Unit e I/O/Banco em Integration>
+- **Testes Tautológicos/Frágeis**: <Apontar testes que zombam (mock) da realidade em vez de testar regras>
 - **Cenários Ausentes (TDD Falho)**: <Quais cenários de falha e borda foram ignorados>
 
 ## 6. Plano de Ação (Bloqueantes para Produção)

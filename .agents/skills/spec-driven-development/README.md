@@ -2,7 +2,7 @@
 
 This skill implements the methodological rigor of Spec-Driven Development in your workspace, enforcing the separation between intention ("The What") and technical implementation ("The How").
 
-Inspired by the GitHub Spec Kit and technical articles on eliminating "vibe coding", this skill acts as an orchestrator that guides the developer through the 5 essential phases before and during AI code generation.
+Inspired by the GitHub Spec Kit and technical articles on eliminating "vibe coding", this skill acts as an orchestrator that guides the developer through the 7 essential phases before, during, and after AI code generation.
 
 ## Workflow Phases
 
@@ -11,6 +11,9 @@ Inspired by the GitHub Spec Kit and technical articles on eliminating "vibe codi
 2. **Plan**: System architecture, DB schema, and APIs for the spec functionality.
 3. **Tasks**: Breaking down the plan into granular verifiable tasks.
 4. **Implement**: Execution with human checkpoints at each step.
+5. **Active Review**: Pre-PR automated audit against `constitution.md` with auto-fix suggestions.
+6. **Visual PR**: Crafting a PR with Blast Radius, Decision Doors (One-Way vs. Two-Way), and Mermaid diagrams.
+7. **Retrospective**: Feeding human review feedback and edge cases back into `constitution.md` for compound learning.
 
 ## How to Use
 
