@@ -6,7 +6,7 @@ description: >
   an adversarial verification process to refute false positives for bugs, and 
   evaluates test effectiveness, fragility, and coverage gaps, generating a highly 
   detailed, dual-dashboard markdown report.
-version: 1.1.0
+version: 1.2.0
 author: Fábio Ferreccio
 tags:
   - auditing
@@ -59,10 +59,11 @@ The workflow always executes both phases.
    - **Tier 2 (Risco Médio)**: Integration layers, critical system state, business rules not directly transacting money.
    - **Tier 3 (Risco Baixo)**: View layers, opt-outs, profile edits without financial impact.
 2. **Test Evaluation**: For each test, evaluate:
-   - **Veredito**: `efetivo` (tests real behavior robustly), `fragil` (brittle, tautological, non-deterministic, time-dependent), `inconclusivo`.
+   - **Veredito**: `efetivo` (tests real behavior robustly), `tautologico` (merely asserts internal mock wiring without verifying business invariants), `fragil` (brittle, non-deterministic, time-dependent), `inconclusivo`.
+   - **Camada**: `unitario` (isolated in-memory logic) vs. `integracao` (real I/O, database constraints, network boundaries). Flag misplaced tests (e.g. database tests that mock everything in unit layer instead of testing real queries in integration layer).
    - **Ação**: `manter`, `refatorar`, `remover`.
-   - **Técnica**: Identify the testing technique (e.g., `EP` - Equivalence Partitioning, `BVA` - Boundary Value Analysis, `adivinhacao-erro`, `mock-excessivo`).
-   - **Gap**: Describe clearly why the test fails to add value (e.g., "Mocking implementation details", "Time-dependent execution failing in CI") and how to fix it.
+   - **Técnica**: Identify the testing technique (e.g., `EP` - Equivalence Partitioning, `BVA` - Boundary Value Analysis, `adivinhacao-erro`, `mock-excessivo`, `tautologico-mock`).
+   - **Gap**: Describe clearly why the test fails to add value (e.g., "Mocking implementation details without asserting state", "Time-dependent execution failing in CI") and how to fix it.
 3. Compile findings using the **Part 2 Output Format**.
 
 # Conventions

@@ -5,6 +5,14 @@ All notable changes to the `code-review` skill will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-10-01
+
+### Added
+- **Blast Radius & Reversibility Lens (`blast-radius-doors.md`)**: Operational classification into One-Way Door (Irreversible / High Risk) vs. Two-Way Door (Reversible / Low Risk) and Blast Radius assessment matrix (domains, APIs, database, rollback viability).
+- **Show-Me Architectural Summary**: Automated Mermaid diagrams visualizing changes, flows, and boundaries without suppressing comprehensive textual analysis.
+- **Active Remediation Protocol (`remediation-protocol.md`)**: Interactive human-in-the-loop suggestion allowing users to apply safe auto-fix commits directly to the branch and choose whether to post inline comments.
+- **Coding Standards Enforcement with Graceful Fallback**: Dynamic detection and enforcement of `coding-standards.md`, `.agents/rules/coding-standards.md`, or `standards.md`, with zero review quality degradation when absent, and end-of-review offer to scaffold standards.
+
 ## [1.2.0] - 2026-07-09
 
 ### Added
