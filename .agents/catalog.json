@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "generated": "2026-10-01T12:00:29.290Z",
+  "generated": "2026-10-01T17:14:05.044Z",
   "total_skills": 26,
   "skills": [
     {
@@ -493,7 +493,7 @@
     },
     {
       "name": "spec-driven-development",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "Guide the development team through the rigorous Spec-Driven Development (SDD) workflow, creating and maintaining specifications, plans, and tasks as the single source of truth before any code generation, eliminating \"vibe coding\".",
       "author": "Fábio Ferreccio",
       "tags": [
@@ -501,7 +501,9 @@
         "specification",
         "architecture",
         "workflow",
-        "speckit"
+        "speckit",
+        "retrospective",
+        "pull-request"
       ],
       "scope": "workspace",
       "path": ".agents/skills/spec-driven-development",
