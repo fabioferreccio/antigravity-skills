@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "generated": "2026-10-01T12:00:29.290Z",
+  "generated": "2026-10-01T19:18:03.092Z",
   "total_skills": 26,
   "skills": [
     {
@@ -291,7 +291,7 @@
     },
     {
       "name": "migration-reviewer",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "Migration Reviewer Agent that receives database migrations in any format (Knex, Prisma, Sequelize, TypeORM, raw SQL, etc.), performs DBA-grade analysis for safety, performance, and rollback viability, then generates a structured Slack-ready Markdown approval report for Stack Leaders and Holders. Use when reviewing, analyzing, or approving database migrations, or when generating DB change reports for stakeholders.",
       "author": "Fábio Ferreccio",
       "tags": [
@@ -302,7 +302,9 @@
         "dba",
         "review",
         "knex",
-        "prisma"
+        "prisma",
+        "one-way-door",
+        "blast-radius"
       ],
       "scope": "workspace",
       "path": ".agents/skills/migration-reviewer",
