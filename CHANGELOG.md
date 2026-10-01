@@ -5,20 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.2.0] - 2026-10-01
 
 ### Added
 
-- **Skills Registry**:
-  - `web-pentest-agent` (v1.0.0) — Autonomous web penetration testing skill. Orchestrates a 6-phase security assessment:
-    - Guided onboarding with SDD-style scoping and mandatory legal authorization gate.
-    - Passive reconnaissance (DNS/WHOIS/TLS/headers/tech fingerprinting).
-    - Attack surface mapping and parallel vulnerability analysis (OWASP Top 10, security headers, JWT/OAuth, CVE identification).
-    - Adversarial verification of CRITICAL/HIGH findings via skeptic sub-agent.
-    - CVSS v3.1 scoring with P0/P1/P2 prioritization.
-    - Dual-format professional report generation (Executive + Technical HTML/PDF).
-    - Integrates `security-engineer`, `quality-gate`, `prompt-engineering`, and `spec-driven-development` as internal sub-systems.
-    - Includes 5 references, 3 workflow graphs, 3 examples, 16-case eval suite, and 2 Node.js scripts.
+- **New Supreme Skills**:
+  - `pr-craftsman` (v1.0.0) — Supreme Pull Request engineering skill that reverse-engineers code diffs and commit sequences into crystal-clear, human-reviewable PRs. Features automated Mermaid architectural flow diagrams, One-Way vs. Two-Way Door classification, test evidence checklists, and reviewer cognitive acceleration.
+  - `codebase-design` (v1.0.0) — Supreme software design skill grounded in John Ousterhout's *A Philosophy of Software Design*. Diagnoses shallow modules, collapses unnecessary classitis/pass-through layers, and discovers high-leverage architectural seams.
+  - `retrospective-agent` (v1.0.0) — Autonomous compound learning and institutional memory engine. Audits agent session trajectories, compiler backtracking, and PR review comments to update `coding-standards.md` and `AGENTS.md` while actively pruning obsolete rules.
+  - `web-pentest-agent` (v1.0.0) — Autonomous web penetration testing skill orchestrating 6-phase security assessments (passive recon, OWASP Top 10, JWT/API analysis, adversarial verification, CVSS v3.1 scoring, and executive/technical reporting).
+
+### Changed
+
+- **Major Skill Upgrades (PR Bottleneck & AX Architecture)**:
+  - `code-review` (bumped to **v1.3.0**):
+    - Added One-Way vs. Two-Way Door classification for risk triage.
+    - Integrated visual Mermaid blast radius diagrams without suppressing textual analysis.
+    - Established Active Remediation Protocol with human-in-the-loop interactive suggestions (zero unilateral commits/posting).
+    - Added graceful fallback for `coding-standards.md` (baseline quality maintained; creation suggested at conclusion).
+  - `clean-architecture` (bumped to **v1.2.0**):
+    - Integrated Deep Modules paradigm (`references/deep-modules.md`).
+    - Added Anti-Pattern 9 (Anti-Anemic Use Cases & Classitis) to combat shallow pass-through classes.
+  - `qa-engineer` (bumped to **v1.1.0**) & `bug-hunter` (bumped to **v1.2.0**):
+    - Added `references/anti-tautological-tests.md` banning tautological mock assertions.
+    - Enforced strict boundary: pure unit tests with zero mocks for domain logic; real behavioral verification via Testcontainers/in-memory DB for integration tests.
+  - `spec-driven-development` (bumped to **v1.1.0**):
+    - Expanded SDD workflow to 7 phases (Active Review, Visual PR, Retrospective).
+    - Added `references/retrospective-feedback.md` to feed review learnings back into specifications.
+  - `migration-reviewer` (bumped to **v1.1.0**):
+    - Added One-Way vs. Two-Way Door classification for database changes.
+    - Added visual Mermaid database lock and transaction queue analyzer.
+  - `quality-gate` (bumped to **v1.2.0**):
+    - Added mock inflation audit in Phase 4.
+    - Added visual risk dashboard and doors classification in Phase 7.
 
 ## [1.1.0] - 2026-07-04
 
