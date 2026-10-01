@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
-  "generated": "2026-10-01T20:30:17.270Z",
-  "total_skills": 26,
+  "generated": "2026-10-01T20:30:53.882Z",
+  "total_skills": 27,
   "skills": [
     {
       "name": "ai-onboarding",
@@ -315,6 +315,26 @@
         "network": false,
         "filesystem": "read-write",
         "terminal": "sandboxed"
+      }
+    },
+    {
+      "name": "pr-craftsman",
+      "version": "1.0.0",
+      "description": "Supreme Pull Request engineering skill that analyzes changesets to calculate operational blast radius, classifies decision reversibility (One-Way vs. Two-Way Doors), produces concise visual Mermaid architectural diagrams, and composes high-signal, human-friendly PR descriptions that eliminate reviewer fatigue.",
+      "author": "Fábio Ferreccio",
+      "tags": [
+        "pull-request",
+        "blast-radius",
+        "one-way-door",
+        "mermaid",
+        "code-review",
+        "supreme"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/pr-craftsman",
+      "security": {
+        "network": false,
+        "filesystem": "read-write"
       }
     },
     {
