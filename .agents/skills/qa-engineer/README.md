@@ -10,7 +10,7 @@ A senior-level agentic skill that identifies missing coverage, generates test st
 
 | Property     | Value                                        |
 |--------------|----------------------------------------------|
-| Version      | 1.0.0                                        |
+| Version      | 1.1.0                                        |
 | Scope        | workspace                                    |
 | Complexity   | Level 4                                      |
 | Architecture | Reviewer + Autonomous Generator              |
@@ -57,6 +57,11 @@ Use any of these phrases to activate the skill:
 - Designs deterministic mocks for APIs, databases, clocks, and file systems
 - Generates factory functions for complex domain objects
 - Produces PII-safe synthetic test data at scale
+
+### Anti-Tautological Testing & Layer Differentiation
+- Audits test suites to eliminate fragile tests that only assert internal mock invocations (`toHaveBeenCalledWith`)
+- Enforces strict separation between **Unit Tests** (pure isolated domain logic) and **Integration Tests** (real black-box persistence, database constraints, and network boundaries)
+- Prevents false confidence where CI reports 100% coverage on brittle mocks while real logic breaks in production
 
 ### E2E & Integration Test Authoring
 - Generates Playwright, Cypress, or Selenium E2E test scripts

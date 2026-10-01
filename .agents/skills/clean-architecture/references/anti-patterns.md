@@ -168,3 +168,45 @@ class Order extends Entity<OrderId> {
 ```
 
 **Why**: Domain logic belongs inside the Entity. Anemic models turn Entities into DTOs and push business rules into services, violating encapsulation.
+
+---
+
+## 9. Shallow Module Sprawl (Anemic Pass-Through Use Cases)
+
+❌ **Before** — A long chain of 5 files where each layer does nothing but forward arguments:
+```typescript
+// Controller -> UseCase -> Port -> Impl -> Entity
+class GetUserByIdUseCase {
+  constructor(private readonly repo: IUserRepository) {}
+  async execute(id: string): Promise<UserDto> {
+    const user = await this.repo.findById(id);
+    return UserMapper.toDto(user);
+  }
+}
+```
+
+✅ **After** — Consolidate shallow queries or provide a Deep Module interface with real business invariants, authorization, and caching:
+```typescript
+// Deep Module: hides user access policies, multi-tenant scoping, and hydration complexity
+class GetUserProfileUseCase {
+  constructor(
+    private readonly repo: IUserRepository,
+    private readonly authPolicy: IAuthorizationPolicy,
+    private readonly telemetry: ITelemetryService
+  ) {}
+
+  async execute(input: GetUserProfileInput): Promise<Result<UserProfileOutput, DomainError>> {
+    const authResult = await this.authPolicy.assertCanView(input.actorId, input.targetUserId);
+    if (authResult.isFailure) return Result.fail(authResult.error);
+
+    const user = await this.repo.findActiveAggregateById(input.targetUserId);
+    if (!user) return Result.fail(new UserNotFoundError(input.targetUserId));
+
+    this.telemetry.recordProfileView(input.actorId, input.targetUserId);
+    return Result.ok(UserProfileMapper.toOutput(user));
+  }
+}
+```
+
+**Why**: Anemic use cases inflate the file count without providing leverage. A Deep Module hides meaningful domain complexity, authorization, and policies behind a simple interface, making the code testable and maintainable.
+
