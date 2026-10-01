@@ -142,6 +142,7 @@ Additionally, the CLI automatically injects a `postinstall` script pointing to t
 | `query-homelab-state` | 1.0.0 | Query the health, CPU/RAM, and logs of containers in Docker or Kubernetes to debug infrastructure autonomously | devops, monitoring, docker, kubernetes, sre |
 | `read-file-chunked` | 1.0.0 | Reads large files in specific chunks with pagination, providing exact lines to prevent context window overflow | context-optimization, file-reading, pagination |
 | `repository-maintainer` | 1.0.0 | AI-powered repository governance, auditing, and quality enforcement | governance, validation |
+| `retrospective-agent` | 1.0.0 | Autonomous compound learning and institutional memory engine that audits AI coding sessions, PR review outcomes, and git history to update coding-standards.md and AGENTS.md while pruning obsolete rules | retrospective, compound-learning, governance, prompt-engineering |
 | `security-engineer` | 1.0.0 | Security Engineer Agent specialized in Security by Design and defense in depth | security, appsec, threat-modeling |
 | `skill-creator` | 2.0.0 | Guided skill scaffolding with modular architecture and internal agentic reasoning | scaffolding, meta-skill |
 | `spec-driven-development` | 1.0.0 | Guide the team through SDD workflow with Specs, Plans, and Tasks | sdd, specification, architecture |
