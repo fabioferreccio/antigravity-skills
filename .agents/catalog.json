@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "generated": "2026-10-01T11:46:15.004Z",
+  "generated": "2026-10-01T12:00:29.290Z",
   "total_skills": 26,
   "skills": [
     {
@@ -545,7 +545,8 @@
         "report-generation",
         "cvss",
         "security-audit",
-        "multi-agent"
+        "multi-agent",
+        "supreme"
       ],
       "scope": "workspace",
       "path": ".agents/skills/web-pentest-agent",
