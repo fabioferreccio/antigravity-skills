@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "generated": "2026-10-01T12:00:29.290Z",
+  "generated": "2026-10-01T17:10:30.514Z",
   "total_skills": 26,
   "skills": [
     {
@@ -44,7 +44,7 @@
     },
     {
       "name": "bug-hunter",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "description": "Supreme autonomous skill that performs a comprehensive, multi-agent codebase sweep to identify concrete bugs AND structurally audit existing tests. It uses an adversarial verification process to refute false positives for bugs, and evaluates test effectiveness, fragility, and coverage gaps, generating a highly detailed, dual-dashboard markdown report.",
       "author": "Fábio Ferreccio",
       "tags": [
@@ -353,7 +353,7 @@
     },
     {
       "name": "qa-engineer",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "QA Engineer Agent specialized in defect prevention and destructive testing. Identifies missing edge cases, race conditions, flaky scenarios, and systemic failures. Generates test strategies, mocks, E2E suites, stress tests, and regression plans to ensure robustness, stability, and predictability.",
       "author": "Antigravity Skill Creator",
       "tags": [
@@ -364,7 +364,8 @@
         "regression",
         "e2e",
         "performance",
-        "tdd"
+        "tdd",
+        "anti-tautological"
       ],
       "scope": "workspace",
       "path": ".agents/skills/qa-engineer",
