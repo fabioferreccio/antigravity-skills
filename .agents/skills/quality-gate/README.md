@@ -7,7 +7,8 @@ The ultimate, unforgiving Quality Gate for production readiness. This meta-skill
 - **Deep Code Review**: Finds concrete bugs, race conditions, and architectural flaws. It does not sugarcoat bad logic.
 - **Security Audit**: Dedicated auditor hunting injection sinks, broken access control (IDOR, mass assignment), auth/crypto failures, exposed secrets, SSRF, unsafe deserialization, and config hygiene — every finding anchored to `file:line` with an OWASP category and exploit scenario.
 - **Adversarial Verification**: Every CRITICAL/HIGH finding is verified against the source (and challenged by a skeptic subagent for security findings) before being reported. Refuted findings are dropped and counted.
-- **QA Enforcement**: Evaluates tests for AAA (Arrange, Act, Assert) patterns. Maps untested code and missing failure scenarios, prioritized by financial-risk hotspots.
+- **QA & Mock Inflation Enforcement**: Evaluates tests for AAA (Arrange, Act, Assert) patterns. Audits "Mock Inflation" to detect false coverage created by tautological mock wiring. Enforces that domain rules live in Unit tests without mocks, and real behaviors live in Integration tests. Maps untested code and missing failure scenarios, prioritized by financial-risk hotspots.
+- **Visual Architecture & Risk Dashboard**: Includes a Mermaid diagram and One-Way vs. Two-Way Door classification in the production verdict.
 - **Automated Test Infrastructure**: If your project lacks integration test setups (like Docker/Testcontainers), this skill will generate a `docker-compose.test.yml` (ephemeral loopback ports, tmpfs, healthchecks), spin it up, run your tests, collect the results, and tear it down — always, even on failure.
 - **Strict Coverage**: Enforces a minimum of 70% coverage with a target of 90%, focusing on structural efficiency rather than just line hits.
 

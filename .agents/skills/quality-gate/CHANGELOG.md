@@ -2,6 +2,13 @@
 
 All notable changes to this skill are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/); versioning follows SemVer.
 
+## [1.2.0] - 2026-10-01
+
+### Added
+- **Mock Inflation & Architectural Density Audit**: Phase 4 now specifically detects superficial coverage achieved through mock-heavy tautological tests, and validates proper test placement (domain in Unit without mocks, I/O in Integration).
+- **One-Way vs. Two-Way Door Classification**: Section 1 of the report now classifies production changes by operational reversibility.
+- **Visual Risk & Blast Radius Dashboard (Show Me)**: Section 1.1 includes an automated Mermaid diagram summarizing system boundaries, vulnerable paths, and blast radius.
+
 ## [1.1.0] - 2026-07-19
 
 ### Added
