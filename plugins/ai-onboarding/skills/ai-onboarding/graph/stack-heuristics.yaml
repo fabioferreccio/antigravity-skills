@@ -1,0 +1,1278 @@
+# ==============================================================================
+# Stack Heuristics — Language, Framework, Package Manager & Project Detection
+# ==============================================================================
+# Decision tree used by the ai-onboarding skill to fingerprint a repository's
+# technology stack from file-system signals (marker files, dependency names,
+# config patterns).  Each rule carries a confidence weight so the engine can
+# rank competing hypotheses when multiple signals overlap.
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Language Detection
+# ------------------------------------------------------------------------------
+language_detection:
+  rules:
+    # --- JavaScript / TypeScript -------------------------------------------
+    - id: lang-js-ts
+      languages: [javascript, typescript]
+      markers:
+        files:
+          - package.json
+          - tsconfig.json
+          - jsconfig.json
+          - .nvmrc
+          - .node-version
+          - .npmrc
+        extensions: [.js, .jsx, .ts, .tsx, .mjs, .cjs, .mts, .cts]
+      disambiguation:
+        - condition: "tsconfig.json exists OR .ts/.tsx files present"
+          primary: typescript
+        - condition: "only .js/.jsx files, no tsconfig.json"
+          primary: javascript
+      confidence: 0.95
+
+    # --- Go ----------------------------------------------------------------
+    - id: lang-go
+      languages: [go]
+      markers:
+        files: [go.mod, go.sum, go.work]
+        extensions: [.go]
+      confidence: 0.98
+
+    # --- Rust --------------------------------------------------------------
+    - id: lang-rust
+      languages: [rust]
+      markers:
+        files: [Cargo.toml, Cargo.lock, rust-toolchain.toml, rust-toolchain]
+        extensions: [.rs]
+      confidence: 0.98
+
+    # --- Python ------------------------------------------------------------
+    - id: lang-python
+      languages: [python]
+      markers:
+        files:
+          - pyproject.toml
+          - setup.py
+          - setup.cfg
+          - requirements.txt
+          - requirements-dev.txt
+          - requirements-lock.txt
+          - Pipfile
+          - Pipfile.lock
+          - poetry.lock
+          - pdm.lock
+          - uv.lock
+          - .python-version
+          - tox.ini
+          - noxfile.py
+          - manage.py           # Django
+          - __init__.py         # package marker
+        extensions: [.py, .pyi, .pyw]
+      confidence: 0.95
+
+    # --- Java --------------------------------------------------------------
+    - id: lang-java
+      languages: [java]
+      markers:
+        files:
+          - pom.xml
+          - build.gradle
+          - build.gradle.kts
+          - settings.gradle
+          - settings.gradle.kts
+          - gradlew
+          - mvnw
+          - .java-version
+        extensions: [.java]
+      disambiguation:
+        - condition: "build.gradle.kts with kotlin plugin AND .kt files"
+          primary: kotlin
+      confidence: 0.95
+
+    # --- Kotlin ------------------------------------------------------------
+    - id: lang-kotlin
+      languages: [kotlin]
+      markers:
+        files:
+          - build.gradle.kts
+          - settings.gradle.kts
+        extensions: [.kt, .kts]
+      detection_rules:
+        - type: file_content_match
+          file: build.gradle.kts
+          patterns:
+            - "kotlin(\"jvm\")"
+            - "kotlin(\"multiplatform\")"
+            - "kotlin(\"android\")"
+            - "org.jetbrains.kotlin"
+      confidence: 0.90
+
+    # --- C# ----------------------------------------------------------------
+    - id: lang-csharp
+      languages: [csharp]
+      markers:
+        files:
+          - "*.csproj"
+          - "*.sln"
+          - global.json
+          - Directory.Build.props
+          - Directory.Packages.props
+          - nuget.config
+        extensions: [.cs, .csx]
+      confidence: 0.95
+
+    # --- Ruby --------------------------------------------------------------
+    - id: lang-ruby
+      languages: [ruby]
+      markers:
+        files:
+          - Gemfile
+          - Gemfile.lock
+          - Rakefile
+          - .ruby-version
+          - .ruby-gemset
+        extensions: [.rb, .rake, .gemspec]
+      confidence: 0.95
+
+    # --- PHP ---------------------------------------------------------------
+    - id: lang-php
+      languages: [php]
+      markers:
+        files:
+          - composer.json
+          - composer.lock
+          - artisan                # Laravel
+          - .php-cs-fixer.php
+          - phpunit.xml
+          - phpstan.neon
+        extensions: [.php]
+      confidence: 0.95
+
+    # --- Swift -------------------------------------------------------------
+    - id: lang-swift
+      languages: [swift]
+      markers:
+        files:
+          - Package.swift
+          - "*.xcodeproj"
+          - "*.xcworkspace"
+          - "*.pbxproj"
+        extensions: [.swift]
+      confidence: 0.95
+
+    # --- Dart / Flutter ----------------------------------------------------
+    - id: lang-dart
+      languages: [dart]
+      markers:
+        files:
+          - pubspec.yaml
+          - pubspec.lock
+          - analysis_options.yaml
+        extensions: [.dart]
+      disambiguation:
+        - condition: "pubspec.yaml contains flutter sdk dependency"
+          primary: dart
+          framework: flutter
+      confidence: 0.95
+
+    # --- Elixir ------------------------------------------------------------
+    - id: lang-elixir
+      languages: [elixir]
+      markers:
+        files:
+          - mix.exs
+          - mix.lock
+          - .formatter.exs
+        extensions: [.ex, .exs]
+      confidence: 0.98
+
+    # --- Scala -------------------------------------------------------------
+    - id: lang-scala
+      languages: [scala]
+      markers:
+        files:
+          - build.sbt
+          - project/build.properties
+          - project/plugins.sbt
+          - .scalafmt.conf
+        extensions: [.scala, .sc]
+      confidence: 0.95
+
+    # --- Clojure -----------------------------------------------------------
+    - id: lang-clojure
+      languages: [clojure]
+      markers:
+        files:
+          - deps.edn
+          - project.clj
+          - shadow-cljs.edn
+          - bb.edn                # Babashka
+        extensions: [.clj, .cljs, .cljc, .edn]
+      confidence: 0.95
+
+    # --- Zig ---------------------------------------------------------------
+    - id: lang-zig
+      languages: [zig]
+      markers:
+        files:
+          - build.zig
+          - build.zig.zon
+        extensions: [.zig]
+      confidence: 0.98
+
+    # --- C / C++ -----------------------------------------------------------
+    - id: lang-c-cpp
+      languages: [c, cpp]
+      markers:
+        files:
+          - CMakeLists.txt
+          - Makefile
+          - GNUmakefile
+          - configure
+          - configure.ac
+          - meson.build
+          - conanfile.txt
+          - conanfile.py
+          - vcpkg.json
+          - "*.vcxproj"
+        extensions: [.c, .h, .cpp, .cxx, .cc, .hpp, .hxx, .hh]
+      disambiguation:
+        - condition: "only .c and .h files"
+          primary: c
+        - condition: ".cpp, .cxx, .cc, .hpp files present"
+          primary: cpp
+      confidence: 0.90
+
+# ------------------------------------------------------------------------------
+# 2. Framework Detection
+# ------------------------------------------------------------------------------
+framework_detection:
+  rules:
+    # ===== JavaScript / TypeScript Frameworks =====
+
+    # --- React ---
+    - id: fw-react
+      framework: react
+      language: [javascript, typescript]
+      detection:
+        - type: dependency
+          file: package.json
+          fields: [dependencies, devDependencies]
+          packages: [react, react-dom]
+        - type: file_exists
+          paths: [src/App.tsx, src/App.jsx, src/App.js]
+      confidence: 0.95
+
+    # --- Next.js ---
+    - id: fw-nextjs
+      framework: nextjs
+      language: [javascript, typescript]
+      detection:
+        - type: dependency
+          file: package.json
+          fields: [dependencies, devDependencies]
+          packages: [next]
+        - type: file_exists
+          paths: [next.config.js, next.config.mjs, next.config.ts]
+        - type: directory_exists
+          paths: [app/, pages/, src/app/, src/pages/]
+      meta:
+        version_check: "next --version"
+        app_router_signal: "app/ directory with layout.tsx"
+        pages_router_signal: "pages/ directory with _app.tsx"
+      confidence: 0.98
+
+    # --- Vite ---
+    - id: fw-vite
+      framework: vite
+      language: [javascript, typescript]
+      detection:
+        - type: dependency
+          file: package.json
+          fields: [dependencies, devDependencies]
+          packages: [vite]
+        - type: file_exists
+          paths: [vite.config.ts, vite.config.js, vite.config.mts]
+      confidence: 0.95
+
+    # --- Vue ---
+    - id: fw-vue
+      framework: vue
+      language: [javascript, typescript]
+      detection:
+        - type: dependency
+          file: package.json
+          fields: [dependencies, devDependencies]
+          packages: [vue]
+        - type: file_exists
+          paths: [src/App.vue, src/main.ts, src/main.js]
+      confidence: 0.95
+
+    # --- Nuxt ---
+    - id: fw-nuxt
+      framework: nuxt
+      language: [javascript, typescript]
+      detection:
+        - type: dependency
+          file: package.json
+          fields: [dependencies, devDependencies]
+          packages: [nuxt]
+        - type: file_exists
+          paths: [nuxt.config.ts, nuxt.config.js]
+      confidence: 0.98
+
+    # --- Angular ---
+    - id: fw-angular
+      framework: angular
+      language: [typescript]
+      detection:
+        - type: dependency
+          file: package.json
+          fields: [dependencies, devDependencies]
+          packages: ["@angular/core", "@angular/cli"]
+        - type: file_exists
+          paths: [angular.json, .angular.json]
+      confidence: 0.98
+
+    # --- Svelte ---
+    - id: fw-svelte
+      framework: svelte
+      language: [javascript, typescript]
+      detection:
+        - type: dependency
+          file: package.json
+          fields: [dependencies, devDependencies]
+          packages: [svelte]
+        - type: file_exists
+          paths: [svelte.config.js, svelte.config.ts]
+      confidence: 0.95
+
+    # --- SvelteKit ---
+    - id: fw-sveltekit
+      framework: sveltekit
+      language: [javascript, typescript]
+      detection:
+        - type: dependency
+          file: package.json
+          fields: [dependencies, devDependencies]
+          packages: ["@sveltejs/kit"]
+        - type: file_exists
+          paths: [svelte.config.js]
+        - type: directory_exists
+          paths: [src/routes/]
+      confidence: 0.98
+
+    # --- Astro ---
+    - id: fw-astro
+      framework: astro
+      language: [javascript, typescript]
+      detection:
+        - type: dependency
+          file: package.json
+          fields: [dependencies, devDependencies]
+          packages: [astro]
+        - type: file_exists
+          paths: [astro.config.mjs, astro.config.ts]
+      confidence: 0.98
+
+    # --- Remix ---
+    - id: fw-remix
+      framework: remix
+      language: [javascript, typescript]
+      detection:
+        - type: dependency
+          file: package.json
+          fields: [dependencies, devDependencies]
+          packages: ["@remix-run/react", "@remix-run/node", "@remix-run/serve"]
+        - type: file_exists
+          paths: [remix.config.js, remix.config.ts]
+      confidence: 0.95
+
+    # --- Express ---
+    - id: fw-express
+      framework: express
+      language: [javascript, typescript]
+      detection:
+        - type: dependency
+          file: package.json
+          fields: [dependencies]
+          packages: [express]
+      confidence: 0.90
+
+    # --- NestJS ---
+    - id: fw-nestjs
+      framework: nestjs
+      language: [typescript]
+      detection:
+        - type: dependency
+          file: package.json
+          fields: [dependencies]
+          packages: ["@nestjs/core", "@nestjs/common"]
+        - type: file_exists
+          paths: [nest-cli.json]
+      confidence: 0.98
+
+    # --- Fastify ---
+    - id: fw-fastify
+      framework: fastify
+      language: [javascript, typescript]
+      detection:
+        - type: dependency
+          file: package.json
+          fields: [dependencies]
+          packages: [fastify]
+      confidence: 0.90
+
+    # --- Hono ---
+    - id: fw-hono
+      framework: hono
+      language: [javascript, typescript]
+      detection:
+        - type: dependency
+          file: package.json
+          fields: [dependencies]
+          packages: [hono]
+      confidence: 0.90
+
+    # --- Koa ---
+    - id: fw-koa
+      framework: koa
+      language: [javascript, typescript]
+      detection:
+        - type: dependency
+          file: package.json
+          fields: [dependencies]
+          packages: [koa]
+      confidence: 0.90
+
+    # --- AdonisJS ---
+    - id: fw-adonis
+      framework: adonisjs
+      language: [typescript]
+      detection:
+        - type: dependency
+          file: package.json
+          fields: [dependencies]
+          packages: ["@adonisjs/core"]
+        - type: file_exists
+          paths: [ace, adonisrc.ts, .adonisrc.json]
+      confidence: 0.95
+
+    # ===== Python Frameworks =====
+
+    # --- Django ---
+    - id: fw-django
+      framework: django
+      language: [python]
+      detection:
+        - type: dependency
+          files: [requirements.txt, pyproject.toml, Pipfile, setup.py]
+          packages: [django, Django]
+        - type: file_exists
+          paths: [manage.py, wsgi.py]
+        - type: file_content_match
+          file: manage.py
+          patterns: ["django.core.management"]
+      confidence: 0.98
+
+    # --- Flask ---
+    - id: fw-flask
+      framework: flask
+      language: [python]
+      detection:
+        - type: dependency
+          files: [requirements.txt, pyproject.toml, Pipfile]
+          packages: [flask, Flask]
+      confidence: 0.90
+
+    # --- FastAPI ---
+    - id: fw-fastapi
+      framework: fastapi
+      language: [python]
+      detection:
+        - type: dependency
+          files: [requirements.txt, pyproject.toml, Pipfile]
+          packages: [fastapi]
+        - type: file_content_match
+          patterns: ["from fastapi import", "import fastapi"]
+      confidence: 0.90
+
+    # --- Starlette ---
+    - id: fw-starlette
+      framework: starlette
+      language: [python]
+      detection:
+        - type: dependency
+          files: [requirements.txt, pyproject.toml, Pipfile]
+          packages: [starlette]
+      confidence: 0.85
+
+    # --- Tornado ---
+    - id: fw-tornado
+      framework: tornado
+      language: [python]
+      detection:
+        - type: dependency
+          files: [requirements.txt, pyproject.toml, Pipfile]
+          packages: [tornado]
+      confidence: 0.85
+
+    # --- Pyramid ---
+    - id: fw-pyramid
+      framework: pyramid
+      language: [python]
+      detection:
+        - type: dependency
+          files: [requirements.txt, pyproject.toml, Pipfile]
+          packages: [pyramid]
+      confidence: 0.85
+
+    # ===== Go Frameworks =====
+
+    # --- Gin ---
+    - id: fw-gin
+      framework: gin
+      language: [go]
+      detection:
+        - type: dependency
+          file: go.mod
+          packages: ["github.com/gin-gonic/gin"]
+      confidence: 0.95
+
+    # --- Echo ---
+    - id: fw-echo
+      framework: echo
+      language: [go]
+      detection:
+        - type: dependency
+          file: go.mod
+          packages: ["github.com/labstack/echo"]
+      confidence: 0.95
+
+    # --- Fiber ---
+    - id: fw-fiber
+      framework: fiber
+      language: [go]
+      detection:
+        - type: dependency
+          file: go.mod
+          packages: ["github.com/gofiber/fiber"]
+      confidence: 0.95
+
+    # --- Chi ---
+    - id: fw-chi
+      framework: chi
+      language: [go]
+      detection:
+        - type: dependency
+          file: go.mod
+          packages: ["github.com/go-chi/chi"]
+      confidence: 0.95
+
+    # --- Gorilla Mux ---
+    - id: fw-gorilla
+      framework: gorilla
+      language: [go]
+      detection:
+        - type: dependency
+          file: go.mod
+          packages: ["github.com/gorilla/mux"]
+      confidence: 0.95
+
+    # ===== Rust Frameworks =====
+
+    # --- Actix-web ---
+    - id: fw-actix
+      framework: actix-web
+      language: [rust]
+      detection:
+        - type: dependency
+          file: Cargo.toml
+          section: "[dependencies]"
+          packages: [actix-web]
+      confidence: 0.95
+
+    # --- Axum ---
+    - id: fw-axum
+      framework: axum
+      language: [rust]
+      detection:
+        - type: dependency
+          file: Cargo.toml
+          section: "[dependencies]"
+          packages: [axum]
+      confidence: 0.95
+
+    # --- Rocket ---
+    - id: fw-rocket
+      framework: rocket
+      language: [rust]
+      detection:
+        - type: dependency
+          file: Cargo.toml
+          section: "[dependencies]"
+          packages: [rocket]
+      confidence: 0.95
+
+    # --- Warp ---
+    - id: fw-warp
+      framework: warp
+      language: [rust]
+      detection:
+        - type: dependency
+          file: Cargo.toml
+          section: "[dependencies]"
+          packages: [warp]
+      confidence: 0.95
+
+    # ===== Java Frameworks =====
+
+    # --- Spring Boot ---
+    - id: fw-spring-boot
+      framework: spring-boot
+      language: [java, kotlin]
+      detection:
+        - type: dependency
+          files: [pom.xml, build.gradle, build.gradle.kts]
+          packages:
+            - "org.springframework.boot:spring-boot-starter"
+            - "org.springframework.boot"
+        - type: file_content_match
+          patterns: ["@SpringBootApplication"]
+      confidence: 0.98
+
+    # --- Quarkus ---
+    - id: fw-quarkus
+      framework: quarkus
+      language: [java, kotlin]
+      detection:
+        - type: dependency
+          files: [pom.xml, build.gradle, build.gradle.kts]
+          packages: ["io.quarkus"]
+        - type: file_exists
+          paths: [src/main/resources/application.properties]
+        - type: file_content_match
+          patterns: ["@QuarkusMain", "quarkus."]
+      confidence: 0.95
+
+    # --- Micronaut ---
+    - id: fw-micronaut
+      framework: micronaut
+      language: [java, kotlin]
+      detection:
+        - type: dependency
+          files: [pom.xml, build.gradle, build.gradle.kts]
+          packages: ["io.micronaut"]
+        - type: file_content_match
+          patterns: ["@MicronautTest", "io.micronaut"]
+      confidence: 0.95
+
+    # --- Jakarta EE ---
+    - id: fw-jakarta
+      framework: jakarta-ee
+      language: [java]
+      detection:
+        - type: dependency
+          files: [pom.xml, build.gradle]
+          packages:
+            - "jakarta.platform:jakarta.jakartaee-api"
+            - "jakarta.servlet"
+        - type: file_exists
+          paths: [src/main/webapp/WEB-INF/web.xml]
+      confidence: 0.90
+
+    # ===== C# Frameworks =====
+
+    # --- ASP.NET Core ---
+    - id: fw-aspnet-core
+      framework: aspnet-core
+      language: [csharp]
+      detection:
+        - type: file_content_match
+          file: "*.csproj"
+          patterns:
+            - "Microsoft.AspNetCore"
+            - "<Project Sdk=\"Microsoft.NET.Sdk.Web\">"
+        - type: file_exists
+          paths: [Program.cs, Startup.cs, appsettings.json]
+      confidence: 0.95
+
+    # --- Blazor ---
+    - id: fw-blazor
+      framework: blazor
+      language: [csharp]
+      detection:
+        - type: file_content_match
+          file: "*.csproj"
+          patterns:
+            - "Microsoft.AspNetCore.Components"
+            - "Microsoft.NET.Sdk.BlazorWebAssembly"
+        - type: file_exists
+          paths: ["*.razor"]
+      confidence: 0.95
+
+    # --- MAUI ---
+    - id: fw-maui
+      framework: maui
+      language: [csharp]
+      detection:
+        - type: file_content_match
+          file: "*.csproj"
+          patterns:
+            - "Microsoft.Maui"
+            - "<UseMaui>true</UseMaui>"
+      confidence: 0.95
+
+    # ===== Ruby Frameworks =====
+
+    # --- Rails ---
+    - id: fw-rails
+      framework: rails
+      language: [ruby]
+      detection:
+        - type: dependency
+          file: Gemfile
+          packages: [rails]
+        - type: file_exists
+          paths: [config/routes.rb, bin/rails, Rakefile]
+        - type: directory_exists
+          paths: [app/controllers/, app/models/, app/views/]
+      confidence: 0.98
+
+    # --- Sinatra ---
+    - id: fw-sinatra
+      framework: sinatra
+      language: [ruby]
+      detection:
+        - type: dependency
+          file: Gemfile
+          packages: [sinatra]
+      confidence: 0.90
+
+    # --- Hanami ---
+    - id: fw-hanami
+      framework: hanami
+      language: [ruby]
+      detection:
+        - type: dependency
+          file: Gemfile
+          packages: [hanami]
+        - type: file_exists
+          paths: [config/hanami.rb]
+      confidence: 0.95
+
+    # ===== PHP Frameworks =====
+
+    # --- Laravel ---
+    - id: fw-laravel
+      framework: laravel
+      language: [php]
+      detection:
+        - type: dependency
+          file: composer.json
+          section: require
+          packages: ["laravel/framework"]
+        - type: file_exists
+          paths: [artisan, config/app.php]
+        - type: directory_exists
+          paths: [app/Http/Controllers/, resources/views/]
+      confidence: 0.98
+
+    # --- Symfony ---
+    - id: fw-symfony
+      framework: symfony
+      language: [php]
+      detection:
+        - type: dependency
+          file: composer.json
+          section: require
+          packages: ["symfony/framework-bundle", "symfony/console"]
+        - type: file_exists
+          paths: [symfony.lock, config/bundles.php]
+      confidence: 0.95
+
+    # --- Slim ---
+    - id: fw-slim
+      framework: slim
+      language: [php]
+      detection:
+        - type: dependency
+          file: composer.json
+          section: require
+          packages: ["slim/slim"]
+      confidence: 0.90
+
+    # ===== Dart / Flutter =====
+
+    # --- Flutter ---
+    - id: fw-flutter
+      framework: flutter
+      language: [dart]
+      detection:
+        - type: file_content_match
+          file: pubspec.yaml
+          patterns:
+            - "sdk: flutter"
+            - "flutter:"
+        - type: directory_exists
+          paths: [lib/, android/, ios/]
+      confidence: 0.98
+
+# ------------------------------------------------------------------------------
+# 3. Package Manager Detection
+# ------------------------------------------------------------------------------
+package_manager_detection:
+  rules:
+    # --- Node.js Package Managers ---
+    - id: pm-npm
+      manager: npm
+      language: [javascript, typescript]
+      markers:
+        lockfiles: [package-lock.json]
+        configs: [.npmrc]
+      install_command: "npm install"
+      ci_command: "npm ci"
+      confidence: 0.95
+
+    - id: pm-yarn-classic
+      manager: yarn-classic
+      language: [javascript, typescript]
+      markers:
+        lockfiles: [yarn.lock]
+        configs: [.yarnrc]
+      detection_rules:
+        - type: file_content_match
+          file: package.json
+          patterns: ["\"packageManager\": \"yarn@1"]
+        - type: not_exists
+          paths: [.yarnrc.yml]
+      install_command: "yarn install"
+      ci_command: "yarn install --frozen-lockfile"
+      confidence: 0.90
+
+    - id: pm-yarn-berry
+      manager: yarn-berry
+      language: [javascript, typescript]
+      markers:
+        lockfiles: [yarn.lock]
+        configs: [.yarnrc.yml]
+      detection_rules:
+        - type: file_exists
+          paths: [.yarnrc.yml, .yarn/]
+      install_command: "yarn install"
+      ci_command: "yarn install --immutable"
+      confidence: 0.95
+
+    - id: pm-pnpm
+      manager: pnpm
+      language: [javascript, typescript]
+      markers:
+        lockfiles: [pnpm-lock.yaml]
+        configs: [.npmrc]                 # pnpm respects .npmrc
+      install_command: "pnpm install"
+      ci_command: "pnpm install --frozen-lockfile"
+      confidence: 0.98
+
+    - id: pm-bun
+      manager: bun
+      language: [javascript, typescript]
+      markers:
+        lockfiles: [bun.lockb, bun.lock]
+        configs: [bunfig.toml]
+      install_command: "bun install"
+      ci_command: "bun install --frozen-lockfile"
+      confidence: 0.98
+
+    # --- Python Package Managers ---
+    - id: pm-pip
+      manager: pip
+      language: [python]
+      markers:
+        lockfiles: []
+        configs: [requirements.txt, requirements-dev.txt]
+      install_command: "pip install -r requirements.txt"
+      confidence: 0.80
+
+    - id: pm-pip-tools
+      manager: pip-tools
+      language: [python]
+      markers:
+        lockfiles: [requirements.txt]     # compiled output
+        configs: [requirements.in]
+      install_command: "pip-sync"
+      confidence: 0.90
+
+    - id: pm-poetry
+      manager: poetry
+      language: [python]
+      markers:
+        lockfiles: [poetry.lock]
+        configs: [pyproject.toml]
+      detection_rules:
+        - type: file_content_match
+          file: pyproject.toml
+          patterns: ["[tool.poetry]"]
+      install_command: "poetry install"
+      ci_command: "poetry install --no-interaction"
+      confidence: 0.95
+
+    - id: pm-pdm
+      manager: pdm
+      language: [python]
+      markers:
+        lockfiles: [pdm.lock]
+        configs: [pyproject.toml]
+      detection_rules:
+        - type: file_content_match
+          file: pyproject.toml
+          patterns: ["[tool.pdm]"]
+      install_command: "pdm install"
+      confidence: 0.95
+
+    - id: pm-uv
+      manager: uv
+      language: [python]
+      markers:
+        lockfiles: [uv.lock]
+        configs: [pyproject.toml]
+      detection_rules:
+        - type: file_exists
+          paths: [uv.lock]
+        - type: file_content_match
+          file: pyproject.toml
+          patterns: ["[tool.uv]"]
+      install_command: "uv sync"
+      ci_command: "uv sync --locked"
+      confidence: 0.98
+
+    - id: pm-pipenv
+      manager: pipenv
+      language: [python]
+      markers:
+        lockfiles: [Pipfile.lock]
+        configs: [Pipfile]
+      install_command: "pipenv install"
+      confidence: 0.95
+
+    # --- JVM Package Managers ---
+    - id: pm-maven
+      manager: maven
+      language: [java, kotlin, scala]
+      markers:
+        lockfiles: []
+        configs: [pom.xml]
+      install_command: "mvn install"
+      ci_command: "mvn verify -B"
+      confidence: 0.95
+
+    - id: pm-gradle
+      manager: gradle
+      language: [java, kotlin, scala]
+      markers:
+        lockfiles: [gradle.lockfile]
+        configs: [build.gradle, build.gradle.kts, settings.gradle, settings.gradle.kts]
+      install_command: "./gradlew build"
+      ci_command: "./gradlew build --no-daemon"
+      confidence: 0.95
+
+    # --- Other Language Package Managers ---
+    - id: pm-cargo
+      manager: cargo
+      language: [rust]
+      markers:
+        lockfiles: [Cargo.lock]
+        configs: [Cargo.toml]
+      install_command: "cargo build"
+      ci_command: "cargo build --release"
+      confidence: 0.98
+
+    - id: pm-go-modules
+      manager: go-modules
+      language: [go]
+      markers:
+        lockfiles: [go.sum]
+        configs: [go.mod]
+      install_command: "go mod download"
+      ci_command: "go mod download"
+      confidence: 0.98
+
+    - id: pm-bundler
+      manager: bundler
+      language: [ruby]
+      markers:
+        lockfiles: [Gemfile.lock]
+        configs: [Gemfile, .bundle/config]
+      install_command: "bundle install"
+      ci_command: "bundle install --frozen"
+      confidence: 0.95
+
+    - id: pm-composer
+      manager: composer
+      language: [php]
+      markers:
+        lockfiles: [composer.lock]
+        configs: [composer.json]
+      install_command: "composer install"
+      ci_command: "composer install --no-interaction --prefer-dist"
+      confidence: 0.95
+
+    - id: pm-pub
+      manager: pub
+      language: [dart]
+      markers:
+        lockfiles: [pubspec.lock]
+        configs: [pubspec.yaml]
+      install_command: "dart pub get"
+      ci_command: "dart pub get"
+      confidence: 0.95
+
+    - id: pm-mix
+      manager: mix
+      language: [elixir]
+      markers:
+        lockfiles: [mix.lock]
+        configs: [mix.exs]
+      install_command: "mix deps.get"
+      confidence: 0.95
+
+    - id: pm-sbt
+      manager: sbt
+      language: [scala]
+      markers:
+        lockfiles: []
+        configs: [build.sbt, project/build.properties]
+      install_command: "sbt compile"
+      confidence: 0.95
+
+    - id: pm-nuget
+      manager: nuget
+      language: [csharp]
+      markers:
+        lockfiles: [packages.lock.json]
+        configs: [nuget.config, "*.csproj"]
+      install_command: "dotnet restore"
+      ci_command: "dotnet restore --locked-mode"
+      confidence: 0.95
+
+    - id: pm-swift-pm
+      manager: swift-package-manager
+      language: [swift]
+      markers:
+        lockfiles: [Package.resolved]
+        configs: [Package.swift]
+      install_command: "swift package resolve"
+      confidence: 0.95
+
+    - id: pm-zig
+      manager: zig-build
+      language: [zig]
+      markers:
+        lockfiles: []
+        configs: [build.zig, build.zig.zon]
+      install_command: "zig build"
+      confidence: 0.90
+
+# ------------------------------------------------------------------------------
+# 4. Monorepo Detection
+# ------------------------------------------------------------------------------
+monorepo_detection:
+  rules:
+    - id: mono-lerna
+      tool: lerna
+      markers: [lerna.json]
+      ecosystem: npm
+      confidence: 0.95
+
+    - id: mono-nx
+      tool: nx
+      markers: [nx.json, project.json]
+      ecosystem: npm
+      workspace_layout: "apps/ and libs/ directories"
+      confidence: 0.98
+
+    - id: mono-turborepo
+      tool: turborepo
+      markers: [turbo.json]
+      ecosystem: npm
+      workspace_layout: "apps/ and packages/ directories"
+      confidence: 0.98
+
+    - id: mono-pnpm-workspaces
+      tool: pnpm-workspaces
+      markers: [pnpm-workspace.yaml]
+      ecosystem: pnpm
+      confidence: 0.95
+
+    - id: mono-npm-workspaces
+      tool: npm-workspaces
+      markers: []
+      detection_rules:
+        - type: file_content_match
+          file: package.json
+          patterns: ["\"workspaces\""]
+      ecosystem: npm
+      confidence: 0.85
+
+    - id: mono-yarn-workspaces
+      tool: yarn-workspaces
+      markers: []
+      detection_rules:
+        - type: file_content_match
+          file: package.json
+          patterns: ["\"workspaces\""]
+        - type: file_exists
+          paths: [yarn.lock]
+      ecosystem: yarn
+      confidence: 0.85
+
+    - id: mono-rush
+      tool: rush
+      markers: [rush.json]
+      ecosystem: npm
+      confidence: 0.95
+
+    - id: mono-pants
+      tool: pants
+      markers: [pants.toml, BUILD]
+      ecosystem: polyglot
+      confidence: 0.95
+
+    - id: mono-bazel
+      tool: bazel
+      markers: [WORKSPACE, WORKSPACE.bazel, MODULE.bazel, BUILD.bazel]
+      ecosystem: polyglot
+      confidence: 0.98
+
+    - id: mono-cargo-workspaces
+      tool: cargo-workspaces
+      markers: []
+      detection_rules:
+        - type: file_content_match
+          file: Cargo.toml
+          patterns: ["[workspace]"]
+      ecosystem: rust
+      confidence: 0.95
+
+    - id: mono-go-workspaces
+      tool: go-workspaces
+      markers: [go.work]
+      ecosystem: go
+      confidence: 0.95
+
+  # Heuristic fallbacks when no explicit tool marker is found
+  heuristic_signals:
+    - signal: "Multiple package.json files at depth ≤ 2"
+      suggests: monorepo
+      confidence: 0.60
+    - signal: "Multiple go.mod files"
+      suggests: monorepo
+      confidence: 0.60
+    - signal: "apps/ + packages/ directory structure"
+      suggests: monorepo
+      confidence: 0.70
+
+# ------------------------------------------------------------------------------
+# 5. Project Type Classification
+# ------------------------------------------------------------------------------
+project_type_classification:
+  types:
+    - id: type-frontend
+      type: frontend
+      signals:
+        - "Framework is React/Vue/Angular/Svelte/Astro without server routes"
+        - "Only client-side entry points (index.html)"
+        - "Build output is static assets (dist/, build/)"
+        - "No server-side code or API routes"
+      typical_commands:
+        dev: "npm run dev"
+        build: "npm run build"
+        test: "npm test"
+
+    - id: type-backend
+      type: backend
+      signals:
+        - "Framework is Express/NestJS/Fastify/Django/Flask/FastAPI/Gin/Spring/Rails"
+        - "Has server entry point (server.ts, main.go, app.py)"
+        - "Database connections present"
+        - "API routes defined"
+        - "No frontend build pipeline"
+      typical_commands:
+        dev: "npm run dev / python manage.py runserver / go run ."
+        build: "npm run build / go build"
+        test: "npm test / pytest / go test ./..."
+
+    - id: type-fullstack
+      type: fullstack
+      signals:
+        - "Framework is Next.js/Nuxt/SvelteKit/Remix (SSR + client)"
+        - "Both frontend and backend code present"
+        - "API routes alongside UI components"
+        - "Monorepo with separate frontend/backend packages"
+      typical_commands:
+        dev: "npm run dev"
+        build: "npm run build"
+        test: "npm test"
+
+    - id: type-library
+      type: library
+      signals:
+        - "package.json has main/module/exports fields"
+        - "Cargo.toml has [lib] section"
+        - "pyproject.toml configured for distribution"
+        - "No application entry point"
+        - "tsconfig.json with declaration: true"
+        - "Rollup/tsup/unbuild config present"
+      typical_commands:
+        dev: "npm run dev"
+        build: "npm run build / cargo build / python -m build"
+        test: "npm test / cargo test / pytest"
+
+    - id: type-cli
+      type: cli
+      signals:
+        - "package.json has bin field"
+        - "Cargo.toml has [[bin]] section"
+        - "pyproject.toml has [project.scripts]"
+        - "go main package with flag/cobra/cli usage"
+        - "argparse, click, typer imports (Python)"
+      typical_commands:
+        dev: "node ./src/cli.js"
+        build: "npm run build / go build / cargo build"
+        test: "npm test / go test ./... / pytest"
+
+    - id: type-monorepo
+      type: monorepo
+      signals:
+        - "Monorepo tool detected (see monorepo_detection)"
+        - "Multiple package directories"
+      note: "A monorepo is typically combined with other types (frontend + backend)"
+
+    - id: type-mobile
+      type: mobile
+      signals:
+        - "React Native (react-native in dependencies)"
+        - "Flutter (pubspec.yaml with flutter SDK)"
+        - "Expo (expo in dependencies, app.json)"
+        - "iOS project (.xcodeproj, .xcworkspace)"
+        - "Android project (AndroidManifest.xml, build.gradle with android plugin)"
+        - "Capacitor (@capacitor/core)"
+        - "Ionic (@ionic/angular, @ionic/react, @ionic/vue)"
+      typical_commands:
+        dev: "npx expo start / flutter run / npx react-native start"
+        build: "eas build / flutter build"
+        test: "jest / flutter test"
+
+    - id: type-desktop
+      type: desktop
+      signals:
+        - "Electron (electron in dependencies)"
+        - "Tauri (@tauri-apps/api, tauri.conf.json)"
+        - "CEF / Chromium Embedded Framework"
+        - "Qt (.pro files, CMakeLists.txt with Qt)"
+        - "WPF/WinUI (.xaml files, *.csproj with WPF)"
+        - "SwiftUI (macOS target in .xcodeproj)"
+      typical_commands:
+        dev: "npm run dev / tauri dev / electron ."
+        build: "electron-builder / tauri build"
+        test: "npm test"

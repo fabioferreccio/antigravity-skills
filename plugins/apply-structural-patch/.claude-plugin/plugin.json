@@ -1,0 +1,17 @@
+{
+  "name": "apply-structural-patch",
+  "version": "1.0.0",
+  "description": "Apply surgical code changes using unified Git patch format instead of rewriting the whole file in the chat. Drastically reduces output tokens and avoids syntax truncations.",
+  "author": {
+    "name": "AI Assistant"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/.agents/skills/apply-structural-patch",
+  "repository": "https://github.com/fabioferreccio/antigravity-skills.git",
+  "license": "MIT",
+  "keywords": [
+    "patch",
+    "git",
+    "token-optimization",
+    "surgical-edit"
+  ]
+}

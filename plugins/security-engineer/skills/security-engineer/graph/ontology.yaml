@@ -1,0 +1,92 @@
+domain: application-security
+
+entities:
+  vulnerability:
+    attributes:
+      - name
+      - cwe_id
+      - cvss_score
+      - severity
+      - attack_vector
+    relationships:
+      - maps_to: owasp_category
+      - classified_by: cvss_metric
+      - mitigated_by: control
+
+  attack_surface:
+    types:
+      - code
+      - configuration
+      - iam
+      - pipeline
+      - secrets
+      - network
+      - dependencies
+      - logs
+    relationships:
+      - exposes: vulnerability
+      - protected_by: control
+
+  control:
+    types:
+      - preventive      # Input validation, parameterized queries
+      - detective        # Logging, monitoring, SAST
+      - corrective       # Patch, rotate secret, revoke token
+      - compensating     # WAF when patching is slow
+    relationships:
+      - reduces_risk_of: vulnerability
+      - required_by: standard
+
+  standard:
+    instances:
+      - name: OWASP Top 10 2021
+        url: https://owasp.org/www-project-top-ten/
+      - name: CIS Benchmarks
+        url: https://www.cisecurity.org/cis-benchmarks
+      - name: CVSS v3.1
+        url: https://www.first.org/cvss/calculator/3.1
+      - name: NIST CSF 2.0
+        url: https://www.nist.gov/cyberframework
+      - name: OWASP Kubernetes Top 10
+        url: https://owasp.org/www-project-kubernetes-top-ten/
+
+  threat_actor:
+    types:
+      - external_attacker
+      - malicious_insider
+      - supply_chain_actor
+      - automated_scanner
+    attributes:
+      - motivation
+      - capability
+      - access_level
+
+  stride_category:
+    values:
+      - S: Spoofing         # Impersonating another identity
+      - T: Tampering        # Modifying data or code
+      - R: Repudiation      # Denying actions took place
+      - I: Information_Disclosure  # Exposing data to unauthorized parties
+      - D: Denial_of_Service       # Making system unavailable
+      - E: Elevation_of_Privilege  # Gaining unauthorized permissions
+
+  severity_level:
+    values:
+      - CRITICAL: { cvss_range: "9.0-10.0", priority: P0 }
+      - HIGH:     { cvss_range: "7.0-8.9",  priority: P1 }
+      - MEDIUM:   { cvss_range: "4.0-6.9",  priority: P2 }
+      - LOW:      { cvss_range: "0.1-3.9",  priority: P3 }
+      - INFO:     { cvss_range: "0.0",      priority: none }
+
+relationships:
+  - SQL_injection IS_A injection_vulnerability
+  - injection_vulnerability BELONGS_TO OWASP_A03
+  - injection_vulnerability MITIGATED_BY parameterized_queries
+  - JWT_alg_none IS_A auth_failure
+  - auth_failure BELONGS_TO OWASP_A07
+  - hardcoded_secret IS_A cryptographic_failure
+  - cryptographic_failure BELONGS_TO OWASP_A02
+  - cluster_admin_binding IS_A privilege_escalation
+  - privilege_escalation BELONGS_TO OWASP_K03
+  - cve_in_dependency IS_A supply_chain_risk
+  - supply_chain_risk BELONGS_TO OWASP_A06

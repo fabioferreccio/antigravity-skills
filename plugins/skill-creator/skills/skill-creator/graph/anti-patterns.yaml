@@ -1,0 +1,67 @@
+# Anti-Patterns
+# What NOT to do when creating skills
+
+creation_anti_patterns:
+
+  monolith_skill:
+    description: "Putting everything in a single SKILL.md"
+    symptom: "SKILL.md > 200 lines"
+    fix: "Split into modules: references/, graph/, templates/"
+    severity: high
+
+  vague_trigger:
+    description: "Trigger too generic, causes false activations"
+    symptom: "Skill activates on unrelated requests"
+    examples:
+      - bad: "help me with code"
+      - good: "validate SQL schema naming conventions"
+    fix: "Use domain-specific keywords in triggers"
+    severity: critical
+
+  prose_instructions:
+    description: "Long paragraphs instead of actionable steps"
+    symptom: "Instructions read like an essay"
+    fix: "Replace with numbered steps, decision trees, or checklists"
+    severity: medium
+
+  missing_edge_cases:
+    description: "No handling for unexpected inputs"
+    symptom: "Skill fails silently or produces garbage"
+    fix: "Add edge case handling and escalation logic"
+    severity: high
+
+  scope_creep:
+    description: "Skill tries to do too many things"
+    symptom: "Description uses 'and' more than twice"
+    fix: "Split into Multi-Skill Suite or Orchestrator"
+    severity: high
+
+  hardcoded_paths:
+    description: "Absolute paths baked into instructions"
+    symptom: "Skill breaks on different machines"
+    fix: "Use relative paths or ~ for home directory"
+    severity: medium
+
+  no_exit_condition:
+    description: "Skill runs indefinitely without completion criteria"
+    symptom: "Agent keeps generating without stopping"
+    fix: "Define clear completion criteria in Output Format"
+    severity: critical
+
+  copy_paste_security:
+    description: "Security section copied without thought"
+    symptom: "read-write filesystem for a read-only skill"
+    fix: "Match security profile to actual tool usage"
+    severity: high
+
+  empty_tests:
+    description: "Tests directory exists but tests are trivial"
+    symptom: "test-01.md only checks if files exist"
+    fix: "Use Evaluator agent to generate meaningful test prompts"
+    severity: medium
+
+  token_waste:
+    description: "Repeated information across sections"
+    symptom: "Same concept explained in Goal, Instructions, and Examples"
+    fix: "State once in the most relevant section, reference elsewhere"
+    severity: medium

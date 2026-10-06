@@ -1,0 +1,20 @@
+{
+  "name": "spec-driven-development",
+  "version": "1.1.0",
+  "description": "Guide the development team through the rigorous Spec-Driven Development (SDD) workflow, creating and maintaining specifications, plans, and tasks as the single source of truth before any code generation, eliminating \"vibe coding\".",
+  "author": {
+    "name": "Fábio Ferreccio"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/.agents/skills/spec-driven-development",
+  "repository": "https://github.com/fabioferreccio/antigravity-skills.git",
+  "license": "MIT",
+  "keywords": [
+    "sdd",
+    "specification",
+    "architecture",
+    "workflow",
+    "speckit",
+    "retrospective",
+    "pull-request"
+  ]
+}

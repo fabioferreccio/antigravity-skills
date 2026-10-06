@@ -36,7 +36,7 @@ jobs:
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet .agents/catalog.json; then
+          if git diff --quiet .agents/catalog.json .claude-plugin/marketplace.json plugins/; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT
@@ -47,6 +47,6 @@ jobs:
         run: |
           git config user.name "Fábio Ferreccio"
           git config user.email "fabioferreccio@hotmail.com"
-          git add .agents/catalog.json
-          git commit -m "chore(catalog): sync catalog.json [skip ci]"
+          git add .agents/catalog.json .claude-plugin/ plugins/
+          git commit -m "chore(catalog): sync catalog and marketplace [skip ci]"
           git push

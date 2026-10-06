@@ -1,0 +1,114 @@
+# Product Manager Skill — Workflow Graph
+
+phases:
+  observe:
+    order: 1
+    inputs: [user_input]
+    outputs: [pain_points, bottlenecks, financial_impact, opportunities]
+    actions:
+      - parse_input_type  # tickets, feedback, metrics, roadmap, RFC
+      - extract_pain_points
+      - identify_bottlenecks
+      - quantify_financial_impact
+      - map_retention_opportunities
+    input_types:
+      - jira_ticket: "Structured ticket with title, description, labels"
+      - linear_ticket: "Structured ticket with priority, project"
+      - customer_feedback: "Free-text from NPS, support, interviews"
+      - analytics_data: "Metrics, funnels, cohort data"
+      - crash_report: "Error logs, stack traces, frequency"
+      - roadmap_item: "Strategic initiative from leadership"
+      - rfc: "Technical proposal document"
+      - backlog_batch: "Multiple items to triage"
+    transitions:
+      - to: reflect
+        condition: always
+
+  reflect:
+    order: 2
+    inputs: [pain_points, bottlenecks, financial_impact]
+    outputs: [analysis, priority_scores, recommendation]
+    actions:
+      - apply_frameworks  # → references/frameworks.md
+      - challenge_assumptions
+      - detect_scope_inflation
+      - check_root_cause
+      - estimate_roi
+      - identify_hidden_tech_debt
+    challenge_questions:
+      - "Isso resolve a causa raiz ou apenas o sintoma?"
+      - "Existe uma solução mais simples?"
+      - "O usuário realmente precisa disso?"
+      - "Existe débito técnico escondido?"
+      - "Qual é o custo de oportunidade?"
+      - "E se não fizermos nada?"
+    transitions:
+      - to: act
+        condition: analysis_complete
+      - to: escalation
+        condition: insufficient_data
+
+  act:
+    order: 3
+    inputs: [analysis, priority_scores]
+    outputs: [artifacts]
+    actions:
+      - select_artifact_type  # PRD, User Story, MVP, ADR, A/B, backlog
+      - generate_artifact  # → references/templates.md
+      - validate_mandatory_sections
+      - ensure_hypothesis_present
+      - ensure_metrics_present
+      - ensure_rollback_present
+    mandatory_artifact_sections:
+      - problem
+      - hypothesis
+      - expected_impact
+      - metrics
+      - risks
+      - rollback
+      - dependencies
+    transitions:
+      - to: evaluate
+        condition: artifact_generated
+
+  evaluate:
+    order: 4
+    inputs: [artifacts, analysis]
+    outputs: [verdict]
+    actions:
+      - validate_impact_vs_cost
+      - estimate_churn_reduction
+      - estimate_operational_impact
+      - identify_regressions
+      - identify_complexity_increase
+      - calculate_maintenance_cost
+    decision_rules:
+      - if: "impact > cost AND risk is manageable"
+        then: "go"
+      - if: "impact ≈ cost OR high uncertainty"
+        then: "investigate_more"
+      - if: "impact < cost OR unmanageable risk"
+        then: "reject"
+    transitions:
+      - to: output
+        condition: always
+
+  escalation:
+    inputs: [missing_data_list]
+    outputs: [questions_for_user]
+    actions:
+      - list_missing_information
+      - suggest_data_sources
+      - ask_specific_questions
+    transitions:
+      - to: reflect
+        condition: user_provides_data
+
+  output:
+    inputs: [verdict, artifacts]
+    outputs: [structured_response]
+    actions:
+      - format_10_section_output
+      - include_next_steps
+      - attach_artifacts
+    transitions: []

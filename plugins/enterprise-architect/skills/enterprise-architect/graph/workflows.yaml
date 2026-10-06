@@ -1,0 +1,113 @@
+# Agent Execution Workflows
+# State machine for the Enterprise Architect Agent
+
+phases:
+
+  observe:
+    id: phase_1
+    name: "OBSERVE"
+    entry_conditions:
+      - "user provides artifact (C4, ADR, API spec, pipeline, etc.)"
+      - "user describes a system, problem, or initiative"
+    actions:
+      - parse_artifact_type # → references/artifacts.md
+      - extract_topology
+      - map_dependencies
+      - identify_teams_and_ownership
+      - flag_immediate_red_flags
+    outputs:
+      - dependency_map
+      - ownership_map
+      - initial_red_flag_list
+    transitions:
+      always: phase_2
+
+  reflect:
+    id: phase_2
+    name: "REFLECT"
+    entry_conditions:
+      - phase_1 completed
+    actions:
+      - apply_coupling_heuristics # → graph/heuristics.yaml
+      - apply_cohesion_heuristics
+      - check_bounded_context_violations
+      - assess_blast_radius
+      - evaluate_scalability_dimensions
+      - detect_anti_patterns # → references/anti-patterns.md
+      - check_governance_triggers
+    outputs:
+      - coupling_analysis
+      - anti_pattern_findings
+      - blast_radius_assessment
+      - governance_trigger_list
+    transitions:
+      if_mode_identified: phase_3
+      if_mode_unclear: ask_clarification
+
+  act:
+    id: phase_3
+    name: "ACT"
+    entry_conditions:
+      - phase_2 completed
+      - execution_mode determined
+    mode_routing:
+      adr_review:
+        trigger: ["revisar ADR", "avaliar decisão arquitetural"]
+        template: "references/templates.md#adr"
+      topology_analysis:
+        trigger: ["analisar topologia", "C4", "mapa de dependências"]
+        template: "references/templates.md#governance-report"
+      boundary_validation:
+        trigger: ["bounded context", "validar domínio", "violação de domínio"]
+        template: "references/templates.md#governance-report"
+      anti_pattern_audit:
+        trigger: ["identificar anti-patterns", "auditar arquitetura"]
+        template: "references/templates.md#anti-pattern-report"
+      event_design:
+        trigger: ["event-driven", "kafka", "fila", "evento de domínio"]
+        template: "references/templates.md#governance-report"
+      decomposition:
+        trigger: ["decompor", "monolito", "strangler fig", "migrar serviço"]
+        template: "references/templates.md#decomposition"
+      governance_report:
+        trigger: ["revisar arquitetura", "avaliar impacto arquitetural"]
+        template: "references/templates.md#governance-report"
+    outputs:
+      - structured_output # using selected template
+    transitions:
+      always: phase_4
+
+  evaluate:
+    id: phase_4
+    name: "EVALUATE"
+    entry_conditions:
+      - phase_3 completed
+    validation_checks:
+      - coupling_reduced_or_justified: true
+      - complexity_not_increased: true
+      - resilience_improved_or_maintained: true
+      - governance_recommendation_included: true
+      - blast_radius_assessed: true
+      - rollback_plan_present: true
+    on_validation_failure:
+      action: revise_phase_3
+      max_iterations: 2
+    on_validation_success:
+      action: present_output
+    outputs:
+      - final_validated_output
+      - governance_checklist
+
+escalation:
+  insufficient_context:
+    trigger: "required artifact not provided"
+    action:
+      - stop_generation
+      - list_missing_artifacts
+      - ask_specific_questions
+      - suggest_data_sources
+
+  governance_escalation:
+    trigger: "governance_trigger_list is not empty"
+    required_action: "include ADR creation recommendation in output"
+    board_escalation_trigger: "blast_radius == critical OR existing_adr_violated"

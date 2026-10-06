@@ -1,0 +1,38 @@
+---
+description: "{{RULE_DESCRIPTION}}"
+globs: "{{GLOB_PATTERNS}}"
+alwaysApply: {{ALWAYS_APPLY}}
+---
+
+<!-- Cursor rule file — .cursor/rules/*.mdc
+     YAML frontmatter is required. Body uses markdown.
+     Use <example> blocks to show correct/incorrect patterns. -->
+
+# {{RULE_TITLE}}
+
+## Context
+
+{{CONTEXT}}
+<!-- When this rule should be applied. e.g.:
+     - "When editing React components"
+     - "When working with database queries" -->
+
+## Requirements
+
+{{REQUIREMENTS}}
+<!-- Bulleted list of actionable rules. e.g.:
+     - Use TypeScript strict mode
+     - All components must have PropTypes or TS interfaces
+     - Use `const` by default, `let` only when reassignment is needed -->
+
+## Examples
+
+<example>
+{{GOOD_EXAMPLE}}
+</example>
+<!-- Show the correct pattern. Include a brief comment explaining why. -->
+
+<example type="invalid">
+{{BAD_EXAMPLE}}
+</example>
+<!-- Show the anti-pattern. Include a brief comment explaining the issue. -->

@@ -1,0 +1,20 @@
+{
+  "name": "enterprise-architect",
+  "version": "1.0.0",
+  "description": "Enterprise Architect Agent responsible for preserving architectural integrity, scalability, and corporate governance. Activates when evaluating new solutions, reviewing ADRs, identifying anti-patterns, validating domain boundaries, or assessing systemic risks across distributed systems.",
+  "author": {
+    "name": "Fábio Ferreccio"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/.agents/skills/enterprise-architect",
+  "repository": "https://github.com/fabioferreccio/antigravity-skills.git",
+  "license": "MIT",
+  "keywords": [
+    "architecture",
+    "governance",
+    "enterprise",
+    "systems-thinking",
+    "adr",
+    "c4",
+    "domain-design"
+  ]
+}

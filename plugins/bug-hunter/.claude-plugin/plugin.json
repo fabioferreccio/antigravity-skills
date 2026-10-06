@@ -1,0 +1,20 @@
+{
+  "name": "bug-hunter",
+  "version": "1.2.0",
+  "description": "Supreme autonomous skill that performs a comprehensive, multi-agent codebase sweep to identify concrete bugs AND structurally audit existing tests. It uses an adversarial verification process to refute false positives for bugs, and evaluates test effectiveness, fragility, and coverage gaps, generating a highly detailed, dual-dashboard markdown report.",
+  "author": {
+    "name": "Fábio Ferreccio"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/.agents/skills/bug-hunter",
+  "repository": "https://github.com/fabioferreccio/antigravity-skills.git",
+  "license": "MIT",
+  "keywords": [
+    "auditing",
+    "bug-hunting",
+    "test-quality",
+    "multi-agent",
+    "adversarial-review",
+    "quality-assurance",
+    "cybersecurity"
+  ]
+}

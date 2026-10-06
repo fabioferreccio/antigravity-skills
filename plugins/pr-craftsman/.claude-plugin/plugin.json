@@ -1,0 +1,19 @@
+{
+  "name": "pr-craftsman",
+  "version": "1.0.0",
+  "description": "Supreme Pull Request engineering skill that analyzes changesets to calculate operational blast radius, classifies decision reversibility (One-Way vs. Two-Way Doors), produces concise visual Mermaid architectural diagrams, and composes high-signal, human-friendly PR descriptions that eliminate reviewer fatigue.",
+  "author": {
+    "name": "Fábio Ferreccio"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/.agents/skills/pr-craftsman",
+  "repository": "https://github.com/fabioferreccio/antigravity-skills.git",
+  "license": "MIT",
+  "keywords": [
+    "pull-request",
+    "blast-radius",
+    "one-way-door",
+    "mermaid",
+    "code-review",
+    "supreme"
+  ]
+}

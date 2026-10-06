@@ -1,0 +1,19 @@
+{
+  "name": "product-manager",
+  "version": "1.0.0",
+  "description": "Guides product discovery, prioritization, and strategy as a Senior Product Manager Agent. Synthesizes user pain, business impact, technical feasibility, and operational cost to maximize value and eliminate waste.",
+  "author": {
+    "name": "Fábio Ferreccio"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/.agents/skills/product-manager",
+  "repository": "https://github.com/fabioferreccio/antigravity-skills.git",
+  "license": "MIT",
+  "keywords": [
+    "product-management",
+    "discovery",
+    "prioritization",
+    "strategy",
+    "prd",
+    "backlog"
+  ]
+}

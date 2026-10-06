@@ -1,0 +1,97 @@
+# Skill Type Ontology
+# Taxonomy of skill types and their relationships
+
+skill_types:
+  single_skill:
+    parent: null
+    characteristics:
+      - one_responsibility
+      - one_activation
+      - one_output
+    compatible_levels: [1, 2, 3]
+
+  multi_skill_suite:
+    parent: null
+    characteristics:
+      - shared_context
+      - independent_invocation
+      - related_capabilities
+    compatible_levels: [3, 4, 5]
+
+  orchestrator:
+    parent: null
+    characteristics:
+      - delegates_to_children
+      - workflow_coordination
+      - state_management
+    compatible_levels: [4, 5]
+    children:
+      - single_skill
+      - generator
+      - reviewer
+
+  static_knowledge:
+    parent: null
+    characteristics:
+      - no_execution_logic
+      - reference_material
+      - on_demand_loading
+    compatible_levels: [1, 2]
+
+  dynamic_updating:
+    parent: null
+    characteristics:
+      - tracks_state
+      - adapts_behavior
+      - project_evolution
+    compatible_levels: [3, 4, 5]
+
+  reviewer:
+    parent: null
+    characteristics:
+      - reads_existing_work
+      - evaluates_criteria
+      - reports_findings
+    compatible_levels: [2, 3, 4]
+
+  generator:
+    parent: null
+    characteristics:
+      - produces_artifacts
+      - template_driven
+      - user_input_required
+    compatible_levels: [2, 3, 4]
+
+  autonomous_operator:
+    parent: null
+    characteristics:
+      - end_to_end
+      - minimal_human_intervention
+      - self_monitoring
+    compatible_levels: [4, 5]
+
+# Relationships between types
+relationships:
+  - from: orchestrator
+    to: single_skill
+    type: delegates_to
+
+  - from: orchestrator
+    to: generator
+    type: delegates_to
+
+  - from: orchestrator
+    to: reviewer
+    type: delegates_to
+
+  - from: multi_skill_suite
+    to: single_skill
+    type: contains
+
+  - from: dynamic_updating
+    to: static_knowledge
+    type: evolves_from
+
+  - from: autonomous_operator
+    to: orchestrator
+    type: extends

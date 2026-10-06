@@ -1,0 +1,87 @@
+# Domain Ontology
+# Core concepts and relationships for enterprise architecture reasoning
+
+entities:
+
+  system:
+    definition: "Any deployable unit that provides capabilities to external actors"
+    attributes: [name, owner_team, technology_stack, deployment_model]
+    relationships:
+      depends_on: system
+      exposes: api_contract
+      produces: event
+      consumes: event
+      owns: data_store
+
+  bounded_context:
+    definition: "A logical boundary within which a domain model is consistently defined"
+    attributes: [name, owner_team, ubiquitous_language, data_entities]
+    relationships:
+      implemented_by: system
+      relates_to: bounded_context # via context map relationships
+      publishes: domain_event
+      subscribes_to: domain_event
+
+  api_contract:
+    definition: "A formal, versioned interface definition (REST, gRPC, GraphQL, AsyncAPI)"
+    attributes: [version, protocol, consumers, breaking_change_policy, schema_location]
+    relationships:
+      exposed_by: system
+      consumed_by: [system]
+      governed_by: api_policy
+
+  domain_event:
+    definition: "An immutable record of something that happened in a bounded context"
+    attributes: [name, producer, schema_version, ordering_guarantee, dlq_configured]
+    relationships:
+      produced_by: bounded_context
+      consumed_by: [bounded_context]
+      registered_in: schema_registry
+
+  data_store:
+    definition: "Any persistent storage mechanism owned by a service"
+    attributes: [type, owner_service, pii_contains, backup_policy, encryption_at_rest]
+    relationships:
+      owned_by: system
+      accessed_by: system # violation if accessed_by != owned_by
+
+  adr:
+    definition: "Architecture Decision Record — formal documentation of a significant decision"
+    attributes: [id, status, date, deciders, context, decision, consequences]
+    relationships:
+      governs: [system, api_contract, domain_event, data_store]
+      supersedes: adr
+      referenced_by: [system]
+
+relationships:
+
+  coupling_types:
+    data_coupling: "Services share only primitive data types — best"
+    stamp_coupling: "Services share complex data structures — acceptable"
+    control_coupling: "One service controls another's flow — avoid"
+    common_coupling: "Services share global state or database — red flag"
+    content_coupling: "One service accesses internals of another — critical violation"
+
+  context_map_patterns:
+    partnership: "Two bounded contexts collaborate with mutual synchronization"
+    shared_kernel: "Two contexts share a subset of the domain model — track carefully"
+    customer_supplier: "One context depends on another as a supplier"
+    conformist: "Downstream adopts upstream model with no negotiation"
+    anti_corruption_layer: "Translation layer protects downstream from upstream model"
+    open_host_service: "Upstream publishes a stable, well-documented protocol"
+    published_language: "Shared well-documented model for integration"
+    separate_ways: "No integration — each context evolves independently"
+
+governance:
+
+  decision_authority:
+    team_level: "Decisions within a single service, no external impact"
+    domain_level: "Decisions affecting multiple services within a domain"
+    architecture_board: "Decisions affecting multiple domains or introducing new SPOFs"
+    executive: "Decisions with compliance, legal, or company-wide financial impact"
+
+  adr_lifecycle:
+    proposed: "Decision is being discussed — not yet binding"
+    accepted: "Decision is binding — must be followed"
+    deprecated: "Decision is no longer recommended — migration expected"
+    superseded: "Replaced by a newer ADR — old ADR must link to new one"

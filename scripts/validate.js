@@ -233,6 +233,48 @@ function validateCatalog(skills) {
   }
 }
 
+// ─── Validate Claude Marketplace ────────────────────────────────
+function validateMarketplace(skills) {
+  const marketplacePath = join(ROOT, '.claude-plugin', 'marketplace.json');
+  if (!existsSync(marketplacePath)) {
+    fail('.claude-plugin/marketplace.json does NOT exist — run `npm run catalog:sync`');
+    return;
+  }
+
+  try {
+    const marketplace = JSON.parse(readFileSync(marketplacePath, 'utf8'));
+
+    if (!marketplace.plugins || !Array.isArray(marketplace.plugins)) {
+      fail('marketplace.json has invalid structure (missing plugins array)');
+      return;
+    }
+
+    for (const skill of skills) {
+      const inMarketplace = marketplace.plugins.some((p) => p.name === skill);
+      if (inMarketplace) {
+        pass(`${skill} is listed in .claude-plugin/marketplace.json`);
+      } else {
+        warn(`${skill} is NOT in marketplace.json — run \`npm run catalog:sync\``);
+      }
+
+      // Check plugin directory exists
+      const pluginDir = join(ROOT, 'plugins', skill);
+      const pluginManifest = join(pluginDir, '.claude-plugin', 'plugin.json');
+      const pluginSkill = join(pluginDir, 'skills', skill, 'SKILL.md');
+      if (!existsSync(pluginManifest)) {
+        fail(`Plugin manifest missing for ${skill}: ${pluginManifest}`);
+      }
+      if (!existsSync(pluginSkill)) {
+        fail(`Plugin skill missing for ${skill}: ${pluginSkill}`);
+      }
+    }
+
+    pass(`.claude-plugin/marketplace.json is valid with ${marketplace.plugins.length} plugins`);
+  } catch (err) {
+    fail(`marketplace.json parse error: ${err.message}`);
+  }
+}
+
 // ─── Main ───────────────────────────────────────────────────────
 console.log('\n  ══════════════════════════════════════════════');
 console.log('  🔍 Antigravity Skills — Validation Suite');
@@ -268,8 +310,9 @@ if (skills.length === 0) {
   }
 
   if (flags.catalog) {
-    console.log('  ── Catalog Validation ────────────────────────\n');
+    console.log('  ── Catalog & Marketplace Validation ──────────\n');
     validateCatalog(skills);
+    validateMarketplace(skills);
     console.log('');
   }
 }

@@ -1,0 +1,20 @@
+{
+  "name": "security-engineer",
+  "version": "1.0.0",
+  "description": "Security Engineer Agent specialized in Security by Design and defense in depth. Identifies, prevents, and mitigates vulnerabilities across code, infrastructure, IAM, pipelines, secrets, and dependencies before they become incidents.",
+  "author": {
+    "name": "Antigravity Skill Creator"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/.agents/skills/security-engineer",
+  "repository": "https://github.com/fabioferreccio/antigravity-skills.git",
+  "license": "MIT",
+  "keywords": [
+    "security",
+    "appsec",
+    "threat-modeling",
+    "vulnerability",
+    "devsecops",
+    "owasp",
+    "cve"
+  ]
+}

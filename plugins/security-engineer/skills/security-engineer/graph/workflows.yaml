@@ -1,0 +1,123 @@
+workflows:
+  main:
+    name: Security Engineer Agentic Cycle
+    start: observe
+    states:
+
+      observe:
+        description: "Ingest all available attack surface context"
+        inputs:
+          - source_code
+          - config_files
+          - iam_policies
+          - pipeline_definitions
+          - dependency_manifests
+          - env_vars
+          - log_samples
+        next: reflect
+        on_missing_context:
+          action: ask_user
+          max_questions: 2
+          escalate_if_no_response: true
+
+      reflect:
+        description: "Ask critical security questions before acting"
+        checklist:
+          - privilege_escalation_possible
+          - unnecessary_exposure_present
+          - vulnerable_dependencies_found
+          - lateral_movement_risk
+          - secrets_exposed
+          - auth_weaknesses_present
+          - crypto_failures
+          - missing_security_headers
+          - input_validation_gaps
+          - audit_logging_complete
+        decision:
+          any_yes: proceed_to_action
+          all_no: produce_green_summary
+
+      act:
+        description: "Execute security analysis based on context"
+        actions:
+          - id: threat_model
+            trigger: "new architecture | new endpoint | new data flow"
+            methodology: STRIDE
+          - id: permission_review
+            trigger: "IAM | RBAC | service account | policy"
+          - id: cve_identification
+            trigger: "package.json | requirements.txt | go.mod | Gemfile | Cargo.toml"
+          - id: auth_review
+            trigger: "login | token | session | JWT | OAuth | OIDC"
+          - id: crypto_review
+            trigger: "encryption | hash | key | certificate | TLS"
+          - id: header_audit
+            trigger: "web app | API | HTTP | CORS | CSP | HSTS"
+          - id: secrets_scan
+            trigger: "secret | API key | token | password | .env | git history"
+          - id: isolation_validation
+            trigger: "network policy | container | tenant | namespace | VPC"
+          - id: input_validation_audit
+            trigger: "form | query param | upload | user input | request body"
+          - id: supply_chain_audit
+            trigger: "third-party | CDN | npm | pip | docker | build"
+        next: evaluate
+
+      evaluate:
+        description: "Validate quality and completeness of findings"
+        criteria:
+          - every_finding_has_evidence: true
+          - no_finding_without_mitigation: true
+          - severity_backed_by_cvss: true
+          - priority_assigned: true
+          - standard_referenced: true
+        on_failure: revise_findings
+        on_success: produce_output
+
+      produce_output:
+        description: "Format and deliver structured security report"
+        format:
+          per_finding:
+            - vulnerability
+            - severity
+            - cvss_score
+            - attack_vector
+            - impact
+            - evidence
+            - mitigation
+            - priority
+            - standard
+          summary:
+            - severity_counts
+            - overall_risk_posture
+            - next_action
+        next: done
+
+      escalate:
+        description: "Immediate escalation for P0 findings"
+        trigger_conditions:
+          - secrets_in_source_or_git: true
+          - active_exploitation_signs: true
+          - unauthenticated_rce: true
+          - wildcard_admin_permissions: true
+          - cardholder_data_plaintext: true
+          - critical_cve_in_prod: true
+        actions:
+          - alert_user_immediately
+          - mark_all_affected_as_P0
+          - recommend_deployment_block
+        next: produce_output
+
+      done:
+        description: "Report complete. Agent stops."
+        terminal: true
+
+  refusal:
+    name: Safety Refusal Protocol
+    trigger_conditions:
+      - active_exploit_requested: true
+      - secrets_print_requested: true
+      - destructive_command_requested: true
+    action: refuse_and_explain
+    output: "Explain why the action is refused. Suggest safe alternative (pen test engagement, rotation procedure)."
+    next: done

@@ -1,0 +1,112 @@
+# Skill Creation Workflow Graph
+# Defines the phase orchestration and decision points
+
+phases:
+  discovery:
+    order: 1
+    inputs: [user_request]
+    outputs: [requirements, context]
+    agent: null
+    actions:
+      - ask_strategic_questions
+      - extract_tools_needed
+      - identify_security_requirements
+    transitions:
+      - to: skill_fit_test
+        condition: always
+
+  skill_fit_test:
+    order: 2
+    inputs: [requirements]
+    outputs: [fit_verdict]
+    agent: critic
+    actions:
+      - validate_against_criteria
+      - check_reusability
+    transitions:
+      - to: architecture_decision
+        condition: fit_verdict == pass
+      - to: rejection
+        condition: fit_verdict == fail
+
+  architecture_decision:
+    order: 3
+    inputs: [requirements, fit_verdict]
+    outputs: [architecture, complexity_level]
+    agents: [architect, historian]
+    actions:
+      - classify_architecture_type
+      - determine_complexity_level
+      - scan_existing_patterns
+    transitions:
+      - to: output_construction
+        condition: always
+
+  output_construction:
+    order: 4
+    inputs: [requirements, architecture, complexity_level, patterns]
+    outputs: [skill_files]
+    agents: [architect, optimizer]
+    actions:
+      - create_directory_structure
+      - generate_skill_md
+      - generate_readme_md
+      - generate_examples
+      - generate_eval_suite
+      - generate_supporting_assets
+      - optimize_triggers
+    transitions:
+      - to: quality_gate
+        condition: always
+
+  quality_gate:
+    order: 5
+    inputs: [skill_files]
+    outputs: [quality_verdict]
+    agents: [critic, optimizer, evaluator]
+    actions:
+      - run_gold_standard_test
+      - check_token_efficiency
+      - validate_activation_precision
+    transitions:
+      - to: validation
+        condition: quality_verdict == pass
+      - to: output_construction
+        condition: quality_verdict == revise
+
+  validation:
+    order: 6
+    inputs: [skill_files]
+    outputs: [validation_results]
+    agent: null
+    actions:
+      - run_validate_structure
+      - run_validate_frontmatter
+      - run_validate_duplicates
+      - run_catalog_sync
+    transitions:
+      - to: finalization
+        condition: all_pass
+      - to: output_construction
+        condition: any_fail
+
+  finalization:
+    order: 7
+    inputs: [skill_files, validation_results]
+    outputs: [summary, evolution_plan]
+    agents: [evolution_engine]
+    actions:
+      - update_changelog
+      - suggest_commit_message
+      - generate_evolution_plan
+      - propose_improvements
+      - present_summary
+    transitions: []
+
+  rejection:
+    inputs: [requirements, fit_verdict]
+    outputs: [rejection_message, alternatives]
+    actions:
+      - explain_why_in_portuguese
+      - suggest_alternatives
+    transitions: []

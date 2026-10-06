@@ -1,0 +1,338 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "antigravity-skills",
+  "description": "Production-grade public registry of reusable skills for software engineering, architecture, QA, security, and AI orchestration.",
+  "owner": {
+    "name": "Fabio Ferreccio",
+    "email": "fabioferreccio@gmail.com"
+  },
+  "metadata": {
+    "version": "1.2.0",
+    "description": "Production-grade registry of 29 reusable skills compatible with Antigravity, Claude Code, and Claude Tag."
+  },
+  "plugins": [
+    {
+      "name": "ai-onboarding",
+      "description": "Supreme autonomous skill that performs deep repository analysis and generates all AI initialization files needed to onboard a legacy project into the AI coding universe. Produces cross-tool compatible configurations for Antigravity, Claude Code, Cursor, GitHub Copilot, Windsurf, Aider, and Gemini Code Assist from a single repo scan. Use when the user mentions \"onboard repo\", \"AI init\", or wants to make a repository AI-ready across multiple coding assistants.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Fábio Ferreccio"
+      },
+      "category": "development",
+      "source": "./plugins/ai-onboarding",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/ai-onboarding"
+    },
+    {
+      "name": "apply-structural-patch",
+      "description": "Apply surgical code changes using unified Git patch format instead of rewriting the whole file in the chat. Drastically reduces output tokens and avoids syntax truncations.",
+      "version": "1.0.0",
+      "author": {
+        "name": "AI Assistant"
+      },
+      "category": "development",
+      "source": "./plugins/apply-structural-patch",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/apply-structural-patch"
+    },
+    {
+      "name": "bug-hunter",
+      "description": "Supreme autonomous skill that performs a comprehensive, multi-agent codebase sweep to identify concrete bugs AND structurally audit existing tests. It uses an adversarial verification process to refute false positives for bugs, and evaluates test effectiveness, fragility, and coverage gaps, generating a highly detailed, dual-dashboard markdown report.",
+      "version": "1.2.0",
+      "author": {
+        "name": "Fábio Ferreccio"
+      },
+      "category": "quality",
+      "source": "./plugins/bug-hunter",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/bug-hunter"
+    },
+    {
+      "name": "clean-architecture",
+      "description": "Expert cognitive system for designing and refactoring systems using Clean Architecture. Enforces strict dependency rules and modularity through a reference-based knowledge system.",
+      "version": "1.2.0",
+      "author": {
+        "name": "Fábio Ferreccio",
+        "email": "fabio@example.com"
+      },
+      "category": "architecture",
+      "source": "./plugins/clean-architecture",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/clean-architecture"
+    },
+    {
+      "name": "code-review",
+      "description": "Elite polyglot code review system that analyzes MRs/PRs, branches, or individual files across any language and framework, producing severity-classified findings with file:line anchors and posting inline comments on GitHub, GitLab, or Bitbucket via MCP, CLI, or generated scripts. Use this skill whenever the user asks for any kind of code review, in any language or phrasing — \"review my code\", \"revisa meu código\", \"revisa o MR/PR\", \"review this PR\", \"pode revisar\", \"review before merge\", \"revisa meu branch\" — or pastes a GitHub/GitLab/Bitbucket MR/PR URL, or names a branch or file with review intent, even without the word \"review\". Uses project indexing for context persistence and delegates to complementary skills when detected.",
+      "version": "1.3.0",
+      "author": {
+        "name": "Fábio Ferreccio"
+      },
+      "category": "security",
+      "source": "./plugins/code-review",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/code-review"
+    },
+    {
+      "name": "codebase-design",
+      "description": "Supreme software design and architecture skill based on John Ousterhout's Philosophy of Software Design. Identifies shallow modules, anemic pass-throughs, and information leakage across codebases, providing structured recipes to consolidate code into high-leverage deep modules with narrow interfaces and rich encapsulated complexity.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Fábio Ferreccio"
+      },
+      "category": "architecture",
+      "source": "./plugins/codebase-design",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/codebase-design"
+    },
+    {
+      "name": "dba-agent",
+      "description": "DBA Agent specialized in database performance, integrity, and security. Activates when analyzing slow queries, reviewing migrations, designing indexes, detecting N+1 patterns, auditing transactions, planning partitioning/sharding, or diagnosing any data-layer bottleneck.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Fábio Ferreccio"
+      },
+      "category": "security",
+      "source": "./plugins/dba-agent",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/dba-agent"
+    },
+    {
+      "name": "devops-agent",
+      "description": "Acts as a DevOps Engineer Agent focusing on automation, infrastructure as code, observability, and platform resilience.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Antigravity Skill Creator"
+      },
+      "category": "devops",
+      "source": "./plugins/devops-agent",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/devops-agent"
+    },
+    {
+      "name": "enterprise-architect",
+      "description": "Enterprise Architect Agent responsible for preserving architectural integrity, scalability, and corporate governance. Activates when evaluating new solutions, reviewing ADRs, identifying anti-patterns, validating domain boundaries, or assessing systemic risks across distributed systems.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Fábio Ferreccio"
+      },
+      "category": "architecture",
+      "source": "./plugins/enterprise-architect",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/enterprise-architect"
+    },
+    {
+      "name": "execute-in-sandbox",
+      "description": "Executes unit tests, build commands, or scripts generated by the AI inside a secure, isolated Docker sandbox. Captures exact stdout/stderr to safely evaluate generated code without harming the host system.",
+      "version": "1.0.0",
+      "author": {
+        "name": "AI Assistant"
+      },
+      "category": "security",
+      "source": "./plugins/execute-in-sandbox",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/execute-in-sandbox"
+    },
+    {
+      "name": "explore-codebase-ast",
+      "description": "Maps the file tree of a project by analyzing the internal structure (AST - Abstract Syntax Tree) instead of reading raw text. Identifies inheritances, entities, interfaces, and controllers without blowing up the context window.",
+      "version": "1.0.0",
+      "author": {
+        "name": "AI Assistant"
+      },
+      "category": "architecture",
+      "source": "./plugins/explore-codebase-ast",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/explore-codebase-ast"
+    },
+    {
+      "name": "frontend-architect",
+      "description": "Supreme Front-End Architecture & Component Engineering Skill. Expert cognitive system for component design (Atomic, Compound, Headless), state management, monorepos, performance optimization, tooling, testing (TDD/Triple AAA), and UX/Accessibility (WCAG 2.2).",
+      "version": "1.1.0",
+      "author": {
+        "name": "Fábio Ferreccio",
+        "email": "fabio@example.com"
+      },
+      "category": "design",
+      "source": "./plugins/frontend-architect",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/frontend-architect"
+    },
+    {
+      "name": "image-media-engine",
+      "description": "Supreme Image Processing, Color Engineering, AI Generation, Retouching, Print Preflight, Branding Identity Systems, Corporate Merchandising, Slide Templates, Interactive Discovery, Product Strategy Vision, Master Quality Safeguards, Sub-Agent Orchestration, Persistent Project Memory, High-Precision Vectorization, Automated 300 DPI PDF Export, State Locking, True Vectoring, and Web Media Optimization System. Operates as an expert cognitive agent capable of processing images across all professional workflows, from interactive discovery interviews (bate-papo de alinhamento de produto e negócio), persistent client memory management (.media-engine/projects/<client_id>/), high-precision bitmap-to-SVG vectorization logos, Pantone/CMYK specs, stationery, apparel, tote bags, PowerPoint templates, die-lines), automated 10-page 300 DPI PDF Brandbook compilation (scripts/export-brandbook-pdf.py), and batch e-commerce packshots to high-fashion retouching, AI compositing, real estate media, CMYK print preparation, master quality safeguards, surgical state locking, and seamless UI/UX integration with frontend-architect.",
+      "version": "1.1.0",
+      "author": {
+        "name": "Fábio Ferreccio",
+        "email": "fabio@example.com"
+      },
+      "category": "design",
+      "source": "./plugins/image-media-engine",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/image-media-engine"
+    },
+    {
+      "name": "local-ai-orchestrator",
+      "description": "A unified TypeScript orchestrator that exposes 5 hyper-optimized local AI tools and async execution wrappers compatible with Ollama, Claude, and Antigravity.",
+      "version": "1.0.0",
+      "author": {
+        "name": "AI Assistant"
+      },
+      "category": "development",
+      "source": "./plugins/local-ai-orchestrator",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/local-ai-orchestrator"
+    },
+    {
+      "name": "migration-reviewer",
+      "description": "Migration Reviewer Agent that receives database migrations in any format (Knex, Prisma, Sequelize, TypeORM, raw SQL, etc.), performs DBA-grade analysis for safety, performance, and rollback viability, then generates a structured Slack-ready Markdown approval report for Stack Leaders and Holders. Use when reviewing, analyzing, or approving database migrations, or when generating DB change reports for stakeholders.",
+      "version": "1.1.0",
+      "author": {
+        "name": "Fábio Ferreccio"
+      },
+      "category": "database",
+      "source": "./plugins/migration-reviewer",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/migration-reviewer"
+    },
+    {
+      "name": "pr-craftsman",
+      "description": "Supreme Pull Request engineering skill that analyzes changesets to calculate operational blast radius, classifies decision reversibility (One-Way vs. Two-Way Doors), produces concise visual Mermaid architectural diagrams, and composes high-signal, human-friendly PR descriptions that eliminate reviewer fatigue.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Fábio Ferreccio"
+      },
+      "category": "quality",
+      "source": "./plugins/pr-craftsman",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/pr-craftsman"
+    },
+    {
+      "name": "product-manager",
+      "description": "Guides product discovery, prioritization, and strategy as a Senior Product Manager Agent. Synthesizes user pain, business impact, technical feasibility, and operational cost to maximize value and eliminate waste.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Fábio Ferreccio"
+      },
+      "category": "product",
+      "source": "./plugins/product-manager",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/product-manager"
+    },
+    {
+      "name": "prompt-engineering",
+      "description": "Elite interactive prompt engineering skill for designing, auditing, optimizing, and evolving prompts for LLMs, agents, and complex AI workflows with high precision.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Supreme Skill Architecture"
+      },
+      "category": "ai-engineering",
+      "source": "./plugins/prompt-engineering",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/prompt-engineering"
+    },
+    {
+      "name": "qa-engineer",
+      "description": "QA Engineer Agent specialized in defect prevention and destructive testing. Identifies missing edge cases, race conditions, flaky scenarios, and systemic failures. Generates test strategies, mocks, E2E suites, stress tests, and regression plans to ensure robustness, stability, and predictability.",
+      "version": "1.1.0",
+      "author": {
+        "name": "Antigravity Skill Creator"
+      },
+      "category": "quality",
+      "source": "./plugins/qa-engineer",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/qa-engineer"
+    },
+    {
+      "name": "quality-gate",
+      "description": "Supreme epic meta-skill that acts as an unforgiving, polyglot Quality Gate for production readiness. It builds a persistent project index, performs ruthless bug hunting and code review, runs a dedicated security audit (OWASP Top 10, secrets, injection sinks, authz), and enforces strict QA strategy (AAA/TDD). Every critical finding passes adversarial verification before being reported — no false-positive noise. It automatically sets up and executes integration test infrastructure (Docker/Testcontainers) if missing, enforcing >70% coverage with a target of 90%. It does not sugarcoat findings; it identifies bad logic, naive paths, security holes, and architectural flaws ruthlessly.",
+      "version": "1.2.0",
+      "author": {
+        "name": "Fábio Ferreccio"
+      },
+      "category": "quality",
+      "source": "./plugins/quality-gate",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/quality-gate"
+    },
+    {
+      "name": "query-homelab-state",
+      "description": "Query the health, available resources (CPU/RAM), and logs of specific containers running in a local cluster or Docker host. Acts as a DevOps SRE agent automatically detecting between Docker and Kubernetes (kubectl).",
+      "version": "1.0.0",
+      "author": {
+        "name": "AI Assistant"
+      },
+      "category": "devops",
+      "source": "./plugins/query-homelab-state",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/query-homelab-state"
+    },
+    {
+      "name": "read-file-chunked",
+      "description": "Reads large files in specific chunks with pagination, providing exact lines to the model. Prevents context window overflow and VRAM spikes by extracting only the requested subset of lines.",
+      "version": "1.0.0",
+      "author": {
+        "name": "AI Assistant"
+      },
+      "category": "development",
+      "source": "./plugins/read-file-chunked",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/read-file-chunked"
+    },
+    {
+      "name": "repository-maintainer",
+      "description": "Monitors and maintains the antigravity-skills repository by validating skill structures, detecting rule violations, reviewing documentation quality, proposing version bumps, and suggesting releases. Activates when the user asks to review, audit, fix, or improve the skills registry or any individual skill within it.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Fábio Ferreccio"
+      },
+      "category": "development",
+      "source": "./plugins/repository-maintainer",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/repository-maintainer"
+    },
+    {
+      "name": "retrospective-agent",
+      "description": "Analyzes session transcripts, commits, and PR review outcomes to extract institutional learnings, update coding-standards.md and AGENTS.md, and prune obsolete rules.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Fabio Ferreccio",
+        "email": "fabioferreccio@gmail.com"
+      },
+      "category": "ai-engineering",
+      "source": "./plugins/retrospective-agent",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/retrospective-agent"
+    },
+    {
+      "name": "security-engineer",
+      "description": "Security Engineer Agent specialized in Security by Design and defense in depth. Identifies, prevents, and mitigates vulnerabilities across code, infrastructure, IAM, pipelines, secrets, and dependencies before they become incidents.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Antigravity Skill Creator"
+      },
+      "category": "security",
+      "source": "./plugins/security-engineer",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/security-engineer"
+    },
+    {
+      "name": "skill-creator",
+      "description": "Interactive meta-skill that designs, scaffolds, validates, and evolves Antigravity Skills using modular architecture, internal agentic reasoning, structured knowledge graphs, and production-grade outputs. Activates when the user wants to create, teach, or add a new skill to the registry.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Fábio Ferreccio"
+      },
+      "category": "architecture",
+      "source": "./plugins/skill-creator",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/skill-creator"
+    },
+    {
+      "name": "spec-driven-development",
+      "description": "Guide the development team through the rigorous Spec-Driven Development (SDD) workflow, creating and maintaining specifications, plans, and tasks as the single source of truth before any code generation, eliminating \"vibe coding\".",
+      "version": "1.1.0",
+      "author": {
+        "name": "Fábio Ferreccio"
+      },
+      "category": "architecture",
+      "source": "./plugins/spec-driven-development",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/spec-driven-development"
+    },
+    {
+      "name": "staff-engineer",
+      "description": "Staff Engineer Agent specialized in cross-functional engineering, organizational scalability, and technical standardization. Multiplies impact across teams by detecting redundancy, creating reusable abstractions, enforcing architectural standards, and accelerating engineering velocity through systematic observation, reflection, and action cycles.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Fábio Ferreccio"
+      },
+      "category": "development",
+      "source": "./plugins/staff-engineer",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/staff-engineer"
+    },
+    {
+      "name": "web-pentest-agent",
+      "description": "Supreme autonomous web penetration testing skill that orchestrates a professional, multi-phase security assessment against websites and web services. Performs passive reconnaissance, attack surface mapping, OWASP Top 10 analysis, authentication testing, CVE identification, adversarial verification of findings, CVSS v3.1 scoring, and generates dual-format professional reports (Executive + Technical) in HTML and PDF. Integrates prompt-engineering, spec-driven-development, security-engineer, and quality-gate as internal sub-systems. Designed to be usable by non-technical users while delivering expert-grade output. Activates on pentest, security audit, or vulnerability assessment requests for web targets.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Fábio Ferreccio"
+      },
+      "category": "security",
+      "source": "./plugins/web-pentest-agent",
+      "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/plugins/web-pentest-agent"
+    }
+  ]
+}

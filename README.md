@@ -119,6 +119,30 @@ Additionally, the CLI automatically injects a `postinstall` script pointing to t
 
 ---
 
+### 🔌 Use as a Claude Code Plugin Marketplace & Claude Tag Skills Repo
+
+This repository is also natively formatted as a **Claude Code Plugin Marketplace** (`.claude-plugin/marketplace.json`), allowing direct installation in Claude Code and auto-synced skills in **Claude Tag (Claude.ai / Claude Enterprise)**.
+
+#### Option 1: In Claude Code CLI
+Add this repository as a marketplace:
+```bash
+/plugin marketplace add fabioferreccio/antigravity-skills
+```
+Install any skill as a plugin:
+```bash
+/plugin install clean-architecture@antigravity-skills
+/plugin install code-review@antigravity-skills
+```
+
+#### Option 2: In Claude Tag (Claude.ai / Claude Enterprise)
+1. Fork or mirror this repository into your private/internal GitHub organization (Claude Tag requires internal/private repositories).
+2. In **Organization settings > Plugins & skills**, click **Add** and choose **Sync from GitHub**.
+3. Select the repository, ensure **Sync automatically** is enabled, and click **Create**.
+4. In your Access Bundle's **Plugins** tab, toggle on the individual plugins/skills you want active in your team channels.
+5. Claude can automatically propose updates via Pull Requests from lessons learned in your channels!
+
+---
+
 ## 📦 Available Skills
 
 | Skill | Version | Description | Tags |

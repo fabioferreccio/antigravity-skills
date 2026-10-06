@@ -1,0 +1,101 @@
+# Decision Heuristics for Product Manager Skill
+
+# Determines which execution mode to activate
+mode_selection:
+  rules:
+    - if: "single ticket or feature request"
+      then: ticket_triage
+      confidence: high
+
+    - if: "multiple items to rank or order"
+      then: backlog_sprint
+      confidence: high
+
+    - if: "user says 'criar PRD' or 'documento de requisitos' or describes a new feature in depth"
+      then: prd_generation
+      confidence: high
+
+    - if: "user mentions 'épico' or 'dividir' or a large initiative"
+      then: epic_breakdown
+      confidence: high
+
+    - if: "user mentions 'avaliar' or 'analisar' existing roadmap, RFC, or initiative"
+      then: initiative_audit
+      confidence: high
+
+    - if: "user mentions 'experimento' or 'A/B' or 'testar hipótese'"
+      then: experiment_design
+      confidence: high
+
+# Determines which framework(s) to apply
+framework_selection:
+  rules:
+    - if: "comparing diverse features with quantitative data available"
+      then: [rice]
+      confidence: high
+
+    - if: "time-sensitive decision, compliance deadline, or market window"
+      then: [wsjf]
+      confidence: high
+
+    - if: "user satisfaction or delight analysis, customer-facing features"
+      then: [kano]
+      confidence: medium
+
+    - if: "discovery phase, unmet needs, jobs-to-be-done"
+      then: [opportunity_scoring]
+      confidence: medium
+
+    - if: "high-stakes decision requiring cross-validation"
+      then: [rice, kano, wsjf]
+      confidence: high
+
+    - if: "not enough data for any framework"
+      then: escalate
+      action: "Ask user for specific data points"
+
+# Determines verdict (go / no-go / investigate)
+verdict_rules:
+  go:
+    conditions:
+      - "RICE score ≥ 5 OR WSJF score in top quartile"
+      - "Risk is mitigable (has rollback strategy)"
+      - "Dependencies are identified and unblocked"
+      - "Maintenance cost estimated and acceptable"
+
+  investigate:
+    conditions:
+      - "Data insufficient for confident scoring"
+      - "Risk is unclear or unquantified"
+      - "Dependencies on unconfirmed resources"
+      - "Frameworks disagree significantly"
+
+  reject:
+    conditions:
+      - "Impact < estimated cost (dev + maintenance)"
+      - "No testable hypothesis provided"
+      - "Solves symptom, not root cause"
+      - "Scope inflation detected (>3 personas, no MVP)"
+      - "No success metric defined"
+
+# Scope inflation detection
+scope_inflation:
+  signals:
+    - "Requirements document exceeds 3 pages for MVP"
+    - "More than 2 user personas in scope"
+    - "No phased delivery plan"
+    - "'While we're at it' language detected"
+    - "Feature count > 5 for initial release"
+  response: "Split into slices. Propose MVP slice. Validate before expanding."
+
+# Root cause vs. symptom detection
+root_cause_analysis:
+  technique: "5 Whys"
+  signals_of_symptom:
+    - "Request describes a UI element (button, filter, modal)"
+    - "Request uses solution language ('add X') not problem language"
+    - "No user research or data cited"
+  signals_of_root_cause:
+    - "Request cites specific user behavior data"
+    - "Request describes outcome, not mechanism"
+    - "Multiple evidence sources converge on same issue"

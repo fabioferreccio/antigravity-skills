@@ -1,0 +1,22 @@
+{
+  "name": "qa-engineer",
+  "version": "1.1.0",
+  "description": "QA Engineer Agent specialized in defect prevention and destructive testing. Identifies missing edge cases, race conditions, flaky scenarios, and systemic failures. Generates test strategies, mocks, E2E suites, stress tests, and regression plans to ensure robustness, stability, and predictability.",
+  "author": {
+    "name": "Antigravity Skill Creator"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/.agents/skills/qa-engineer",
+  "repository": "https://github.com/fabioferreccio/antigravity-skills.git",
+  "license": "MIT",
+  "keywords": [
+    "qa",
+    "testing",
+    "edge-cases",
+    "automation",
+    "regression",
+    "e2e",
+    "performance",
+    "tdd",
+    "anti-tautological"
+  ]
+}

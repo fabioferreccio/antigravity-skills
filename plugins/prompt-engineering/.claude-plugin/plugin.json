@@ -1,0 +1,17 @@
+{
+  "name": "prompt-engineering",
+  "version": "1.0.0",
+  "description": "Elite interactive prompt engineering skill for designing, auditing, optimizing, and evolving prompts for LLMs, agents, and complex AI workflows with high precision.",
+  "author": {
+    "name": "Supreme Skill Architecture"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/.agents/skills/prompt-engineering",
+  "repository": "https://github.com/fabioferreccio/antigravity-skills.git",
+  "license": "MIT",
+  "keywords": [
+    "prompt-engineering",
+    "optimization",
+    "multi-agent",
+    "llm"
+  ]
+}

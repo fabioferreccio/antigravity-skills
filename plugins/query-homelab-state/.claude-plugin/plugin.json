@@ -1,0 +1,18 @@
+{
+  "name": "query-homelab-state",
+  "version": "1.0.0",
+  "description": "Query the health, available resources (CPU/RAM), and logs of specific containers running in a local cluster or Docker host. Acts as a DevOps SRE agent automatically detecting between Docker and Kubernetes (kubectl).",
+  "author": {
+    "name": "AI Assistant"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/.agents/skills/query-homelab-state",
+  "repository": "https://github.com/fabioferreccio/antigravity-skills.git",
+  "license": "MIT",
+  "keywords": [
+    "devops",
+    "monitoring",
+    "docker",
+    "kubernetes",
+    "sre"
+  ]
+}

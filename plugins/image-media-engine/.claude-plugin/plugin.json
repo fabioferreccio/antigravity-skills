@@ -1,0 +1,37 @@
+{
+  "name": "image-media-engine",
+  "version": "1.1.0",
+  "description": "Supreme Image Processing, Color Engineering, AI Generation, Retouching, Print Preflight, Branding Identity Systems, Corporate Merchandising, Slide Templates, Interactive Discovery, Product Strategy Vision, Master Quality Safeguards, Sub-Agent Orchestration, Persistent Project Memory, High-Precision Vectorization, Automated 300 DPI PDF Export, State Locking, True Vectoring, and Web Media Optimization System. Operates as an expert cognitive agent capable of processing images across all professional workflows, from interactive discovery interviews (bate-papo de alinhamento de produto e negócio), persistent client memory management (.media-engine/projects/<client_id>/), high-precision bitmap-to-SVG vectorization logos, Pantone/CMYK specs, stationery, apparel, tote bags, PowerPoint templates, die-lines), automated 10-page 300 DPI PDF Brandbook compilation (scripts/export-brandbook-pdf.py), and batch e-commerce packshots to high-fashion retouching, AI compositing, real estate media, CMYK print preparation, master quality safeguards, surgical state locking, and seamless UI/UX integration with frontend-architect.",
+  "author": {
+    "name": "Fábio Ferreccio",
+    "email": "fabio@example.com"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/.agents/skills/image-media-engine",
+  "repository": "https://github.com/fabioferreccio/antigravity-skills.git",
+  "license": "MIT",
+  "keywords": [
+    "image-processing",
+    "color-engineering",
+    "photo-retouching",
+    "ai-generation",
+    "web-optimization",
+    "print-preflight",
+    "branding-identity",
+    "brandbook",
+    "merchandise",
+    "presentation-templates",
+    "discovery-interview",
+    "product-strategy",
+    "master-quality",
+    "subagent-orchestration",
+    "persistent-memory",
+    "vectorization",
+    "pdf-exporter",
+    "state-locking",
+    "true-vectoring",
+    "luxury-clean-design",
+    "sdd-workflow",
+    "prompt-engineering",
+    "frontend-architect"
+  ]
+}

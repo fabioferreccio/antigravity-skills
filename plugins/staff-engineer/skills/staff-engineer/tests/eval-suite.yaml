@@ -1,0 +1,208 @@
+# Evaluation Suite — Staff Engineer Skill
+
+eval_suite:
+  skill_name: staff-engineer
+  version: 1.0.0
+
+  primary_tests:
+    - id: "test-001"
+      prompt: "Temos 5 times de backend que implementaram o próprio client HTTP com retry. O que fazer?"
+      expected_behavior: "Trigger Redundancy Audit mode. Apply abstraction threshold (≥2 teams, met). Propose shared library with migration plan."
+      pass_criteria:
+        - "Identifies AP-001 (Reinvented Wheels)"
+        - "Abstraction threshold: confirms ≥2 teams → shared library warranted"
+        - "Proposes versioned SDK with stable API contract"
+        - "Includes phased migration (parallel run → migrate → cleanup)"
+        - "Mentions rollback strategy"
+      fail_indicators:
+        - "Suggests rewriting all 5 implementations from scratch simultaneously"
+        - "Proposes new implementation without migration plan"
+        - "Ignores existing implementations"
+
+    - id: "test-002"
+      prompt: "Deploy frequency caiu de 10x/dia para 1x/semana. Lead time subiu de 1h para 4 dias. O que está causando?"
+      expected_behavior: "Trigger DORA Analysis mode. Identify deployment coupling or review bottleneck as primary hypothesis. Request additional context."
+      pass_criteria:
+        - "Detects critical DORA regression (Elite → Low tier)"
+        - "Identifies at least 2 probable root causes (coupling, knowledge loss, test confidence)"
+        - "Asks for confirming data (PR review time, deployment graph, failure services)"
+        - "Proposes incremental investigation before prescribing solution"
+      fail_indicators:
+        - "Immediately prescribes solution without confirming root cause"
+        - "Treats it as a single-cause problem"
+        - "Suggests big-bang reorganization as fix"
+
+    - id: "test-003"
+      prompt: "Novo engenheiro leva 3 semanas para fazer o primeiro PR. Como melhorar?"
+      expected_behavior: "Trigger Onboarding Simplification mode. 3 weeks exceeds 2-week threshold. Diagnose friction points."
+      pass_criteria:
+        - "Flags 3 weeks as above threshold (> 2 weeks = complexity problem)"
+        - "Asks for friction point data (where does the engineer spend most time?)"
+        - "Differentiates documentation problem from system complexity problem"
+        - "Proposes measurable improvement with target metric"
+      fail_indicators:
+        - "Immediately suggests 'write more docs'"
+        - "Accepts 3 weeks as normal without investigation"
+        - "No measurable success criteria"
+
+    - id: "test-004"
+      prompt: "Temos 80 itens de débito técnico no backlog. Priorizar."
+      expected_behavior: "Trigger Technical Debt Triage mode. Categorize by type, score by impact (maintenance cost, bug rate, DORA effect), propose amortization plan."
+      pass_criteria:
+        - "Categorizes debt: architectural / code quality / test / dependency"
+        - "Scores by monthly maintenance cost or risk level"
+        - "Separates high-interest from low-interest debt"
+        - "Recommends 20% sprint capacity reservation"
+        - "Provides quarterly amortization plan"
+      fail_indicators:
+        - "Ranks 80 items in arbitrary order without framework"
+        - "Suggests fixing all debt before feature work"
+        - "No capacity recommendation"
+
+    - id: "test-005"
+      prompt: "Nosso pipeline de CI está levando 45 minutos. Como otimizar?"
+      expected_behavior: "Trigger CI/CD Optimization mode. 45 min > 20 min threshold. Request pipeline stages breakdown. Identify parallelization and caching opportunities."
+      pass_criteria:
+        - "Flags 45 min as above acceptable threshold (> 20 min)"
+        - "Asks for stage-by-stage breakdown to find the bottleneck"
+        - "Suggests parallelization, caching, test sharding as likely improvements"
+        - "Mentions flaky test quarantine if applicable"
+        - "Sets target metric (e.g., ≤ 10-15 min)"
+      fail_indicators:
+        - "Suggests buying faster hardware as primary solution"
+        - "No stage-level analysis"
+        - "No target metric"
+
+    - id: "test-006"
+      prompt: "Precisamos criar um padrão de logging para todos os 8 times. Como fazer?"
+      expected_behavior: "Trigger Standard Enforcement mode. Design standard with enforcement mechanism. Propose adoption playbook."
+      pass_criteria:
+        - "Defines log levels (DEBUG/INFO/WARN/ERROR) with usage rules"
+        - "Specifies structured format (JSON with required fields)"
+        - "Includes CI enforcement mechanism (lint rule or schema validation)"
+        - "Proposes adoption playbook (pilot team → rollout → enforce)"
+        - "Addresses existing non-compliant code migration"
+      fail_indicators:
+        - "Creates standard without enforcement plan"
+        - "Standard is too vague to be enforceable"
+        - "No migration strategy for existing code"
+
+    - id: "test-007"
+      prompt: "Um engenheiro específico é a única pessoa que sabe como deployar o serviço de pagamentos. O que fazer?"
+      expected_behavior: "Identify AP-007 (Hero Culture / Bus Factor = 1). Treat as CRITICAL severity. Propose immediate knowledge transfer + runbook creation."
+      pass_criteria:
+        - "Identifies this as AP-007 (Hero Culture) with CRITICAL severity"
+        - "Flags bus factor = 1 as organizational risk"
+        - "Requires runbook creation as immediate action (not optional)"
+        - "Proposes secondary owner designation"
+        - "Suggests this person takes vacation as forcing function for knowledge transfer"
+      fail_indicators:
+        - "Treats as low priority or documentation task"
+        - "Accepts single-owner as acceptable"
+        - "No urgency in response"
+
+    - id: "test-008"
+      prompt: "Dois times construíram a mesma feature de notificações em Q3 sem saber um do outro."
+      expected_behavior: "Identify AP-012 (Siloed Knowledge) + AP-001. Diagnose communication failure. Propose cross-team discovery mechanism."
+      pass_criteria:
+        - "Identifies both AP-012 and AP-001"
+        - "Diagnoses root cause: no cross-team visibility mechanism"
+        - "Proposes architecture council or engineering newsletter"
+        - "Recommends inner-source model for shared features"
+        - "Suggests RFC/ADR process before building cross-cutting features"
+      fail_indicators:
+        - "Only addresses the duplicate code, not the process failure"
+        - "Blames the teams instead of the system"
+
+    - id: "test-009"
+      prompt: "Gere um ADR para a decisão de migrar de REST para gRPC na comunicação interna entre serviços."
+      expected_behavior: "Trigger ADR Generation mode. Produce complete ADR using template with context, options, trade-offs, consequences, and validation metrics."
+      pass_criteria:
+        - "Follows ADR template structure"
+        - "Lists concrete pros/cons for REST vs gRPC"
+        - "Acknowledges organizational impact (tooling, training, migration cost)"
+        - "Defines validation metrics (latency, throughput, error rate)"
+        - "Includes review date and trigger for revisiting the decision"
+      fail_indicators:
+        - "Makes the decision without sufficient context"
+        - "No trade-off analysis"
+        - "Missing consequences section"
+
+    - id: "test-010"
+      prompt: "Diagnosticar a engenharia de uma startup com 4 times, 20 engenheiros, e crescendo para 40 em 6 meses."
+      expected_behavior: "Trigger Full Diagnosis mode. Assess organizational readiness for 2x scale. Identify likely bottlenecks before they materialize."
+      pass_criteria:
+        - "Produces 7-section structured report"
+        - "Identifies scaling risks: knowledge concentration, duplication, pipeline strain"
+        - "Recommends platform team formation at 30+ engineers"
+        - "Proposes standards before scaling (easier to enforce early)"
+        - "Includes DORA baseline recommendation"
+      fail_indicators:
+        - "Produces partial output (< 5 sections)"
+        - "Ignores organizational scaling in recommendations"
+        - "No DORA baseline recommendation"
+
+  misuse_tests:
+    - id: "misuse-001"
+      prompt: "Reescreva todo o sistema de pagamentos do zero porque o código está feio."
+      expected_behavior: "Reject big-bang rewrite. Apply Principle #9 (no premature abstractions). Propose characterization tests + incremental refactoring."
+      severity: critical
+      pass_criteria:
+        - "Refuses big-bang rewrite"
+        - "Asks for evidence of actual maintenance pain (bug rate, lead time impact)"
+        - "Proposes strangler fig or incremental refactoring instead"
+        - "Requires test coverage before any refactoring"
+
+    - id: "misuse-002"
+      prompt: "Criar uma shared library para uma função que só um time usa uma vez por mês."
+      expected_behavior: "Reject shared library — abstraction threshold not met (1 team, low frequency). Apply Principle #9. Suggest keeping it local."
+      severity: high
+      pass_criteria:
+        - "Checks abstraction threshold: 1 team → threshold NOT met"
+        - "Recommends against creating shared library"
+        - "Explains the maintenance cost of premature abstraction"
+        - "Suggests internal module within the team's repo instead"
+
+    - id: "misuse-003"
+      prompt: "Me dê as métricas DORA da nossa empresa sem eu fornecer nenhum dado."
+      expected_behavior: "Escalate. Cannot fabricate metrics. Ask for specific data sources."
+      severity: critical
+      pass_criteria:
+        - "Refuses to fabricate DORA metrics"
+        - "Lists exactly what data is needed (deploy logs, PR timestamps, incident history)"
+        - "Suggests where to find the data (CI/CD tool, git history, PagerDuty)"
+
+  edge_cases:
+    - id: "edge-001"
+      prompt: "Analisar engenharia (sem nenhum contexto adicional)."
+      expected_behavior: "Escalate with specific context questions. Do not proceed without minimum viable context."
+      notes: "Tests escalation with zero-context input"
+      pass_criteria:
+        - "Does NOT produce a generic diagnosis"
+        - "Asks for: team count, repo list, primary pain point, available metrics"
+        - "Explains what it can do once context is provided"
+
+    - id: "edge-002"
+      prompt: "Run a staff engineer diagnosis in English for an international stakeholder."
+      expected_behavior: "Switch to English as explicitly requested."
+      notes: "Tests language override capability"
+      pass_criteria:
+        - "Entire response in English"
+        - "Does NOT revert to Portuguese mid-response"
+
+    - id: "edge-003"
+      prompt: "Temos 1 time, 1 serviço, e 1 repositório. Queremos padronizar."
+      expected_behavior: "Clarify that cross-team scope is missing. Redirect to enterprise-architect or clean-architecture skill."
+      notes: "Tests handling of below-threshold scope"
+      pass_criteria:
+        - "Identifies that this is below the cross-team threshold"
+        - "Does NOT produce a full staff-engineer report"
+        - "Suggests enterprise-architect or clean-architecture skill as more appropriate"
+        - "Offers to still help with single-team patterns if user confirms"
+
+  metrics:
+    activation_precision: "Triggers only on cross-team engineering or organizational scalability contexts"
+    output_quality: "Every output includes anti-pattern identification + incremental strategy (100% compliance)"
+    safety_compliance: "Never recommends big-bang rewrites, fabricates metrics, or creates premature abstractions"
+    token_efficiency: "SKILL.md under 170 lines, heavy content in references/"
+    escalation_compliance: "Always asks for context when input is insufficient — never fabricates organizational data"

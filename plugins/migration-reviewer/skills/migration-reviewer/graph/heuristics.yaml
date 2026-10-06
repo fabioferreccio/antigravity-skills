@@ -1,0 +1,110 @@
+format_detection:
+  rules:
+    - if: "contains 'exports.up' OR 'exports.down' OR 'knex.schema' OR 'table.increments'"
+      then: "Knex.js migration"
+      normalize: "Extract DDL from Knex API calls → SQL equivalent"
+
+    - if: "contains 'model' AND ('@@map' OR '@relation' OR '@default' OR '@id')"
+      then: "Prisma schema change"
+      normalize: "Diff against previous schema → derive ALTER TABLE statements"
+
+    - if: "contains 'queryInterface' AND 'DataTypes'"
+      then: "Sequelize migration"
+      normalize: "Map queryInterface calls to SQL DDL"
+
+    - if: "contains 'MigrationInterface' OR 'queryRunner'"
+      then: "TypeORM migration"
+      normalize: "Map queryRunner calls to SQL DDL"
+
+    - if: "contains 'migrations.RunSQL' OR 'migrations.AddField' OR 'migrations.CreateModel'"
+      then: "Django migration"
+      normalize: "Map Django ORM operations to SQL DDL"
+
+    - if: "contains 'def change' OR 'add_column' OR 'create_table' AND Ruby-like syntax"
+      then: "Rails/ActiveRecord migration"
+      normalize: "Map ActiveRecord DSL to SQL DDL"
+
+    - if: "contains 'ALTER TABLE' OR 'CREATE TABLE' OR 'DROP' OR 'CREATE INDEX'"
+      then: "Raw SQL migration"
+      normalize: "Already SQL — validate syntax and extract operations"
+
+    - if: "none of the above match"
+      then: "Informal description"
+      normalize: "Parse natural language intent → generate SQL equivalent → confirm with user"
+
+risk_classification:
+  destructive:
+    - signal: "DROP TABLE"
+      level: critical
+      requires: "explicit backup confirmation"
+
+    - signal: "DROP COLUMN"
+      level: high
+      requires: "data loss acknowledgment"
+
+    - signal: "TRUNCATE"
+      level: critical
+      requires: "explicit data export confirmation"
+
+    - signal: "column type change with potential truncation"
+      level: high
+      requires: "data compatibility verification"
+
+    - signal: "RENAME COLUMN without application update strategy"
+      level: medium
+      requires: "deployment coordination plan"
+
+  non_destructive:
+    - signal: "ADD COLUMN (nullable)"
+      level: low
+      note: "Instant in PG 11+"
+
+    - signal: "ADD COLUMN with constant DEFAULT"
+      level: low
+      note: "Instant in PG 11+"
+
+    - signal: "CREATE TABLE"
+      level: low
+      note: "No existing data affected"
+
+    - signal: "CREATE INDEX CONCURRENTLY"
+      level: low
+      note: "Non-blocking"
+
+    - signal: "ADD CONSTRAINT (on empty or new table)"
+      level: low
+      note: "No validation needed"
+
+triage_question_selection:
+  rules:
+    - if: "table size unknown AND operation affects existing data"
+      ask: "Qual o tamanho estimado da tabela afetada? (número de rows)"
+
+    - if: "database engine not specified"
+      ask: "Qual o banco de dados e versão? (PostgreSQL 15, MySQL 8, etc.)"
+
+    - if: "business motivation not provided"
+      ask: "Qual o motivo de negócio para essa mudança?"
+
+    - if: "operation is destructive OR high risk"
+      ask: "A aplicação suporta deploy zero-downtime ou haverá janela de manutenção?"
+
+    - if: "operation involves NOT NULL without DEFAULT"
+      ask: "Qual valor padrão deve ser usado para as linhas existentes?"
+
+    - if: "multiple tables affected"
+      ask: "Existem endpoints ou serviços que acessam essas tabelas? Quais?"
+
+    - if: "replication is likely (production context)"
+      ask: "Há réplicas de leitura que serão afetadas?"
+
+report_quality_gate:
+  checklist:
+    - "Title is objective and ≤ 10 words"
+    - "Context is stakeholder-friendly (no unexplained jargon)"
+    - "SQL blocks are present and syntactically correct"
+    - "Destructive flag is explicitly stated (sim/não)"
+    - "Rollback SQL is concrete and executable"
+    - "Lock risk level is stated with justification"
+    - "All affected tables are listed"
+    - "DBA Recommendations section only present if genuine"

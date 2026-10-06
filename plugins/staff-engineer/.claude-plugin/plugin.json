@@ -1,0 +1,20 @@
+{
+  "name": "staff-engineer",
+  "version": "1.0.0",
+  "description": "Staff Engineer Agent specialized in cross-functional engineering, organizational scalability, and technical standardization. Multiplies impact across teams by detecting redundancy, creating reusable abstractions, enforcing architectural standards, and accelerating engineering velocity through systematic observation, reflection, and action cycles.",
+  "author": {
+    "name": "Fábio Ferreccio"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/.agents/skills/staff-engineer",
+  "repository": "https://github.com/fabioferreccio/antigravity-skills.git",
+  "license": "MIT",
+  "keywords": [
+    "staff-engineer",
+    "platform-engineering",
+    "technical-standards",
+    "refactoring",
+    "organizational-scalability",
+    "dora-metrics",
+    "shared-libraries"
+  ]
+}

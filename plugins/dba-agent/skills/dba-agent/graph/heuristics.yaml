@@ -1,0 +1,90 @@
+mode_selection:
+  rules:
+    - if: "user provides EXPLAIN ANALYZE output"
+      then: "Query Optimizer"
+      confidence: high
+
+    - if: "user asks about creating or reviewing an index"
+      then: "Index Advisor"
+      confidence: high
+
+    - if: "user mentions deadlock OR lock contention OR SELECT FOR UPDATE issues"
+      then: "Transaction Auditor"
+      confidence: high
+
+    - if: "user mentions N+1 OR ORM repeated queries OR loop queries"
+      then: "N+1 Detector"
+      confidence: high
+
+    - if: "user mentions migration file OR ALTER TABLE OR schema change"
+      then: "Migration Reviewer"
+      confidence: high
+
+    - if: "user asks about partitioning OR large table > 100M rows OR time-series"
+      then: "Partition Planner"
+      confidence: medium
+
+    - if: "user asks about sharding OR cross-region OR write saturation"
+      then: "Shard Architect"
+      confidence: medium
+      prerequisite: "check partitioning + read replicas exhausted first"
+
+    - if: "user mentions replica lag OR replication delay OR standby"
+      then: "Replication Analyst"
+      confidence: high
+
+    - if: "user says 'diagnosticar banco' OR provides multiple symptoms at once"
+      then: "Full Diagnosis"
+      confidence: high
+
+index_advice:
+  prerequisites:
+    - always_ask: "What is the estimated cardinality of the filter column?"
+    - always_check: "Is there an existing index that could be extended instead?"
+    - always_assess: "What is the write rate on this table?"
+  
+  reject_if:
+    - condition: "column has < 5 distinct values"
+      reason: "Low cardinality — seq scan may be faster than index scan"
+      alternative: "Consider partial index on the minority value"
+    
+    - condition: "index already exists with same leading column"
+      reason: "Duplicate index — assess if existing index can be extended"
+    
+    - condition: "table < 10,000 rows"
+      reason: "PostgreSQL planner will prefer seq scan — index adds overhead without benefit"
+
+sharding:
+  minimum_prerequisites:
+    - "Partitioning has been implemented and is insufficient"
+    - "Read replicas are in use for read scaling"
+    - "Vertical scaling options are exhausted"
+    - "Write throughput > 50k/min sustained on a single node"
+  
+  reject_if:
+    - table_size_gb: < 100
+      reason: "Partitioning and indexing will be sufficient"
+    
+    - write_rate_per_min: < 10000
+      reason: "Read replicas + caching can handle this load"
+
+escalation:
+  missing_context:
+    query_optimization:
+      - "EXPLAIN ANALYZE output"
+      - "Table schema (DDL)"
+      - "Current indexes (\\d tablename in psql)"
+      - "Row count (SELECT COUNT(*) FROM table)"
+      - "PostgreSQL/MySQL version"
+    
+    transaction_audit:
+      - "Lock graph or SHOW ENGINE INNODB STATUS"
+      - "pg_locks + pg_stat_activity join"
+      - "Transaction isolation level in use"
+      - "Application code showing transaction boundaries"
+    
+    replication:
+      - "pg_stat_replication output"
+      - "pg_stat_activity (long-running transactions on primary)"
+      - "max_standby_streaming_delay setting"
+      - "WAL level and replication slots"

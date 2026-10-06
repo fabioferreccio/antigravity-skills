@@ -1,0 +1,73 @@
+trigger_classification:
+  high_confidence:
+    - pattern: "@security-engineer"
+      confidence: 1.0
+      action: full_cycle
+    - pattern: "audit.*security vulnerabilit"
+      confidence: 0.98
+      action: full_cycle
+    - pattern: "do a threat model"
+      confidence: 0.97
+      action: threat_model_only
+    - pattern: "security review"
+      confidence: 0.92
+      action: full_cycle
+    - pattern: "check for exposed secrets"
+      confidence: 0.95
+      action: secrets_scan_only
+    - pattern: "privilege escalation"
+      confidence: 0.95
+      action: iam_review_only
+    - pattern: "review the security of"
+      confidence: 0.93
+      action: scoped_review
+
+  medium_confidence:
+    - pattern: "is this secure"
+      confidence: 0.75
+      action: full_cycle
+    - pattern: "CVE"
+      confidence: 0.80
+      action: cve_lookup
+    - pattern: "OWASP"
+      confidence: 0.80
+      action: full_cycle
+    - pattern: "pen test|pentest"
+      confidence: 0.85
+      action: threat_model_only
+    - pattern: "hardcoded (secret|password|key|token)"
+      confidence: 0.90
+      action: secrets_scan_only
+
+  low_confidence_reject:
+    - pattern: "debug this"
+      reason: "Performance/logic debug, not security"
+    - pattern: "help me with code"
+      reason: "Too generic — general coding request"
+    - pattern: "review my code"
+      reason: "Code review, not security review — check context"
+
+skill_fit:
+  pass_criteria:
+    - repeated_workflow: true        # Every codebase needs security reviews
+    - saves_time: true               # Replaces manual OWASP checklist review
+    - reduces_errors: true           # Catches CRITICAL vulnerabilities systematically
+    - enforces_standards: true       # OWASP, CIS, CVSS consistently applied
+    - expert_reasoning: true         # STRIDE, CVSS, threat modeling are expert domains
+    - automation: true               # Structured output enables downstream tooling
+    - cross_session_reuse: true      # Same methodology applies to any codebase
+
+architecture_selection:
+  type: "Reviewer + Autonomous Operator"
+  rationale: >
+    The agent reads existing artifacts (code, configs, IAM policies),
+    evaluates them against security criteria (OWASP, CIS, CVSS),
+    and produces structured actionable output. It also autonomously
+    follows a full agentic cycle (Observe → Reflect → Act → Evaluate)
+    without requiring constant user input.
+  complexity: 4
+  requires:
+    - references: true    # OWASP Top 10, CVSS, Severity Matrix
+    - graph: true         # Workflow state machine, heuristics, ontology
+    - examples: true      # ≥2 realistic security audits
+    - tests: true         # 10 standard + 3 misuse + 3 edge cases

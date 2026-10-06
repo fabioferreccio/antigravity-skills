@@ -1,0 +1,23 @@
+# Gemini Code Assist configuration: .gemini/config.yaml
+# See https://cloud.google.com/gemini/docs/discover/set-up-gemini-code-assist
+
+# Code review settings
+code_review:
+  # Minimum severity for Gemini to leave a review comment.
+  # Options: LOW, MEDIUM, HIGH, CRITICAL
+  comment_severity_threshold: {{SEVERITY_THRESHOLD}}
+  # e.g.: MEDIUM
+
+# File patterns to ignore during code review and suggestions.
+# Uses glob patterns relative to the repository root.
+ignore_patterns:
+{{IGNORE_PATTERNS}}
+# e.g.:
+#   - "node_modules/**"
+#   - "dist/**"
+#   - "build/**"
+#   - "*.gen.ts"
+#   - "*.generated.go"
+#   - "coverage/**"
+#   - ".next/**"
+#   - "vendor/**"

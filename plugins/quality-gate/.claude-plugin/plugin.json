@@ -1,0 +1,23 @@
+{
+  "name": "quality-gate",
+  "version": "1.2.0",
+  "description": "Supreme epic meta-skill that acts as an unforgiving, polyglot Quality Gate for production readiness. It builds a persistent project index, performs ruthless bug hunting and code review, runs a dedicated security audit (OWASP Top 10, secrets, injection sinks, authz), and enforces strict QA strategy (AAA/TDD). Every critical finding passes adversarial verification before being reported — no false-positive noise. It automatically sets up and executes integration test infrastructure (Docker/Testcontainers) if missing, enforcing >70% coverage with a target of 90%. It does not sugarcoat findings; it identifies bad logic, naive paths, security holes, and architectural flaws ruthlessly.",
+  "author": {
+    "name": "Fábio Ferreccio"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/.agents/skills/quality-gate",
+  "repository": "https://github.com/fabioferreccio/antigravity-skills.git",
+  "license": "MIT",
+  "keywords": [
+    "quality-assurance",
+    "release-gate",
+    "bug-hunting",
+    "security-audit",
+    "test-automation",
+    "polyglot",
+    "supreme",
+    "infrastructure",
+    "mock-inflation",
+    "one-way-door"
+  ]
+}

@@ -1,0 +1,104 @@
+trigger_classification:
+  direct:
+    - "@qa-engineer"
+    - "qa-engineer"
+
+  edge_cases:
+    confidence: high
+    patterns:
+      - "edge cases"
+      - "what am I missing"
+      - "boundary values"
+      - "what could go wrong"
+      - "missing coverage"
+
+  test_generation:
+    confidence: high
+    patterns:
+      - "generate tests"
+      - "write tests"
+      - "write a test suite"
+      - "create unit tests"
+      - "create integration tests"
+      - "test this function"
+      - "test this endpoint"
+
+  regression:
+    confidence: high
+    patterns:
+      - "create regression tests"
+      - "regression"
+      - "this bug was fixed"
+      - "prevent this from recurring"
+
+  e2e:
+    confidence: high
+    patterns:
+      - "E2E"
+      - "end-to-end"
+      - "playwright"
+      - "cypress"
+      - "user flow test"
+      - "critical path test"
+
+  performance:
+    confidence: high
+    patterns:
+      - "stress test"
+      - "load test"
+      - "p99"
+      - "throughput"
+      - "performance test"
+      - "concurrent users"
+      - "latency budget"
+
+  flakiness:
+    confidence: high
+    patterns:
+      - "flaky test"
+      - "intermittent failure"
+      - "sometimes fails"
+      - "non-deterministic"
+      - "CI failure"
+
+  rca:
+    confidence: high
+    patterns:
+      - "root cause analysis"
+      - "RCA"
+      - "incident"
+      - "post-mortem"
+      - "production failure"
+      - "escaped defect"
+
+  coverage_review:
+    confidence: medium
+    patterns:
+      - "review coverage"
+      - "coverage audit"
+      - "missing tests"
+      - "not tested"
+      - "low coverage"
+
+skill_fit:
+  accept_if_any:
+    - repeated workflow
+    - saves time
+    - reduces regression risk
+    - enforces testing standards
+    - expert reasoning (edge cases, RCA)
+    - automation of test generation
+    - cross-session reuse (test suites persist)
+
+  reject_if_all:
+    - one-time trivial question with no test generation needed
+    - fully covered by existing skill (e.g., security-engineer for security tests)
+    - no code or system context provided and user refuses to provide any
+
+false_positive_guard:
+  - trigger: "cover this feature" (marketing/content)
+    not_qa: true
+    reason: "cover" in non-testing context does not activate qa-engineer
+  - trigger: "review my code"
+    not_qa: true
+    reason: generic code review → prefer staff-engineer or clean-architecture skills

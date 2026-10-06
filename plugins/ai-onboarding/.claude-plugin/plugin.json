@@ -1,0 +1,20 @@
+{
+  "name": "ai-onboarding",
+  "version": "1.0.0",
+  "description": "Supreme autonomous skill that performs deep repository analysis and generates all AI initialization files needed to onboard a legacy project into the AI coding universe. Produces cross-tool compatible configurations for Antigravity, Claude Code, Cursor, GitHub Copilot, Windsurf, Aider, and Gemini Code Assist from a single repo scan. Use when the user mentions \"onboard repo\", \"AI init\", or wants to make a repository AI-ready across multiple coding assistants.",
+  "author": {
+    "name": "Fábio Ferreccio"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/.agents/skills/ai-onboarding",
+  "repository": "https://github.com/fabioferreccio/antigravity-skills.git",
+  "license": "MIT",
+  "keywords": [
+    "onboarding",
+    "initialization",
+    "multi-tool",
+    "ai-config",
+    "legacy",
+    "bootstrap",
+    "cross-platform"
+  ]
+}

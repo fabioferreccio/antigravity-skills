@@ -1,0 +1,1011 @@
+# ==============================================================================
+# Service Detection Heuristics
+# ==============================================================================
+# Maps dependency names, config files, environment variables, and
+# infrastructure definitions to external services.  Each detected service is
+# paired with a recommended MCP server for AI-tool integration.
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Database Detection
+# ------------------------------------------------------------------------------
+database_detection:
+  rules:
+    # --- PostgreSQL --------------------------------------------------------
+    - id: db-postgresql
+      service: postgresql
+      category: relational
+      detection:
+        # Node.js / JavaScript / TypeScript
+        - type: dependency
+          file: package.json
+          packages: [pg, postgres, "@prisma/client", knex, sequelize, typeorm, drizzle-orm, kysely, slonik, massive]
+          notes: "Check prisma schema for provider = postgresql"
+        # Python
+        - type: dependency
+          files: [requirements.txt, pyproject.toml, Pipfile]
+          packages: [psycopg2, psycopg2-binary, psycopg, asyncpg, databases, sqlalchemy, django, tortoise-orm, piccolo]
+        # Go
+        - type: dependency
+          file: go.mod
+          packages:
+            - "github.com/lib/pq"
+            - "github.com/jackc/pgx"
+            - "github.com/jackc/pgconn"
+            - "github.com/jmoiron/sqlx"
+            - "gorm.io/driver/postgres"
+        # Rust
+        - type: dependency
+          file: Cargo.toml
+          packages: [sqlx, diesel, tokio-postgres, deadpool-postgres, sea-orm]
+          notes: "Check feature flags for postgres"
+        # Java / Kotlin
+        - type: dependency
+          files: [pom.xml, build.gradle, build.gradle.kts]
+          packages: ["org.postgresql:postgresql", "io.r2dbc:r2dbc-postgresql"]
+        # Ruby
+        - type: dependency
+          file: Gemfile
+          packages: [pg, activerecord-postgis-adapter]
+        # PHP
+        - type: dependency
+          file: composer.json
+          packages: ["doctrine/dbal"]
+          notes: "Check DB_CONNECTION=pgsql in .env"
+        # Infrastructure / Config
+        - type: file_content_match
+          files: [docker-compose.yml, docker-compose.yaml, compose.yml, compose.yaml]
+          patterns:
+            - "postgres:"
+            - "image: postgres"
+            - "image: postgis"
+        - type: file_content_match
+          files: [".env", ".env.example", ".env.local"]
+          patterns:
+            - "DATABASE_URL=postgres"
+            - "DATABASE_URL=postgresql"
+            - "POSTGRES_"
+            - "PG_HOST"
+            - "PGDATABASE"
+        - type: file_content_match
+          file: "prisma/schema.prisma"
+          patterns: ['provider = "postgresql"', 'provider = "postgres"']
+      mcp_server:
+        package: "@modelcontextprotocol/server-postgres"
+        env_vars: [POSTGRES_CONNECTION_STRING]
+      default_port: 5432
+
+    # --- MySQL / MariaDB ---------------------------------------------------
+    - id: db-mysql
+      service: mysql
+      category: relational
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [mysql2, mysql, "@prisma/client", knex, sequelize, typeorm]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml, Pipfile]
+          packages: [mysqlclient, pymysql, aiomysql, mysql-connector-python]
+        - type: dependency
+          file: go.mod
+          packages:
+            - "github.com/go-sql-driver/mysql"
+            - "gorm.io/driver/mysql"
+        - type: dependency
+          file: Cargo.toml
+          packages: [sqlx, diesel]
+          notes: "Check feature flags for mysql"
+        - type: dependency
+          file: Gemfile
+          packages: [mysql2]
+        - type: dependency
+          file: composer.json
+          packages: ["doctrine/dbal"]
+          notes: "Check DB_CONNECTION=mysql in .env"
+        - type: file_content_match
+          files: [docker-compose.yml, docker-compose.yaml, compose.yml]
+          patterns: ["image: mysql", "image: mariadb"]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["DATABASE_URL=mysql", "MYSQL_", "DB_CONNECTION=mysql"]
+        - type: file_content_match
+          file: "prisma/schema.prisma"
+          patterns: ['provider = "mysql"']
+      mcp_server:
+        package: "@benborla29/mcp-server-mysql"
+        env_vars: [MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE]
+      default_port: 3306
+
+    # --- MongoDB -----------------------------------------------------------
+    - id: db-mongodb
+      service: mongodb
+      category: document
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [mongodb, mongoose, "@prisma/client", mongoist, papr]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml, Pipfile]
+          packages: [pymongo, motor, mongoengine, beanie, odmantic]
+        - type: dependency
+          file: go.mod
+          packages: ["go.mongodb.org/mongo-driver"]
+        - type: dependency
+          file: Cargo.toml
+          packages: [mongodb]
+        - type: dependency
+          file: Gemfile
+          packages: [mongoid, mongo]
+        - type: file_content_match
+          files: [docker-compose.yml, docker-compose.yaml, compose.yml]
+          patterns: ["image: mongo"]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["MONGODB_URI", "MONGO_URL", "MONGODB_URL"]
+        - type: file_content_match
+          file: "prisma/schema.prisma"
+          patterns: ['provider = "mongodb"']
+      mcp_server:
+        package: "@modelcontextprotocol/server-mongodb"
+        env_vars: [MONGODB_URI]
+      default_port: 27017
+
+    # --- Redis -------------------------------------------------------------
+    - id: db-redis
+      service: redis
+      category: cache-kv
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [redis, ioredis, "@upstash/redis", bullmq, bull]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml, Pipfile]
+          packages: [redis, aioredis, "redis[hiredis]", fakeredis, walrus, rq]
+        - type: dependency
+          file: go.mod
+          packages:
+            - "github.com/redis/go-redis"
+            - "github.com/gomodule/redigo"
+        - type: dependency
+          file: Cargo.toml
+          packages: [redis, deadpool-redis]
+        - type: dependency
+          file: Gemfile
+          packages: [redis, sidekiq, resque]
+        - type: file_content_match
+          files: [docker-compose.yml, docker-compose.yaml, compose.yml]
+          patterns: ["image: redis", "image: valkey"]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["REDIS_URL", "REDIS_HOST"]
+      mcp_server:
+        package: "@modelcontextprotocol/server-redis"
+        env_vars: [REDIS_URL]
+      default_port: 6379
+
+    # --- SQLite ------------------------------------------------------------
+    - id: db-sqlite
+      service: sqlite
+      category: embedded
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [better-sqlite3, sqlite3, sql.js, "@prisma/client"]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml, Pipfile]
+          packages: [sqlite3, aiosqlite, peewee]
+          notes: "sqlite3 is stdlib in Python; check import usage"
+        - type: dependency
+          file: Cargo.toml
+          packages: [rusqlite, sqlx]
+          notes: "Check sqlx feature flags for sqlite"
+        - type: file_exists
+          patterns: ["*.sqlite", "*.sqlite3", "*.db"]
+        - type: file_content_match
+          file: "prisma/schema.prisma"
+          patterns: ['provider = "sqlite"']
+      mcp_server:
+        package: "@modelcontextprotocol/server-sqlite"
+        env_vars: [SQLITE_DB_PATH]
+
+    # --- DynamoDB ----------------------------------------------------------
+    - id: db-dynamodb
+      service: dynamodb
+      category: nosql
+      detection:
+        - type: dependency
+          file: package.json
+          packages: ["@aws-sdk/client-dynamodb", "@aws-sdk/lib-dynamodb", dynamoose, electrodb]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml, Pipfile]
+          packages: [boto3, pynamodb, aioboto3]
+          notes: "Must confirm DynamoDB usage via imports/config"
+        - type: file_content_match
+          files: [serverless.yml, serverless.yaml, template.yaml, samconfig.toml]
+          patterns: ["AWS::DynamoDB::Table", "Type: AWS::Serverless"]
+      mcp_server:
+        package: "@aws/mcp-server-dynamodb"
+        env_vars: [AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION]
+
+    # --- Cassandra ---------------------------------------------------------
+    - id: db-cassandra
+      service: cassandra
+      category: wide-column
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [cassandra-driver, express-cassandra]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [cassandra-driver, acsylla]
+        - type: dependency
+          file: go.mod
+          packages: ["github.com/gocql/gocql", "github.com/scylladb/gocqlx"]
+        - type: file_content_match
+          files: [docker-compose.yml, compose.yml]
+          patterns: ["image: cassandra", "image: scylladb"]
+      default_port: 9042
+
+    # --- Neo4j -------------------------------------------------------------
+    - id: db-neo4j
+      service: neo4j
+      category: graph
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [neo4j-driver, "@neo4j/graphql"]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [neo4j, py2neo, neomodel]
+        - type: dependency
+          file: go.mod
+          packages: ["github.com/neo4j/neo4j-go-driver"]
+        - type: file_content_match
+          files: [docker-compose.yml, compose.yml]
+          patterns: ["image: neo4j"]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["NEO4J_URI", "NEO4J_URL"]
+      default_port: 7687
+
+    # --- CockroachDB -------------------------------------------------------
+    - id: db-cockroachdb
+      service: cockroachdb
+      category: relational-distributed
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [pg, "@prisma/client"]
+          notes: "Uses PostgreSQL wire protocol; check DATABASE_URL for cockroachdb://"
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["cockroachdb://", "COCKROACH_"]
+        - type: file_content_match
+          file: "prisma/schema.prisma"
+          patterns: ['provider = "cockroachdb"']
+        - type: file_content_match
+          files: [docker-compose.yml, compose.yml]
+          patterns: ["image: cockroachdb"]
+      default_port: 26257
+
+# ------------------------------------------------------------------------------
+# 2. Cloud Provider Detection
+# ------------------------------------------------------------------------------
+cloud_detection:
+  rules:
+    # --- AWS ---------------------------------------------------------------
+    - id: cloud-aws
+      provider: aws
+      detection:
+        - type: dependency
+          file: package.json
+          packages:
+            - "@aws-sdk/*"
+            - "@aws-cdk/*"
+            - aws-amplify
+            - "@aws-amplify/*"
+            - serverless
+        - type: dependency
+          files: [requirements.txt, pyproject.toml, Pipfile]
+          packages: [boto3, botocore, aws-cdk-lib, chalice, troposphere, pulumi-aws]
+        - type: dependency
+          file: go.mod
+          packages: ["github.com/aws/aws-sdk-go-v2"]
+        - type: dependency
+          file: Cargo.toml
+          packages: [aws-sdk-s3, aws-config, aws-sdk-dynamodb]
+        - type: file_exists
+          paths:
+            - serverless.yml
+            - serverless.yaml
+            - samconfig.toml
+            - template.yaml
+            - cdk.json
+            - amplify.yml
+            - .aws/
+            - buildspec.yml
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_REGION"]
+      mcp_server:
+        package: "@aws/mcp-server-aws"
+        env_vars: [AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION]
+
+    # --- GCP ---------------------------------------------------------------
+    - id: cloud-gcp
+      provider: gcp
+      detection:
+        - type: dependency
+          file: package.json
+          packages: ["@google-cloud/*", firebase-admin, firebase-functions]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [google-cloud-storage, google-cloud-bigquery, google-auth, firebase-admin]
+        - type: dependency
+          file: go.mod
+          packages: ["cloud.google.com/go"]
+        - type: file_exists
+          paths: [app.yaml, .gcloudignore, firebase.json, cloudbuild.yaml]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["GOOGLE_APPLICATION_CREDENTIALS", "GCP_PROJECT", "GOOGLE_CLOUD_PROJECT"]
+
+    # --- Azure -------------------------------------------------------------
+    - id: cloud-azure
+      provider: azure
+      detection:
+        - type: dependency
+          file: package.json
+          packages: ["@azure/*", "@azure/identity", "@azure/storage-blob"]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [azure-identity, azure-storage-blob, azure-functions]
+        - type: dependency
+          file: Cargo.toml
+          packages: [azure_core, azure_identity]
+        - type: file_exists
+          paths: [azure-pipelines.yml, host.json, local.settings.json, .azure/]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["AZURE_CLIENT_ID", "AZURE_TENANT_ID", "AZURE_SUBSCRIPTION_ID"]
+
+    # --- Vercel ------------------------------------------------------------
+    - id: cloud-vercel
+      provider: vercel
+      detection:
+        - type: file_exists
+          paths: [vercel.json, .vercel/]
+        - type: dependency
+          file: package.json
+          packages: ["@vercel/analytics", "@vercel/og", "@vercel/postgres", "@vercel/kv", "@vercel/blob"]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["VERCEL_"]
+
+    # --- Netlify -----------------------------------------------------------
+    - id: cloud-netlify
+      provider: netlify
+      detection:
+        - type: file_exists
+          paths: [netlify.toml, _redirects, _headers]
+        - type: dependency
+          file: package.json
+          packages: ["@netlify/functions", netlify-cli]
+
+    # --- Fly.io ------------------------------------------------------------
+    - id: cloud-flyio
+      provider: flyio
+      detection:
+        - type: file_exists
+          paths: [fly.toml]
+
+    # --- Railway -----------------------------------------------------------
+    - id: cloud-railway
+      provider: railway
+      detection:
+        - type: file_exists
+          paths: [railway.toml, railway.json, nixpacks.toml]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["RAILWAY_"]
+
+    # --- Render ------------------------------------------------------------
+    - id: cloud-render
+      provider: render
+      detection:
+        - type: file_exists
+          paths: [render.yaml]
+
+    # --- Heroku ------------------------------------------------------------
+    - id: cloud-heroku
+      provider: heroku
+      detection:
+        - type: file_exists
+          paths: [Procfile, app.json, heroku.yml]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["HEROKU_"]
+
+    # --- Supabase ----------------------------------------------------------
+    - id: cloud-supabase
+      provider: supabase
+      detection:
+        - type: dependency
+          file: package.json
+          packages: ["@supabase/supabase-js", "@supabase/auth-helpers-nextjs", "@supabase/ssr"]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [supabase, supabase-py]
+        - type: file_exists
+          paths: [supabase/config.toml, supabase/.gitignore]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["SUPABASE_URL", "SUPABASE_ANON_KEY", "NEXT_PUBLIC_SUPABASE_URL"]
+
+    # --- Firebase ----------------------------------------------------------
+    - id: cloud-firebase
+      provider: firebase
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [firebase, firebase-admin, firebase-functions, "@firebase/*"]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [firebase-admin]
+        - type: file_exists
+          paths: [firebase.json, .firebaserc, firestore.rules, storage.rules]
+
+# ------------------------------------------------------------------------------
+# 3. CI/CD Detection
+# ------------------------------------------------------------------------------
+ci_cd_detection:
+  rules:
+    - id: ci-github-actions
+      service: github-actions
+      detection:
+        - type: directory_exists
+          paths: [.github/workflows/]
+        - type: file_exists_glob
+          pattern: ".github/workflows/*.yml"
+      config_location: ".github/workflows/"
+
+    - id: ci-gitlab-ci
+      service: gitlab-ci
+      detection:
+        - type: file_exists
+          paths: [.gitlab-ci.yml]
+      config_location: ".gitlab-ci.yml"
+
+    - id: ci-circleci
+      service: circleci
+      detection:
+        - type: file_exists
+          paths: [.circleci/config.yml]
+      config_location: ".circleci/config.yml"
+
+    - id: ci-jenkins
+      service: jenkins
+      detection:
+        - type: file_exists
+          paths: [Jenkinsfile, jenkins/Jenkinsfile]
+      config_location: "Jenkinsfile"
+
+    - id: ci-bitbucket-pipelines
+      service: bitbucket-pipelines
+      detection:
+        - type: file_exists
+          paths: [bitbucket-pipelines.yml]
+      config_location: "bitbucket-pipelines.yml"
+
+    - id: ci-azure-devops
+      service: azure-devops
+      detection:
+        - type: file_exists
+          paths: [azure-pipelines.yml]
+      config_location: "azure-pipelines.yml"
+
+    - id: ci-travis
+      service: travis-ci
+      detection:
+        - type: file_exists
+          paths: [.travis.yml]
+      config_location: ".travis.yml"
+
+    - id: ci-drone
+      service: drone
+      detection:
+        - type: file_exists
+          paths: [.drone.yml]
+      config_location: ".drone.yml"
+
+# ------------------------------------------------------------------------------
+# 4. Messaging / Queue Detection
+# ------------------------------------------------------------------------------
+messaging_detection:
+  rules:
+    - id: msg-kafka
+      service: kafka
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [kafkajs, node-rdkafka, "@confluent/kafka-javascript"]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [kafka-python, confluent-kafka, aiokafka, faust-streaming]
+        - type: dependency
+          file: go.mod
+          packages:
+            - "github.com/segmentio/kafka-go"
+            - "github.com/confluentinc/confluent-kafka-go"
+        - type: dependency
+          file: Cargo.toml
+          packages: [rdkafka, kafka]
+        - type: file_content_match
+          files: [docker-compose.yml, compose.yml]
+          patterns: ["image: confluentinc/cp-kafka", "image: bitnami/kafka", "KAFKA_"]
+      default_port: 9092
+
+    - id: msg-rabbitmq
+      service: rabbitmq
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [amqplib, amqp-connection-manager, rascal]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [pika, aio-pika, celery, kombu]
+        - type: dependency
+          file: go.mod
+          packages: ["github.com/rabbitmq/amqp091-go", "github.com/streadway/amqp"]
+        - type: dependency
+          file: Cargo.toml
+          packages: [lapin, amqp]
+        - type: file_content_match
+          files: [docker-compose.yml, compose.yml]
+          patterns: ["image: rabbitmq"]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["RABBITMQ_URL", "AMQP_URL", "CLOUDAMQP_URL"]
+      default_port: 5672
+
+    - id: msg-sqs
+      service: aws-sqs
+      detection:
+        - type: dependency
+          file: package.json
+          packages: ["@aws-sdk/client-sqs", sqs-consumer, sqs-producer]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [boto3]
+          notes: "Must confirm SQS usage via import or config"
+        - type: file_content_match
+          files: [serverless.yml, template.yaml]
+          patterns: ["AWS::SQS::Queue", "sqs:"]
+
+    - id: msg-redis-pubsub
+      service: redis-pubsub
+      detection:
+        notes: "Detected via redis dependency combined with pub/sub usage patterns in code"
+        code_patterns:
+          - "subscribe("
+          - "publish("
+          - "psubscribe("
+
+    - id: msg-nats
+      service: nats
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [nats, nats.ws]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [nats-py, asyncio-nats-client]
+        - type: dependency
+          file: go.mod
+          packages: ["github.com/nats-io/nats.go"]
+        - type: dependency
+          file: Cargo.toml
+          packages: [nats, async-nats]
+        - type: file_content_match
+          files: [docker-compose.yml, compose.yml]
+          patterns: ["image: nats"]
+      default_port: 4222
+
+    - id: msg-bullmq
+      service: bullmq
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [bullmq, bull, "@bull-board/api", "@bull-board/express"]
+      notes: "BullMQ requires Redis; also detect Redis"
+
+# ------------------------------------------------------------------------------
+# 5. Search Engine Detection
+# ------------------------------------------------------------------------------
+search_detection:
+  rules:
+    - id: search-elasticsearch
+      service: elasticsearch
+      detection:
+        - type: dependency
+          file: package.json
+          packages: ["@elastic/elasticsearch", elasticsearch]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [elasticsearch, elasticsearch-dsl, elastic-apm]
+        - type: dependency
+          file: go.mod
+          packages: ["github.com/elastic/go-elasticsearch"]
+        - type: file_content_match
+          files: [docker-compose.yml, compose.yml]
+          patterns: ["image: elasticsearch", "image: docker.elastic.co"]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["ELASTICSEARCH_URL", "ELASTIC_"]
+      default_port: 9200
+
+    - id: search-opensearch
+      service: opensearch
+      detection:
+        - type: dependency
+          file: package.json
+          packages: ["@opensearch-project/opensearch"]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [opensearch-py, opensearch-dsl]
+        - type: file_content_match
+          files: [docker-compose.yml, compose.yml]
+          patterns: ["image: opensearchproject/opensearch"]
+      default_port: 9200
+
+    - id: search-meilisearch
+      service: meilisearch
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [meilisearch]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [meilisearch]
+        - type: file_content_match
+          files: [docker-compose.yml, compose.yml]
+          patterns: ["image: getmeili/meilisearch"]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["MEILI_MASTER_KEY", "MEILISEARCH_URL"]
+      default_port: 7700
+
+    - id: search-algolia
+      service: algolia
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [algoliasearch, react-instantsearch, vue-instantsearch, instantsearch.js]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [algoliasearch]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["ALGOLIA_APP_ID", "ALGOLIA_API_KEY", "NEXT_PUBLIC_ALGOLIA"]
+
+    - id: search-typesense
+      service: typesense
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [typesense, typesense-instantsearch-adapter]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [typesense]
+        - type: file_content_match
+          files: [docker-compose.yml, compose.yml]
+          patterns: ["image: typesense/typesense"]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["TYPESENSE_API_KEY", "TYPESENSE_HOST"]
+      default_port: 8108
+
+# ------------------------------------------------------------------------------
+# 6. Auth Provider Detection
+# ------------------------------------------------------------------------------
+auth_detection:
+  rules:
+    - id: auth-auth0
+      service: auth0
+      detection:
+        - type: dependency
+          file: package.json
+          packages: ["@auth0/auth0-react", "@auth0/nextjs-auth0", auth0, express-openid-connect, passport-auth0]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [auth0-python, authlib]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["AUTH0_DOMAIN", "AUTH0_CLIENT_ID", "AUTH0_SECRET"]
+
+    - id: auth-clerk
+      service: clerk
+      detection:
+        - type: dependency
+          file: package.json
+          packages: ["@clerk/nextjs", "@clerk/clerk-react", "@clerk/express", "@clerk/backend"]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["CLERK_SECRET_KEY", "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY", "CLERK_PUBLISHABLE_KEY"]
+
+    - id: auth-firebase-auth
+      service: firebase-auth
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [firebase, "@firebase/auth", firebase-admin]
+        - type: file_content_match
+          patterns: ["getAuth(", "signInWith", "createUserWithEmailAndPassword"]
+
+    - id: auth-keycloak
+      service: keycloak
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [keycloak-connect, keycloak-js, "@react-keycloak/web"]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [python-keycloak]
+        - type: file_content_match
+          files: [docker-compose.yml, compose.yml]
+          patterns: ["image: quay.io/keycloak", "image: keycloak"]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["KEYCLOAK_URL", "KEYCLOAK_REALM", "KEYCLOAK_CLIENT_ID"]
+
+    - id: auth-supabase-auth
+      service: supabase-auth
+      detection:
+        - type: dependency
+          file: package.json
+          packages: ["@supabase/supabase-js", "@supabase/auth-helpers-nextjs", "@supabase/ssr"]
+        - type: file_content_match
+          patterns: ["supabase.auth.", "createClient("]
+
+    - id: auth-nextauth
+      service: nextauth
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [next-auth, "@auth/core", "@auth/nextjs-adapter", "@auth/prisma-adapter"]
+        - type: file_exists
+          paths:
+            - app/api/auth/[...nextauth]/route.ts
+            - pages/api/auth/[...nextauth].ts
+            - auth.ts
+            - auth.config.ts
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["NEXTAUTH_SECRET", "NEXTAUTH_URL", "AUTH_SECRET"]
+
+    - id: auth-lucia
+      service: lucia
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [lucia, "@lucia-auth/adapter-prisma", "@lucia-auth/adapter-drizzle"]
+
+    - id: auth-passport
+      service: passport
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [passport, passport-local, passport-jwt, passport-google-oauth20]
+
+# ------------------------------------------------------------------------------
+# 7. Observability Detection
+# ------------------------------------------------------------------------------
+observability_detection:
+  rules:
+    - id: obs-datadog
+      service: datadog
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [dd-trace, datadog-metrics, "@datadog/browser-rum"]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [ddtrace, datadog, datadog-api-client]
+        - type: dependency
+          file: go.mod
+          packages: ["gopkg.in/DataDog/dd-trace-go.v1"]
+        - type: file_exists
+          paths: [datadog.yaml, datadog-agent.yaml]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["DD_API_KEY", "DD_APP_KEY", "DATADOG_"]
+
+    - id: obs-newrelic
+      service: newrelic
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [newrelic, "@newrelic/browser-agent"]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [newrelic]
+        - type: file_exists
+          paths: [newrelic.js, newrelic.yml]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["NEW_RELIC_LICENSE_KEY", "NEW_RELIC_APP_NAME"]
+
+    - id: obs-sentry
+      service: sentry
+      detection:
+        - type: dependency
+          file: package.json
+          packages: ["@sentry/node", "@sentry/react", "@sentry/nextjs", "@sentry/browser", "@sentry/vue"]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [sentry-sdk]
+        - type: dependency
+          file: go.mod
+          packages: ["github.com/getsentry/sentry-go"]
+        - type: dependency
+          file: Cargo.toml
+          packages: [sentry]
+        - type: file_exists
+          paths: [sentry.properties, .sentryclirc]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["SENTRY_DSN", "NEXT_PUBLIC_SENTRY_DSN", "SENTRY_AUTH_TOKEN"]
+      mcp_server:
+        package: "@sentry/mcp-server"
+        env_vars: [SENTRY_AUTH_TOKEN]
+
+    - id: obs-opentelemetry
+      service: opentelemetry
+      detection:
+        - type: dependency
+          file: package.json
+          packages:
+            - "@opentelemetry/sdk-node"
+            - "@opentelemetry/api"
+            - "@opentelemetry/auto-instrumentations-node"
+            - "@opentelemetry/exporter-trace-otlp-http"
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [opentelemetry-sdk, opentelemetry-api, opentelemetry-instrumentation]
+        - type: dependency
+          file: go.mod
+          packages: ["go.opentelemetry.io/otel"]
+        - type: dependency
+          file: Cargo.toml
+          packages: [opentelemetry, tracing-opentelemetry]
+        - type: file_exists
+          paths: [otel-collector-config.yaml]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["OTEL_EXPORTER_OTLP_ENDPOINT", "OTEL_SERVICE_NAME"]
+
+    - id: obs-prometheus
+      service: prometheus
+      detection:
+        - type: dependency
+          file: package.json
+          packages: [prom-client]
+        - type: dependency
+          files: [requirements.txt, pyproject.toml]
+          packages: [prometheus-client, prometheus-flask-instrumentator]
+        - type: dependency
+          file: go.mod
+          packages: ["github.com/prometheus/client_golang"]
+        - type: file_exists
+          paths: [prometheus.yml, prometheus.yaml]
+        - type: file_content_match
+          files: [docker-compose.yml, compose.yml]
+          patterns: ["image: prom/prometheus"]
+
+    - id: obs-grafana
+      service: grafana
+      detection:
+        - type: file_content_match
+          files: [docker-compose.yml, compose.yml]
+          patterns: ["image: grafana/grafana"]
+        - type: file_exists
+          paths: [grafana/provisioning/, grafana/dashboards/]
+        - type: file_content_match
+          files: [".env", ".env.example"]
+          patterns: ["GRAFANA_", "GF_"]
+      default_port: 3000
+
+# ------------------------------------------------------------------------------
+# 8. MCP Server Mapping (Aggregate)
+# ------------------------------------------------------------------------------
+mcp_server_mapping:
+  description: >
+    Maps detected services to their recommended MCP (Model Context Protocol)
+    server packages.  These are installed and configured in the AI tool's MCP
+    config so the coding assistant can interact with the service directly.
+
+  mappings:
+    # Databases
+    - service: postgresql
+      mcp_package: "@modelcontextprotocol/server-postgres"
+      transport: stdio
+      env_vars: [POSTGRES_CONNECTION_STRING]
+    - service: mysql
+      mcp_package: "@benborla29/mcp-server-mysql"
+      transport: stdio
+      env_vars: [MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE]
+    - service: mongodb
+      mcp_package: "@modelcontextprotocol/server-mongodb"
+      transport: stdio
+      env_vars: [MONGODB_URI]
+    - service: redis
+      mcp_package: "@modelcontextprotocol/server-redis"
+      transport: stdio
+      env_vars: [REDIS_URL]
+    - service: sqlite
+      mcp_package: "@modelcontextprotocol/server-sqlite"
+      transport: stdio
+      env_vars: [SQLITE_DB_PATH]
+    - service: dynamodb
+      mcp_package: "@aws/mcp-server-dynamodb"
+      transport: stdio
+      env_vars: [AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION]
+
+    # Cloud
+    - service: aws
+      mcp_package: "@aws/mcp-server-aws"
+      transport: stdio
+      env_vars: [AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION]
+
+    # Version Control
+    - service: github
+      mcp_package: "@modelcontextprotocol/server-github"
+      transport: stdio
+      env_vars: [GITHUB_PERSONAL_ACCESS_TOKEN]
+    - service: gitlab
+      mcp_package: "@modelcontextprotocol/server-gitlab"
+      transport: stdio
+      env_vars: [GITLAB_PERSONAL_ACCESS_TOKEN, GITLAB_API_URL]
+
+    # Observability
+    - service: sentry
+      mcp_package: "@sentry/mcp-server"
+      transport: stdio
+      env_vars: [SENTRY_AUTH_TOKEN]
+
+    # Search
+    - service: elasticsearch
+      mcp_package: "mcp-server-elasticsearch"
+      transport: stdio
+      env_vars: [ELASTICSEARCH_URL]
+
+    # Communication
+    - service: slack
+      mcp_package: "@modelcontextprotocol/server-slack"
+      transport: stdio
+      env_vars: [SLACK_BOT_TOKEN]
+
+    # File System
+    - service: filesystem
+      mcp_package: "@modelcontextprotocol/server-filesystem"
+      transport: stdio
+      env_vars: []
+      args_template: ["allowed_dir_path"]
+
+    # Memory / Knowledge
+    - service: memory
+      mcp_package: "@modelcontextprotocol/server-memory"
+      transport: stdio
+      env_vars: []
+
+    # Browser
+    - service: puppeteer
+      mcp_package: "@modelcontextprotocol/server-puppeteer"
+      transport: stdio
+      env_vars: []
+
+    # Fetch / HTTP
+    - service: fetch
+      mcp_package: "@modelcontextprotocol/server-fetch"
+      transport: stdio
+      env_vars: []

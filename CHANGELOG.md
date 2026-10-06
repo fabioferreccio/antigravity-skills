@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Claude Code & Claude Tag Marketplace Architecture**:
+  - Root `.claude-plugin/marketplace.json` manifest exposing all 29 skills as first-class plugins.
+  - Granular plugin layout in `plugins/<skill-name>/` with `.claude-plugin/plugin.json` and `skills/<skill-name>/SKILL.md`.
+  - Automated sync script `scripts/sync-claude-marketplace.js` integrated into `npm run catalog:sync` and GitHub Actions CI workflow.
+  - Marketplace integrity verification added to `scripts/validate.js` (validates all 29 plugins and manifests).
+  - Documentation for connecting via Claude Code CLI (`/plugin marketplace add`) and Claude Tag (Claude.ai Organization settings).
+
 ## [1.2.0] - 2026-10-01
 
 ### Added

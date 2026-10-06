@@ -1,0 +1,17 @@
+{
+  "name": "read-file-chunked",
+  "version": "1.0.0",
+  "description": "Reads large files in specific chunks with pagination, providing exact lines to the model. Prevents context window overflow and VRAM spikes by extracting only the requested subset of lines.",
+  "author": {
+    "name": "AI Assistant"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/.agents/skills/read-file-chunked",
+  "repository": "https://github.com/fabioferreccio/antigravity-skills.git",
+  "license": "MIT",
+  "keywords": [
+    "context-optimization",
+    "file-reading",
+    "pagination",
+    "efficiency"
+  ]
+}

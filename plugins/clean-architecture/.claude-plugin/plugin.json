@@ -1,0 +1,22 @@
+{
+  "name": "clean-architecture",
+  "version": "1.2.0",
+  "description": "Expert cognitive system for designing and refactoring systems using Clean Architecture. Enforces strict dependency rules and modularity through a reference-based knowledge system.",
+  "author": {
+    "name": "Fábio Ferreccio",
+    "email": "fabio@example.com"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/.agents/skills/clean-architecture",
+  "repository": "https://github.com/fabioferreccio/antigravity-skills.git",
+  "license": "MIT",
+  "keywords": [
+    "architecture",
+    "clean-code",
+    "domain-driven-design",
+    "modularity",
+    "deep-modules",
+    "cqrs",
+    "error-handling",
+    "contracts"
+  ]
+}

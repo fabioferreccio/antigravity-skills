@@ -1,0 +1,146 @@
+heuristics:
+  skill_activation:
+    primary_triggers:
+      - "staff engineer"
+      - "analisar redundância"
+      - "padronizar entre times"
+      - "shared library"
+      - "débito técnico"
+      - "diagnóstico de engenharia"
+      - "escalar engenharia"
+      - "onboarding de engenheiros"
+      - "DORA metrics"
+      - "métricas de engenharia"
+
+    secondary_triggers:
+      - "duplicação de código"
+      - "acoplamento entre serviços"
+      - "pipeline lento"
+      - "bus factor"
+      - "padrões de engenharia"
+      - "SDK interno"
+      - "refatoração cross-team"
+      - "plataforma de engenharia"
+
+    negative_triggers:
+      - "feature para usuário"  # → product-manager skill instead
+      - "revisar ADR de arquitetura"  # → enterprise-architect skill instead
+      - "security audit"  # outside scope
+      - "compliance review"  # outside scope
+
+  mode_selection:
+    redundancy_audit:
+      signals:
+        - "múltiplos repos"
+        - "duplicação entre times"
+        - "mesma lógica"
+        - "bibliotecas duplicadas"
+      required_context:
+        - "repository list or code samples"
+        - "team count"
+
+    shared_library_design:
+      signals:
+        - "shared library"
+        - "SDK"
+        - "biblioteca compartilhada"
+        - "reutilizável entre times"
+      required_context:
+        - "consumer list (teams/services)"
+        - "current implementations to consolidate"
+      minimum_threshold: "≥2 teams or ≥3 instances of same pattern"
+
+    standard_enforcement:
+      signals:
+        - "padronizar"
+        - "inconsistência entre times"
+        - "padrão de código"
+        - "convenção"
+      required_context:
+        - "what standard is violated"
+        - "how many teams affected"
+
+    onboarding_simplification:
+      signals:
+        - "onboarding"
+        - "tempo para primeiro PR"
+        - "ramp-up"
+        - "novo engenheiro"
+      required_context:
+        - "current onboarding time"
+        - "primary friction points"
+
+    dora_analysis:
+      signals:
+        - "DORA"
+        - "deploy frequency"
+        - "lead time"
+        - "MTTR"
+        - "change failure rate"
+        - "velocidade de deploy"
+      required_context:
+        - "metric values (at least 2 DORA metrics)"
+        - "time period"
+
+    refactoring_plan:
+      signals:
+        - "refatorar"
+        - "complexidade cognitiva"
+        - "código legado"
+        - "reescrever"
+      required_context:
+        - "scope (files/services/repos)"
+        - "reason for refactoring"
+
+    cicd_optimization:
+      signals:
+        - "pipeline lento"
+        - "build demorado"
+        - "flaky tests"
+        - "CI/CD"
+      required_context:
+        - "current pipeline time"
+        - "failure rate"
+
+    technical_debt_triage:
+      signals:
+        - "débito técnico"
+        - "technical debt"
+        - "priorizar débito"
+        - "backlog de débito"
+      required_context:
+        - "debt item list or description"
+
+    full_diagnosis:
+      signals:
+        - "diagnosticar engenharia"
+        - "diagnóstico completo"
+        - "analisar tudo"
+        - "panorama de engenharia"
+      required_context:
+        - "team/org description"
+        - "repos or systems involved"
+
+  quality_thresholds:
+    abstraction_threshold: "≥2 teams OR ≥3 codebases with same pattern"
+    debt_action_threshold: "any CRITICAL or ≥3 HIGH severity debt items"
+    onboarding_alert: "time-to-first-PR > 2 weeks"
+    pipeline_alert: "build time > 20 minutes OR flaky rate > 5%"
+    dora_alert:
+      deploy_frequency: "< 1x/week"
+      lead_time: "> 1 week"
+      mttr: "> 4 hours"
+      change_failure_rate: "> 30%"
+
+  escalation_triggers:
+    - condition: "no repository context provided"
+      action: "ask for repo list, team count, and problem description"
+
+    - condition: "only 1 team or 1 repo mentioned"
+      action: "clarify if cross-team scope exists; if not, suggest enterprise-architect or clean-architecture skills"
+
+    - condition: "vague input without measurable signals"
+      action: "ask for specific: repos, metrics, team count, or incident history"
+
+    - condition: "request for big-bang rewrite"
+      action: "reject and propose incremental strangler-fig strategy instead"

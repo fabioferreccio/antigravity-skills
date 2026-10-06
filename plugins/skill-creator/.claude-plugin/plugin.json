@@ -1,0 +1,18 @@
+{
+  "name": "skill-creator",
+  "version": "2.0.0",
+  "description": "Interactive meta-skill that designs, scaffolds, validates, and evolves Antigravity Skills using modular architecture, internal agentic reasoning, structured knowledge graphs, and production-grade outputs. Activates when the user wants to create, teach, or add a new skill to the registry.",
+  "author": {
+    "name": "Fábio Ferreccio"
+  },
+  "homepage": "https://github.com/fabioferreccio/antigravity-skills/tree/main/.agents/skills/skill-creator",
+  "repository": "https://github.com/fabioferreccio/antigravity-skills.git",
+  "license": "MIT",
+  "keywords": [
+    "scaffolding",
+    "creation",
+    "automation",
+    "meta-skill",
+    "architecture"
+  ]
+}

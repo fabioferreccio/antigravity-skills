@@ -1,0 +1,110 @@
+phase_transitions:
+  - from: OBSERVATION
+    to: REFLECTION
+    condition: "context ingested (tests, logs, acceptance criteria, bug history)"
+
+  - from: REFLECTION
+    to: ACTION
+    condition: "reflection questions answered; at least one risk or gap identified"
+
+  - from: REFLECTION
+    to: CLARIFICATION
+    condition: "context is insufficient to identify risks confidently"
+
+  - from: CLARIFICATION
+    to: OBSERVATION
+    condition: "user provides missing context"
+
+  - from: ACTION
+    to: EVALUATION
+    condition: "test scenarios generated"
+
+  - from: EVALUATION
+    to: OUTPUT
+    condition: "all evaluation checks pass"
+
+  - from: EVALUATION
+    to: ACTION
+    condition: "any evaluation check fails — regenerate or refine"
+
+  - from: OUTPUT
+    to: DONE
+    condition: "coverage summary presented with confidence level"
+
+action_selection:
+  edge_case_generation:
+    triggers:
+      - "new feature"
+      - "untested function"
+      - "what am I missing"
+      - "edge cases"
+    output: "edge cases + unit/integration test code"
+
+  regression_test:
+    triggers:
+      - "bug was fixed"
+      - "regression"
+      - "create regression"
+      - "this broke before"
+    output: "regression test file linked to bug/incident ID"
+
+  e2e_authoring:
+    triggers:
+      - "user flow"
+      - "checkout"
+      - "login"
+      - "critical path"
+      - "E2E"
+      - "end-to-end"
+    output: "Playwright/Cypress test script"
+
+  stress_test:
+    triggers:
+      - "stress test"
+      - "load test"
+      - "performance"
+      - "p99"
+      - "concurrent users"
+      - "throughput"
+    output: "k6 or Artillery script with thresholds"
+
+  rca_report:
+    triggers:
+      - "root cause"
+      - "RCA"
+      - "incident"
+      - "production failure"
+      - "post-mortem"
+    output: "structured RCA report + regression test"
+
+  coverage_gap:
+    triggers:
+      - "review coverage"
+      - "coverage audit"
+      - "missing tests"
+      - "what's not tested"
+    output: "coverage gap analysis + prioritized test list"
+
+  flaky_diagnosis:
+    triggers:
+      - "flaky"
+      - "intermittent"
+      - "sometimes fails"
+      - "non-deterministic"
+    output: "root cause of flakiness + deterministic fix"
+
+  mock_design:
+    triggers:
+      - "mock"
+      - "stub"
+      - "external API"
+      - "isolate dependency"
+    output: "mock factory + test doubles"
+
+escalation:
+  conditions:
+    - "bug appears in multiple unrelated modules"
+    - "same failure recurs after fix"
+    - "test passes locally but fails in CI consistently"
+    - "race condition affects data integrity"
+  action: "escalate with systemic failure flag — recommend architectural review"
