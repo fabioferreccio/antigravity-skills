@@ -1,41 +1,70 @@
-## Summary
+<!-- ==============================================================================
+  antigravity-skills Registry — Supreme Pull Request Template
+  Inspirado nos princípios de PR-Craftsman, Deep Modules e Governança Estrita.
+============================================================================== -->
 
-<!-- Brief description of what this PR does -->
+## 🚪 Triagem de Decisão & Raio de Explosão
 
-## Type of Change
+- **Classificação**: 🔴 **Porta de Mão Única (Irreversível / Alto Risco)** | 🟢 **Porta de Mão Dupla (Reversível / Baixo Risco)**
+- **Nível de Risco (Blast Radius)**: Tier 1 (Crítico/Core) | Tier 2 (Feature Interna) | Tier 3 (Folha/Documentação)
+- **Justificativa de Risco**: <!-- 1-2 frases explicando a reversibilidade e impacto operacional -->
+- **Plano de Rollback**: <!-- Sim, git revert imediato | Requer script ou intervenção manual -->
+- **Domínios/Skills Afetados**: <!-- Ex: code-review, clean-architecture, CLI, etc. -->
 
-- [ ] 🚀 New Skill
-- [ ] 🔧 Skill Update (bug fix or improvement)
-- [ ] 📝 Documentation only
-- [ ] 🏗️ Infrastructure (CI/CD, scripts, CLI)
-- [ ] ♻️ Refactor (no behavior change)
+---
 
-## Skill Checklist (if applicable)
+## 🗺️ Visão Arquitetural das Alterações (Show Me)
 
-- [ ] `SKILL.md` has valid frontmatter with all required fields
-- [ ] `README.md` is present and complete
-- [ ] `examples/` directory contains at least one example
-- [ ] `tests/` directory contains at least one test case
-- [ ] Version has been bumped in `SKILL.md` frontmatter
-- [ ] `CHANGELOG.md` has been updated
-- [ ] `npm run validate` passes locally
-- [ ] No duplicate skill names in the registry
+<!-- Diagrama Mermaid ilustrando o fluxo, arquitetura ou comparação Antes x Depois -->
+```mermaid
+graph LR
+  subgraph Antes
+    A[Componente / Fluxo Anterior]
+  end
+  subgraph Depois
+    B[Nova Estrutura / Módulo Profundo]
+  end
+```
 
-## Security Review
+> *O diagrama visual orienta o revisor e acelera a compreensão cognitiva, sem substituir o detalhamento textual abaixo.*
 
-- [ ] No API keys, tokens, or secrets in committed files
-- [ ] Filesystem access is scoped and documented
-- [ ] Terminal commands are non-destructive by default
-- [ ] Network access is declared in frontmatter `security` field
+---
 
-## Testing
+## 🎯 Objetivo & Motivação
 
-<!-- Describe how you tested your changes -->
+<!-- Resumo claro de 2 a 3 parágrafos explicando:
+1. Qual problema ou oportunidade este PR resolve?
+2. Por que esta abordagem foi escolhida?
+3. Qual o benefício mensurável para os usuários ou agentes? -->
 
-## Screenshots / Examples
+---
 
-<!-- If applicable, add screenshots or example outputs -->
+## 🔍 Guia para o Revisor ("Por onde começar a revisar")
 
-## Related Issues
+<!-- Ordene os arquivos recomendados para leitura sequencial, reduzindo a fadiga do revisor: -->
+1. Comece pela especificação/lente em `...`
+2. Veja a implementação principal em `...`
+3. Valide os testes e exemplos em `...`
 
-<!-- Link related issues: Closes #123, Fixes #456 -->
+---
+
+## 🧩 Checklist de Simplicidade & Design (Anti-Overengineering)
+
+- [ ] **Módulos Profundos**: A implementação esconde complexidade atrás de interfaces estreitas?
+- [ ] **Sem Indireção Excessiva**: Foram evitadas cadeias anêmicas de repasse (`Controller -> UseCase -> Service -> Repo` sem regras de negócio)?
+- [ ] **Sem Fragmentação**: Rotinas simples e coesas mantiveram sua localidade de leitura (sem micro-helpers de 2 linhas desnecessários)?
+- [ ] **Regra de Três & YAGNI**: Não foram criadas abstrações/interfaces especulativas sem variação comprovada?
+- [ ] **Interfaces Justificadas**: Todas as novas interfaces possuem múltiplos implementadores ou seam de teste real?
+
+---
+
+## 🛡️ Checklist de Governança & Qualidade do Repositório
+
+- [ ] **Validação**: `npm run validate` executado e aprovado localmente (0 erros, 0 warnings).
+- [ ] **SemVer**: Versão atualizada semanticamente no frontmatter do `SKILL.md`.
+- [ ] **Changelog**: `CHANGELOG.md` da skill atualizado seguindo o formato *Keep a Changelog*.
+- [ ] **Documentação**: `README.md` completo com propósito, uso, exemplos e limitações.
+- [ ] **Exemplos & Testes**: Pelo menos um exemplo em `examples/` e um teste em `tests/`.
+- [ ] **Idioma**: Interações com usuário em PT-BR; código, commits e arquivos internos em Inglês.
+- [ ] **Segurança**: Nenhum segredo/token/chave comitada; permissões declaradas no frontmatter.
+- [ ] **Commits**: Formato Conventional Commits (`feat(skill-name): ...`) com escopo e < 100 caracteres.

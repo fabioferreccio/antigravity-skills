@@ -260,6 +260,44 @@ Expected behavior:
   - Agent provides concrete fix with proper validation logic
   - Agent includes Migration Plan with risk-ordered steps
   - Finding severity is Crítico (not Importante or Menor)
+### E-05: Overengineering, Fragmentation & Indirection Detection
+```
+Input: "revisa o arquivo src/services/user-status.service.ts"
+File content:
+  interface IUserStatusStrategy {
+    calculate(user: { active: boolean }): string;
+  }
+  class ActiveUserStatusStrategy implements IUserStatusStrategy {
+    calculate(user: { active: boolean }): string {
+      return this.formatStatus(this.extractStatus(user));
+    }
+    private extractStatus(user: { active: boolean }): boolean {
+      return user.active;
+    }
+    private formatStatus(active: boolean): string {
+      return active ? "ACTIVE" : "INACTIVE";
+    }
+  }
+  class UserStatusStrategyFactory {
+    static getStrategy(): IUserStatusStrategy {
+      return new ActiveUserStatusStrategy();
+    }
+  }
+  export class UserStatusFacade {
+    getStatus(user: { active: boolean }): string {
+      return UserStatusStrategyFactory.getStrategy().calculate(user);
+    }
+  }
+
+Expected behavior:
+  - Agent activates simplicity-reviewer and architecture-reviewer
+  - Agent detects AT LEAST 3 of these issues:
+    1. [Importante] Overengineering / Over-abstraction: Strategy pattern + Factory + Interface for a binary status calculation
+    2. [Importante] Indirection overuse: UserStatusFacade -> Factory -> Strategy -> private helpers merely for a ternary check
+    3. [Menor] Function fragmentation: extractStatus and formatStatus are 1-line micro-functions destroying reading locality
+    4. [Menor] Premature abstraction: only one strategy exists with zero polymorphic variation
+  - Agent recommends collapsing the design into a direct, readable function:
+    `export function getUserStatus(user: { active: boolean }): string { return user.active ? "ACTIVE" : "INACTIVE"; }`
 ```
 
 ---

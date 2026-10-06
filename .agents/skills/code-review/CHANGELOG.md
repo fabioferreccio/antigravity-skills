@@ -5,6 +5,18 @@ All notable changes to the `code-review` skill will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2026-10-06
+
+### Added
+- **Deep Simplicity & Anti-Overengineering Lenses (`simplicity.md`)**: Explicit audit rules for 5 core anti-patterns:
+  - **Overengineering**: Heavyweight design patterns applied to simple, bounded tasks.
+  - **Over-Abstraction**: 1-to-1 single-implementer interfaces, empty wrappers, and layers encapsulating 1-2 trivial lines.
+  - **Premature Abstraction**: Enforcement of **Rule of Three** and **YAGNI** before abstracting.
+  - **Function Fragmentation**: Detection of shallow micro-function proliferation that hurts reading locality and mental flow.
+  - **Indirection Overuse**: Anemic pass-through layers forwarding calls without adding logic.
+- **Dogmatic Clean Architecture & Anemic Pass-Through Lens (`architecture.md`)**: Guards against excessive layers, trivial UseCases, and pointless 1:1 DTO mappings in Clean Architecture implementations.
+- **Integration with `codebase-design` skill**: Automatic complementary skill hook to inject Ousterhout deep-module and leverage heuristics into `simplicity-reviewer` and `architecture-reviewer`.
+
 ## [1.3.0] - 2026-10-01
 
 ### Added
