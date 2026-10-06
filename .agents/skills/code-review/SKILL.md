@@ -12,7 +12,7 @@ description: >
   file with review intent, even without the word "review". Uses project
   indexing for context persistence and delegates to complementary skills when
   detected.
-version: 1.3.0
+version: 1.4.0
 author: Fábio Ferreccio
 tags:
   - code-review
@@ -229,6 +229,7 @@ Check the skill registries available in the environment — `.claude/skills/` (p
 | Diff touches security-sensitive code | `security-engineer` | Enrich security-reviewer context |
 | Diff touches test files or coverage config | `qa-engineer` | Enrich testing-reviewer context |
 | Diff touches UX/frontend interaction patterns | `ux-specialist` | Add usability lens |
+| Complexity, deep-modules, or pass-through concerns | `codebase-design` | Enrich simplicity-reviewer & architecture-reviewer with deep module & leverage heuristics |
 | Always (if skill exists in registry) | `domain-expert` | Inject domain-specific validation rules and algorithms into business-logic-reviewer context |
 
 **If more than 3 complementary skills are detected**, ask the user which ones to activate before proceeding.
@@ -274,7 +275,7 @@ These five agents run on every review, regardless of diff content:
 |---|---|---|
 | `architecture-reviewer` | Dependency direction, module boundaries, coupling, cohesion, SOLID | `agents/architecture-reviewer.md` |
 | `security-reviewer` | Injection, auth, secrets, input validation, OWASP Top 10 | `agents/security-reviewer.md` |
-| `simplicity-reviewer` | Over-engineering, unnecessary abstraction, readability, DRY, KISS | `agents/simplicity-reviewer.md` |
+| `simplicity-reviewer` | Over-engineering, over-abstraction, premature abstraction, function fragmentation, indirection overuse, deep duplication | `agents/simplicity-reviewer.md` |
 | `testing-reviewer` | Coverage gaps, fragile tests, missing edge cases, test quality | `agents/testing-reviewer.md` |
 | `business-logic-reviewer` | Semantic correctness, naming integrity, domain algorithms, classification soundness, boundary blindness, invariant violations | `agents/business-logic-reviewer.md` |
 
@@ -315,6 +316,7 @@ For each applicable agent:
 When complementary skills are detected in Phase 3.2, enrich agent context:
 
 - **`clean-architecture` skill** → Load its reference files and inject into `architecture-reviewer` context.
+- **`codebase-design` skill** → Inject deep-module analysis, pass-through reduction, and information-hiding principles into `simplicity-reviewer` and `architecture-reviewer` context.
 - **`dba-agent` skill** → Inject DBA-grade analysis rules into `database-reviewer` context.
 - **`security-engineer` skill** → Merge its threat model and checklist into `security-reviewer` context.
 - **`qa-engineer` skill** → Inject test strategy and edge-case patterns into `testing-reviewer` context.

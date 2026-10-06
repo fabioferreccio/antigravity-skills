@@ -59,6 +59,23 @@ Polyglot architecture review lens. Language-agnostic principles with language-sp
 - DbContext in domain layer
 - Missing interface for repository pattern
 
+## Anti-Pattern: Dogmatic Clean Architecture & Anemic Indirection
+
+Clean Architecture and hexagonal design must serve domain clarity and maintainability, not dogmatic bureaucracy. Flag the following patterns:
+
+1. **Anemic Pass-Through Chains (Shallow Modules)**:
+   - Call chains where each layer merely forwards arguments to the layer below without validation, business rules, or transformation (e.g., `Controller -> Facade -> UseCase -> Service -> Repository`).
+   - If an intermediate layer adds no value, recommend collapsing or eliminating the pass-through.
+
+2. **Trivial / Empty Use Cases**:
+   - Creating a dedicated UseCase/Interactor class for a basic single-line repository call (e.g., `class GetUserUseCase { execute(id) { return this.userRepo.findById(id); } }`) with zero orchestration, transaction boundary, or authorization check.
+
+3. **Pointless DTO & Mapper Layering**:
+   - Creating 4 identical representations (`ApiRequestDTO` -> `UseCaseInputDTO` -> `DomainEntity` -> `DatabaseModel`) that map 1:1 with zero field divergence or security boundary justification.
+
+4. **Shallow Interfaces (One-to-One Rigidity)**:
+   - Creating an interface for every single concrete class solely to satisfy dogmatic Clean Architecture rules, when the interface will only ever have one implementation and is never substituted in testing. Depend on stable concrete classes where polymorphism is nonexistent.
+
 ## Severity
 - **Critico**: Layer violations (domain importing infra), tight coupling creating untestable code
 - **Importante**: Convention deviations, legacy patterns when newer ones exist
