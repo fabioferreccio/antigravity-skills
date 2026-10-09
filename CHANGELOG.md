@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **Ecosystem Bundles & Dependency Matrix in README**: Comprehensive documentation of skill synergy, required vs. optional companion skills, and one-liner bundled installation commands for engineering suites.
+- **Enhanced `code-review` Companion Documentation**: Detailed guide in `code-review/README.md` explaining how companion skills (`codebase-design`, `clean-architecture`, `dba-agent`, `security-engineer`, `qa-engineer`, `pr-craftsman`) enrich reviews.
+
+### Fixed
+- **CLI Global Antigravity Path**: Corrected machine-local installation and diagnostic paths in `cli/commands/install.js` and `cli/commands/doctor.js` to target `~/.gemini/config/skills/`, aligning with Antigravity's native customization discovery system.
+
 ## [1.2.0] - 2026-10-01
 
 ### Added
