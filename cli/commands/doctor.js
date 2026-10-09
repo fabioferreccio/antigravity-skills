@@ -45,7 +45,7 @@ export async function doctor() {
   }
 
   // ─── Check 3: Global skills directory ─────────────────────────
-  const globalSkills = join(homedir(), '.gemini', 'antigravity', 'skills');
+  const globalSkills = join(homedir(), '.gemini', 'config', 'skills');
   if (existsSync(globalSkills)) {
     const count = readdirSync(globalSkills, { withFileTypes: true }).filter((d) => d.isDirectory()).length;
     checks.push({ name: 'Global skills dir', status: '🟢 Pass', detail: `${globalSkills} (${count} skills)` });

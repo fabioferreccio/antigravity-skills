@@ -62,6 +62,18 @@ npx antigravity install code-review --claude --global
 npx antigravity install code-review --all-clients
 ```
 
+### 📦 Bundled Installation (With All Companion Skills)
+
+To install `code-review` along with its full ecosystem of complementary skills (`codebase-design`, `clean-architecture`, `dba-agent`, `security-engineer`, `qa-engineer`, `pr-craftsman`):
+
+```bash
+# Antigravity (global)
+npx github:fabioferreccio/antigravity-skills install code-review codebase-design clean-architecture dba-agent security-engineer qa-engineer pr-craftsman --global
+
+# Claude Code (global)
+npx github:fabioferreccio/antigravity-skills install code-review codebase-design clean-architecture dba-agent security-engineer qa-engineer pr-craftsman --claude --global
+```
+
 ## Usage
 
 This skill activates automatically when:
@@ -156,6 +168,23 @@ For single-file reviews, a **Migration Plan** section is appended with steps ord
 - **Pre-existing Issue Detection**: Separates issues that already existed from issues introduced by the current change
 - **Positive Feedback**: Always highlights what was done well, not just what needs fixing
 - **Conflict Resolution**: When multiple agents flag the same line, priority rules determine which finding wins
+
+## 🧩 Complementary Ecosystem & Dependencies
+
+### Strict Runtime Dependencies: **None**
+`code-review` is 100% autonomous. It works out-of-the-box without requiring any other skill to be installed.
+
+### Optional Complementary Skills (Recommended)
+When present in the workspace (`.agents/skills/`) or global directories, `code-review` automatically delegates specialized analysis to:
+
+| Companion Skill | Status | Role in Review |
+|---|---|---|
+| **`codebase-design`** | *Optional (Recommended)* | Injects Ousterhout's *Deep Modules* heuristics into `simplicity-reviewer` to detect and eliminate overengineering, classitis, shallow helper fragmentation, and pass-through chains. |
+| **`clean-architecture`** | *Optional (Recommended)* | Injects domain-driven boundaries, inward dependency rules, and contract integrity checks into `architecture-reviewer`. |
+| **`dba-agent`** | *Optional (Recommended)* | Enriches `database-reviewer` with migration safety analysis, lock risk detection, query efficiency, and index design. |
+| **`security-engineer`** | *Optional (Recommended)* | Merges AppSec threat modeling, OWASP Top 10 matrices, and CVSS scoring into `security-reviewer`. |
+| **`qa-engineer`** | *Optional (Recommended)* | Guides `testing-reviewer` with anti-tautological test checks, AAA structure, and edge-case taxonomy. |
+| **`pr-craftsman`** | *Optional (Recommended)* | Provides operational blast radius assessment, One-Way vs. Two-Way Door classification, and visual Mermaid architecture diagrams. |
 
 ## Examples
 

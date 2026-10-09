@@ -31,7 +31,7 @@ export const CLIENTS = {
   antigravity: {
     name: 'Antigravity',
     workspacePath: (skillName) => join(process.cwd(), '.agents', 'skills', skillName),
-    globalPath: (skillName) => join(homedir(), '.gemini', 'antigravity', 'skills', skillName),
+    globalPath: (skillName) => join(homedir(), '.gemini', 'config', 'skills', skillName),
   },
   claude: {
     name: 'Claude Code',
