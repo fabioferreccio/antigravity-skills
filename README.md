@@ -113,7 +113,7 @@ Additionally, the CLI automatically injects a `postinstall` script pointing to t
 | Client | Scope | Path | When to Use |
 |---|---|---|---|
 | **Antigravity** | Workspace | `./.agents/skills/<name>/` | Project-specific skills |
-| **Antigravity** | Global | `~/.gemini/antigravity/skills/<name>/` | Cross-project utilities |
+| **Antigravity** | Global | `~/.gemini/config/skills/<name>/` | Cross-project utilities |
 | **Claude Code** | Workspace | `./.claude/skills/<name>/` | Project-specific skills |
 | **Claude Code** | Global | `~/.claude/skills/<name>/` | Cross-project utilities |
 
@@ -125,33 +125,102 @@ Additionally, the CLI automatically injects a `postinstall` script pointing to t
 |---|---|---|---|
 | `ai-onboarding` | 1.0.0 | Supreme autonomous skill that analyzes any repository and generates all AI initialization files for 7+ tools (Antigravity, Claude Code, Cursor, Copilot, Windsurf, Aider, Gemini) | onboarding, multi-tool, ai-config, bootstrap |
 | `apply-structural-patch` | 1.0.0 | Apply surgical code changes using unified Git patch format to drastically reduce output tokens and speed up file modifications | patch, git, token-optimization, surgical-edit |
-| `bug-hunter` | 1.0.0 | Supreme autonomous skill that performs a comprehensive, multi-agent codebase sweep to identify concrete bugs with adversarial verification | auditing, bug-hunting, multi-agent, adversarial-review |
-| `clean-architecture` | 1.1.0 | Expert cognitive system for designing and refactoring systems using Clean Architecture, SOLID, DDD, CQRS, and comprehensive contracts catalog | architecture, clean-code, ddd, cqrs |
+| `backend-architect` | 1.0.0 | Supreme Backend Architecture & Engineering Skill (NestJS, Clean Arch, DDD, Pure Unit & Testcontainers Integration Tests, Redis Cache/BullMQ, OTel/Pino Observability, LGPD/GDPR/PCI DSS, Monorepos, CVE Audits) | backend, nestjs, clean-architecture, ddd, redis, opentelemetry, security |
+| `bug-hunter` | 1.2.0 | Supreme autonomous skill that performs a comprehensive, multi-agent codebase sweep to identify concrete bugs with adversarial verification | auditing, bug-hunting, multi-agent, adversarial-review |
+| `clean-architecture` | 1.2.0 | Expert cognitive system for designing and refactoring systems using Clean Architecture, SOLID, DDD, CQRS, and comprehensive contracts catalog | architecture, clean-code, ddd, cqrs |
 | `codebase-design` | 1.0.0 | Supreme software design skill based on John Ousterhout's Philosophy of Software Design — identifies deep modules, collapses shallow abstractions, eliminates classitis, and finds high-leverage architectural seams | architecture, software-design, deep-modules, refactoring |
-| `code-review` | 1.2.0 | Polyglot code review skill that analyzes MRs/PRs or individual files across any language and framework and generates anchored inline comments | code-review, pull-request, architecture, security |
+| `code-review` | 1.4.0 | Polyglot code review skill that analyzes MRs/PRs or individual files across any language and framework, audits against overengineering and indirection, and generates anchored inline comments | code-review, pull-request, architecture, security |
 | `dba-agent` | 1.0.0 | DBA Agent specialized in database performance, integrity, and security | database, performance, sql |
 | `devops-agent` | 1.0.0 | Acts as a DevOps Engineer Agent focusing on automation, infrastructure as code, observability, and platform resilience | devops, sre, automation, cicd |
 | `enterprise-architect` | 1.0.0 | Enterprise Architect Agent responsible for preserving architectural integrity, scalability, and corporate governance | architecture, governance, adr, c4 |
 | `execute-in-sandbox` | 1.0.0 | Executes unit tests, build commands, or arbitrary scripts safely inside a Docker sandbox to self-correct code | testing, sandbox, security, docker |
 | `explore-codebase-ast` | 1.0.0 | Maps the file tree of a project analyzing the internal structure (AST) to identify inheritances, entities, interfaces, and controllers without blowing up the context window | architecture, analysis, ast, codebase-mapping |
 | `local-ai-orchestrator` | 1.0.0 | A unified TypeScript orchestrator that exposes hyper-optimized local AI tools with strict JSON Schemas and async execution wrappers compatible with Ollama, Claude, and Antigravity | orchestrator, typescript, ollama, mcp, local-ai |
-| `migration-reviewer` | 1.0.0 | Migration Reviewer Agent that analyzes migrations (Knex, Prisma, SQL, etc.) and generates Slack-ready approval reports | migration, dba, approval, slack |
+| `migration-reviewer` | 1.1.0 | Migration Reviewer Agent that analyzes migrations (Knex, Prisma, SQL, etc.), evaluates reversibility doors, and generates Slack-ready approval reports | migration, dba, approval, slack |
 | `pr-craftsman` | 1.0.0 | Supreme Pull Request engineering skill that analyzes changesets, calculates blast radius, classifies One-Way vs. Two-Way Doors, and renders Mermaid visual diagrams | pull-request, blast-radius, one-way-door, mermaid |
 | `product-manager` | 1.0.0 | Guides product discovery, prioritization, and strategy as a Senior Product Manager Agent | product-management, strategy, prd |
 | `prompt-engineering` | 1.0.0 | Elite system for designing, auditing, and optimizing high-performance prompt architectures | prompts, optimization, llm |
-| `qa-engineer` | 1.0.0 | QA Engineer Agent specialized in defect prevention and destructive testing | qa, testing, edge-cases, automation |
-| `quality-gate` | 1.1.0 | Unforgiving polyglot Quality Gate with project indexing, ruthless review, OWASP security audit, adversarial verification, and automated test infrastructure | quality-assurance, release-gate, security-audit, test-automation |
+| `qa-engineer` | 1.1.0 | QA Engineer Agent specialized in defect prevention, anti-tautological test checks, and destructive testing | qa, testing, edge-cases, automation |
+| `quality-gate` | 1.2.0 | Unforgiving polyglot Quality Gate with project indexing, ruthless review, OWASP security audit, adversarial verification, and automated test infrastructure | quality-assurance, release-gate, security-audit, test-automation |
 | `query-homelab-state` | 1.0.0 | Query the health, CPU/RAM, and logs of containers in Docker or Kubernetes to debug infrastructure autonomously | devops, monitoring, docker, kubernetes, sre |
 | `read-file-chunked` | 1.0.0 | Reads large files in specific chunks with pagination, providing exact lines to prevent context window overflow | context-optimization, file-reading, pagination |
 | `repository-maintainer` | 1.0.0 | AI-powered repository governance, auditing, and quality enforcement | governance, validation |
 | `retrospective-agent` | 1.0.0 | Autonomous compound learning and institutional memory engine that audits AI coding sessions, PR review outcomes, and git history to update coding-standards.md and AGENTS.md while pruning obsolete rules | retrospective, compound-learning, governance, prompt-engineering |
 | `security-engineer` | 1.0.0 | Security Engineer Agent specialized in Security by Design and defense in depth | security, appsec, threat-modeling |
 | `skill-creator` | 2.0.0 | Guided skill scaffolding with modular architecture and internal agentic reasoning | scaffolding, meta-skill |
-| `spec-driven-development` | 1.0.0 | Guide the team through SDD workflow with Specs, Plans, and Tasks | sdd, specification, architecture |
+| `spec-driven-development` | 1.1.0 | Guide the team through SDD workflow with Specs, Plans, Tasks, Active Review, and retrospective loop | sdd, specification, architecture |
 | `staff-engineer` | 1.0.0 | Staff Engineer Agent for cross-functional engineering diagnosis, redundancy elimination, and DORA analysis | staff-engineer, refactoring, dora |
 | `frontend-architect` | 1.1.0 | Supreme Front-End Architecture & Component Engineering Skill (Atomic, Compound, Headless, State, Monorepos, A11y/WCAG 2.2, TDD/Triple AAA, Mobile DS, Yuno SDK) | frontend, react, typescript, component-architecture, ux, accessibility, monorepo, performance, mobile-design-system, yuno-sdk |
 | `image-media-engine` | 1.1.0 | Supreme Image Processing, Color Engineering, AI Generation, Branding Identity Systems, Retouching, Print Preflight, Web Optimization, High-Precision Vectorization, Automated 300 DPI PDF Brandbook Export, Sub-Agent Orchestration, Persistent Project Memory, State Locking (`/frontend-architect` Synergy) | image-processing, color-engineering, branding-identity, brandbook, vectorization, pdf-exporter, state-locking, subagent-orchestration, persistent-memory |
 | `web-pentest-agent` | 1.0.0 | Autonomous web penetration testing skill — passive recon, OWASP Top 10, JWT/auth/API analysis, adversarial verification, CVSS v3.1 scoring, and professional HTML/PDF report generation. Guided onboarding for non-technical users. | pentesting, web-security, owasp, vulnerability-assessment, cvss, report-generation, security-audit |
+
+> 💡 **This registry grows with contributions.** See [Creating Skills](#-creating-skills) to add yours.
+
+---
+
+## 🧩 Skill Ecosystems & Bundles (Dependencies & Delegation)
+
+Skills in this registry are designed with **zero hard runtime dependencies** — every skill is 100% self-sufficient and works out of the box in complete isolation.
+
+However, high-order cognitive skills feature **dynamic delegation hooks**: when companion skills are detected in the workspace (`.agents/skills/`) or global directories (`~/.gemini/config/skills/` or `~/.claude/skills/`), they automatically enrich their analysis with specialized domain intelligence.
+
+### 🔗 Dependency & Synergy Matrix
+
+| Core Skill | Role | Recommended Companion Skills | Status | What it Unlocks |
+|---|---|---|---|---|
+| **`backend-architect`** | Backend Engineering | `clean-architecture`<br>`codebase-design`<br>`dba-agent`<br>`migration-reviewer`<br>`qa-engineer`<br>`ai-onboarding`<br>`quality-gate` | **Optional** *(Highly Recommended)* | Clean Architecture layers, deep module leverage, database query tuning, migration lock safety, AI context bootstrapping, CVE auditing, and step-by-step test verification. |
+| **`code-review`** | Code Review & Audit | `codebase-design`<br>`clean-architecture`<br>`dba-agent`<br>`security-engineer`<br>`qa-engineer`<br>`pr-craftsman` | **Optional** *(Highly Recommended)* | Deep module analysis, anti-overengineering audit, SQL/migration checks, OWASP threat modeling, anti-tautological test checks, and visual Mermaid PR diagrams. |
+| **`quality-gate`** | Production Gatekeeper | `code-review`<br>`bug-hunter`<br>`security-engineer`<br>`qa-engineer`<br>`execute-in-sandbox` | **Optional** *(Highly Recommended)* | End-to-end ruthless release auditing, adversarial bug verification, automated docker test execution, and strict coverage gating. |
+| **`spec-driven-development`** | Autonomous Delivery | `pr-craftsman`<br>`retrospective-agent` | **Optional** *(Recommended)* | Automated high-signal PR generation from specs, post-session retrospective learning, and institutional rule pruning. |
+| **`migration-reviewer`** | Migration Auditor | `dba-agent` | **Optional** *(Recommended)* | DBA-grade query analysis, lock risk mitigation, table-rewrite detection, and Slack-ready rollback plans. |
+| **`frontend-architect`** | Component Architect | `image-media-engine`<br>`ux-specialist` | **Optional** *(Recommended)* | Automated high-precision vectorization, 300 DPI brandbook generation, WCAG 2.2 accessibility, and design system token alignment. |
+| **`web-pentest-agent`** | Web Penetration Testing | `security-engineer`<br>`prompt-engineering`<br>`quality-gate` | **Optional** *(Recommended)* | Deep OWASP verification, adversarial exploit refutation, CVSS v3.1 scoring, and executive HTML/PDF report synthesis. |
+
+---
+
+### 📦 Curated Installation Bundles
+
+Install complete, pre-configured skill suites with a single command:
+
+#### 1. 🏗️ Enterprise Backend & Data Engineering Suite
+Installs the complete NestJS, Clean Architecture, and database architecture stack:
+```bash
+# Antigravity (Global)
+npx github:fabioferreccio/antigravity-skills install backend-architect clean-architecture codebase-design dba-agent migration-reviewer --global
+
+# Claude Code (Global)
+npx github:fabioferreccio/antigravity-skills install backend-architect clean-architecture codebase-design dba-agent migration-reviewer --claude --global
+```
+
+#### 2. 🔍 Full Code Review & Architecture Suite
+Installs the complete review ecosystem with deep module auditing, security, database, and visual PR craft:
+```bash
+npx github:fabioferreccio/antigravity-skills install code-review codebase-design clean-architecture dba-agent security-engineer qa-engineer pr-craftsman --global
+```
+
+#### 3. 🛡️ Autonomous Quality & Production Gate
+Installs the full testing and defect-prevention stack:
+```bash
+npx github:fabioferreccio/antigravity-skills install quality-gate bug-hunter security-engineer qa-engineer execute-in-sandbox --global
+```
+
+#### 4. 📋 Spec-Driven Delivery & Team Memory
+Installs the structured specification, PR craftsmanship, and compound learning loop:
+```bash
+npx github:fabioferreccio/antigravity-skills install spec-driven-development pr-craftsman retrospective-agent --global
+```
+
+#### 5. 🎨 Frontend Architecture & Design System Suite
+Installs the component engineering, brandbook generation, and UX accessibility engine:
+```bash
+npx github:fabioferreccio/antigravity-skills install frontend-architect image-media-engine ux-specialist --global
+```
+
+#### 6. ⚡ Local AI & Token Optimization Suite
+Installs token-saving tools for offline or local AI workflows (Ollama, Claude, Antigravity):
+```bash
+npx github:fabioferreccio/antigravity-skills install local-ai-orchestrator apply-structural-patch explore-codebase-ast read-file-chunked execute-in-sandbox --global
+```
 
 > 💡 **This registry grows with contributions.** See [Creating Skills](#-creating-skills) to add yours.
 
