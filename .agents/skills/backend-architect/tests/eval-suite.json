@@ -1,0 +1,66 @@
+{
+  "skill": "backend-architect",
+  "version": "1.0.0",
+  "prompts": [
+    {
+      "id": "p1",
+      "type": "activation",
+      "query": "Como estruturar um módulo de pedidos no NestJS usando Clean Architecture e DDD?",
+      "expected_behavior": "Activates backend-architect, recommends 4 layers (domain, application, infrastructure, presentation), decoupled IoC with Symbol tokens, and rich Aggregate Root."
+    },
+    {
+      "id": "p2",
+      "type": "activation",
+      "query": "Como fazer injeção de dependência no NestJS sem poluir o Use Case com @Injectable()?",
+      "expected_behavior": "Loads references/nestjs-clean-architecture.md, demonstrates Symbol/string injection tokens and custom providers with useFactory/useClass."
+    },
+    {
+      "id": "p3",
+      "type": "activation",
+      "query": "Como modelar uma entidade rica e Value Objects no TypeScript para evitar modelo anêmico?",
+      "expected_behavior": "Loads references/ddd-domain-modeling.md, implements Value Objects with structural equality and Aggregate Root with encapsulated invariants."
+    },
+    {
+      "id": "p4",
+      "type": "activation",
+      "query": "Como escrever testes unitários puros sem carregar o runtime do NestJS?",
+      "expected_behavior": "Loads references/testing-strategy.md, advises against Test.createTestingModule for unit tests, uses pure TypeScript with In-Memory repository fakes."
+    },
+    {
+      "id": "p5",
+      "type": "activation",
+      "query": "Como testar repositórios Prisma com banco de dados real usando Testcontainers?",
+      "expected_behavior": "Loads references/testing-strategy.md, demonstrates PostgreSQL container spin-up, migration execution, and integration assertions."
+    },
+    {
+      "id": "p6",
+      "type": "activation",
+      "query": "Como mapear models do Prisma ou TypeORM para entidades de domínio DDD?",
+      "expected_behavior": "Loads references/adapters-and-infrastructure.md, implements Data Mapper pattern with toDomain and toPersistence methods."
+    },
+    {
+      "id": "p7",
+      "type": "activation",
+      "query": "Como traduzir Domain Exceptions para respostas HTTP RFC 7807 no NestJS?",
+      "expected_behavior": "Loads references/adapters-and-infrastructure.md, shows GlobalDomainExceptionFilter mapping domain exceptions to status codes."
+    },
+    {
+      "id": "p8",
+      "type": "activation",
+      "query": "Quando usar Result Pattern em vez de lançar exceptions no Use Case?",
+      "expected_behavior": "Loads references/resilience-and-patterns.md, explains expected domain failures vs unexpected infrastructure crashes."
+    },
+    {
+      "id": "p9",
+      "type": "activation",
+      "query": "Como implementar o Transactional Outbox Pattern para evitar escrita dupla entre PostgreSQL e Kafka?",
+      "expected_behavior": "Loads references/resilience-and-patterns.md, shows outbox table schema and atomic transaction flow."
+    },
+    {
+      "id": "p10",
+      "type": "activation",
+      "query": "Como configurar structured logging com Pino e correlation ID no NestJS?",
+      "expected_behavior": "Loads references/security-and-observability.md, demonstrates nestjs-pino setup with x-correlation-id propagation."
+    }
+  ]
+}

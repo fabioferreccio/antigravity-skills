@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
-  "generated": "2026-10-06T18:48:25.888Z",
-  "total_skills": 29,
+  "generated": "2026-10-09T10:40:32.901Z",
+  "total_skills": 30,
   "skills": [
     {
       "name": "ai-onboarding",
@@ -37,6 +37,31 @@
       ],
       "scope": "workspace",
       "path": ".agents/skills/apply-structural-patch",
+      "security": {
+        "network": false,
+        "filesystem": "read-write"
+      }
+    },
+    {
+      "name": "backend-architect",
+      "version": "1.0.0",
+      "description": "Supreme Backend Architecture & Engineering Skill. Expert cognitive system specializing in NestJS, Clean Architecture, Domain-Driven Design (DDD), pure unit testing (TDD/AAA), infrastructure integration tests (Testcontainers), and resilient backend system design.",
+      "author": "Fábio Ferreccio",
+      "tags": [
+        "backend",
+        "nestjs",
+        "clean-architecture",
+        "domain-driven-design",
+        "typescript",
+        "tdd",
+        "integration-tests",
+        "testcontainers",
+        "prisma",
+        "typeorm",
+        "supreme"
+      ],
+      "scope": "workspace",
+      "path": ".agents/skills/backend-architect",
       "security": {
         "network": false,
         "filesystem": "read-write"
