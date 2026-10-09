@@ -1,6 +1,6 @@
 {
   "version": "1.2.0",
-  "generated": "2026-10-09T10:40:32.901Z",
+  "generated": "2026-10-09T11:23:15.794Z",
   "total_skills": 30,
   "skills": [
     {
@@ -45,7 +45,7 @@
     {
       "name": "backend-architect",
       "version": "1.0.0",
-      "description": "Supreme Backend Architecture & Engineering Skill. Expert cognitive system specializing in NestJS, Clean Architecture, Domain-Driven Design (DDD), pure unit testing (TDD/AAA), infrastructure integration tests (Testcontainers), and resilient backend system design.",
+      "description": "Supreme Backend Architecture & Engineering Skill. Expert cognitive system specializing in NestJS, Clean Architecture, Domain-Driven Design (DDD), pure unit testing (TDD/AAA), infrastructure integration tests (Testcontainers), distributed Redis caching, BullMQ messaging, OpenTelemetry/Pino observability, regulatory compliance (LGPD, GDPR, PCI DSS), Monorepos (Turborepo/Nx), and resilient backend system design.",
       "author": "Fábio Ferreccio",
       "tags": [
         "backend",
@@ -58,6 +58,12 @@
         "testcontainers",
         "prisma",
         "typeorm",
+        "redis",
+        "bullmq",
+        "opentelemetry",
+        "pino",
+        "monorepo",
+        "compliance",
         "supreme"
       ],
       "scope": "workspace",

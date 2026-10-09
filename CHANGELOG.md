@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **New Supreme Skill**:
-  - `backend-architect` (v1.0.0) — Supreme Backend Architecture & Engineering Skill. Expert cognitive system specializing in NestJS, Clean Architecture, Domain-Driven Design (DDD), pure unit testing without framework overhead, integration tests with Testcontainers, decoupled Inversion of Control via Symbol injection tokens, and distributed reliability patterns (Transactional Outbox, Result Pattern, Idempotency).
+  - `backend-architect` (v1.0.0) — Supreme Backend Architecture & Engineering Skill. Expert cognitive system specializing in NestJS, Clean Architecture, Domain-Driven Design (DDD), pure unit testing without framework overhead, integration tests with Testcontainers, decoupled Inversion of Control via Symbol injection tokens, distributed reliability patterns (Transactional Outbox, Result Pattern, Idempotency), Redis caching & BullMQ queues with DLQ, end-to-end OpenTelemetry & Pino observability with universal data masking (LGPD, GDPR, PCI DSS), high availability (Terminus health, graceful shutdown, Redis-backed Throttler), Monorepos (Turborepo/Nx change-based deploy, dependency-cruiser), AI context awareness with `ai-onboarding` delegation, and strict plan-first interactive user validation.
 - **Skill Ecosystems, Dependency Synergy & Bundles in README**: Comprehensive documentation of skill relationships, companion delegation, and one-liner bundled installation commands for enterprise engineering suites.
 
 ### Fixed

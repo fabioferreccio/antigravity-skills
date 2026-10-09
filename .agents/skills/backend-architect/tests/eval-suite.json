@@ -61,6 +61,36 @@
       "type": "activation",
       "query": "Como configurar structured logging com Pino e correlation ID no NestJS?",
       "expected_behavior": "Loads references/security-and-observability.md, demonstrates nestjs-pino setup with x-correlation-id propagation."
+    },
+    {
+      "id": "p11",
+      "type": "activation",
+      "query": "Preciso refatorar o backend de pagamentos da nossa API. Por onde começamos?",
+      "expected_behavior": "Executes Protocol 0 & 1: checks AI context, does not touch code blindly, prepares an architectural plan with Mermaid diagram, trade-offs, blast radius, and requests user approval before proceeding."
+    },
+    {
+      "id": "p12",
+      "type": "activation",
+      "query": "Como garantir observabilidade ponta a ponta com OpenTelemetry e máscara para LGPD e PCI DSS no NestJS?",
+      "expected_behavior": "Loads references/security-and-observability.md, configures OpenTelemetry NodeSDK and Pino redaction paths for cardholder data (PAN/CVV) and PII (CPF/email)."
+    },
+    {
+      "id": "p13",
+      "type": "activation",
+      "query": "Como configurar Redis para cache e filas assíncronas com BullMQ no NestJS?",
+      "expected_behavior": "Loads references/redis-cache-and-messaging.md, sets up Cache-Aside with @keyv/redis and BullMQ worker with concurrency, exponential backoff, and DLQ."
+    },
+    {
+      "id": "p14",
+      "type": "activation",
+      "query": "Como proteger a API contra estouro de memória, tráfego excessivo e quedas bruscas?",
+      "expected_behavior": "Loads references/resilience-and-availability.md, configures Terminus heap/RSS probes, graceful shutdown hooks, and Redis-backed Throttler."
+    },
+    {
+      "id": "p15",
+      "type": "activation",
+      "query": "Como gerenciar múltiplos microservices NestJS em Monorepo com deploy apenas dos pacotes alterados?",
+      "expected_behavior": "Loads references/monorepo-and-tooling.md, demonstrates Turborepo/Nx pipeline with change-based filters and dependency-cruiser layer enforcement."
     }
   ]
 }
