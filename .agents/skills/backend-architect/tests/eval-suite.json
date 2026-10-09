@@ -91,6 +91,18 @@
       "type": "activation",
       "query": "Como gerenciar múltiplos microservices NestJS em Monorepo com deploy apenas dos pacotes alterados?",
       "expected_behavior": "Loads references/monorepo-and-tooling.md, demonstrates Turborepo/Nx pipeline with change-based filters and dependency-cruiser layer enforcement."
+    },
+    {
+      "id": "p16",
+      "type": "activation",
+      "query": "Como auditar vulnerabilidades (CVEs) nas dependências do meu projeto NestJS e propor correções seguras?",
+      "expected_behavior": "Loads references/interactive-planning-protocol.md, executes dependency CVE sweep, categorizes severities, and suggests non-breaking patch/minor upgrades."
+    },
+    {
+      "id": "p17",
+      "type": "activation",
+      "query": "Executei o Step 1 do plano e o teste unitário falhou porque uma entidade violou um invariante. O que fazer?",
+      "expected_behavior": "Executes Protocol 4: halts progression to Step 2, formulates an explicit remediation plan explaining root cause and architectural fix, and presents it to the user."
     }
   ]
 }

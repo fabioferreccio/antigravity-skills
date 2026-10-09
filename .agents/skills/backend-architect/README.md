@@ -33,6 +33,13 @@ It bridges the gap between high-level architectural theory and concrete framewor
    - Monorepo patterns with Turborepo and Nx.
    - Change-based CI/CD builds (`turbo run build --filter=...[origin/main]`).
    - Architectural linting with `dependency-cruiser` to prevent layer violations.
+9. **Dependency Security & CVE Audits**:
+   - Pre-flight sweeps for open CVEs in project dependencies (`npm audit` or lockfile inspection).
+   - Proactive suggestions for safe, semver-compatible patch/minor upgrades without breaking changes.
+10. **Step-by-Step Test Verification & Conceptual Integrity**:
+   - Automated test execution (`npm test`) immediately following each completed plan step.
+   - Conceptual integrity guards (zero framework leaks in domain, zero anemic pass-throughs).
+   - Mandatory halts with structured remediation plans whenever deviations or test failures occur.
 
 ---
 
